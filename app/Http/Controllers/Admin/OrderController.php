@@ -360,4 +360,29 @@ class OrderController extends Controller
  
         return response()->json($data);
     }
+
+    // ----------------------------------------------------------------
+    // EDIT
+    // ----------------------------------------------------------------
+
+    public function edit(Order $order)
+    {
+        $order->load(['user', 'items.variant.product']);
+        return view('admin.orders.edit', compact('order'));
+    }
+
+    // ----------------------------------------------------------------
+    // UPDATE
+    // ----------------------------------------------------------------
+
+    public function update(Request $request, Order $order)
+    {
+        $data = $request->validate([
+            'status' => 'required|in:pending,processing,completed,cancelled',
+        ]);
+
+        $order->update($data);
+
+        return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully.');
+    }
 }

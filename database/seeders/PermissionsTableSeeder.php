@@ -106,8 +106,113 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 24,
                 'title' => 'profile_password_edit',
             ],
+            [
+                'id'    => 25,
+                'title' => 'product_access',
+            ],
+            [
+                'id'    => 26,
+                'title' => 'product_create',
+            ],
+            [
+                'id'    => 27,
+                'title' => 'product_edit',
+            ],
+            [
+                'id'    => 28,
+                'title' => 'product_show',
+            ],
+            [
+                'id'    => 29,
+                'title' => 'product_delete',
+            ],
+            [
+                'id'    => 30,
+                'title' => 'category_access',
+            ],
+            [
+                'id'    => 31,
+                'title' => 'category_create',
+            ],
+            [
+                'id'    => 32,
+                'title' => 'category_edit',
+            ],
+            [
+                'id'    => 33,
+                'title' => 'category_show',
+            ],
+            [
+                'id'    => 34,
+                'title' => 'category_delete',
+            ],
+            [
+                'id'    => 35,
+                'title' => 'subcategory_access',
+            ],
+            [
+                'id'    => 36,
+                'title' => 'subcategory_create',
+            ],
+            [
+                'id'    => 37,
+                'title' => 'subcategory_edit',
+            ],
+            [
+                'id'    => 38,
+                'title' => 'subcategory_show',
+            ],
+            [
+                'id'    => 39,
+                'title' => 'subcategory_delete',
+            ],
+            [
+                'id'    => 40,
+                'title' => 'order_access',
+            ],
+            [
+                'id'    => 41,
+                'title' => 'order_create',
+            ],
+            [
+                'id'    => 42,
+                'title' => 'order_edit',
+            ],
+            [
+                'id'    => 43,
+                'title' => 'order_show',
+            ],
+            [
+                'id'    => 44,
+                'title' => 'order_delete',
+            ],
+            [
+                'id'    => 45,
+                'title' => 'brand_access',
+            ],
+            [
+                'id'    => 46,
+                'title' => 'brand_create',
+            ],
+            [
+                'id'    => 47,
+                'title' => 'brand_edit',
+            ],
+            [
+                'id'    => 48,
+                'title' => 'brand_show',
+            ],
+            [
+                'id'    => 49,
+                'title' => 'brand_delete',
+            ],
         ];
 
-        Permission::insert($permissions);
+        foreach ($permissions as $permission) {
+            Permission::updateOrCreate(
+                ['id' => $permission['id']],
+                ['title' => $permission['title']]
+            );
+        }
     }
 }

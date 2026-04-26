@@ -46,6 +46,21 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('products/media/{media}/set-primary',[ProductController::class, 'setPrimaryImage'])->name('products.media.setPrimary');
     Route::post('products/{product}/media/reorder',  [ProductController::class, 'reorderMedia'])->name('products.media.reorder');
     Route::get('products/{category}/subcategories',  [ProductController::class, 'getSubcategories'])->name('products.subcategories');
+
+    // ----------------------------------------------------------------
+    // CATEGORIES
+    // ----------------------------------------------------------------
+    Route::resource('categories', 'CategoryController');
+
+    // ----------------------------------------------------------------
+    // SUBCATEGORIES
+    // ----------------------------------------------------------------
+    Route::resource('subcategories', 'SubcategoryController');
+
+    // ----------------------------------------------------------------
+    // BRANDS
+    // ----------------------------------------------------------------
+    Route::resource('brands', 'BrandController');
  
     // ----------------------------------------------------------------
     // PRODUCT VARIANTS (nested under products)
@@ -79,7 +94,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // ----------------------------------------------------------------
     // ORDERS
     // ----------------------------------------------------------------
-    Route::resource('orders', OrderController::class)->only(['index', 'create', 'store', 'show']);
+    Route::resource('orders', OrderController::class);
  
     Route::post('orders/{order}/status',          [OrderController::class, 'updateStatus'])->name('orders.status');
     Route::post('orders/{order}/payment',         [OrderController::class, 'recordPayment'])->name('orders.payment');
