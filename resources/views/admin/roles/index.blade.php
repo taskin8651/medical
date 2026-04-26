@@ -174,7 +174,7 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
                     <td>
                         <div style="display:flex; align-items:center; justify-content:flex-end; gap:6px;">
                             @can('role_show')
-                            <a href="{{ route('admin.roles.show', $role->id) }}"
+                            <a href="{{ route('admin.roles.show', $role) }}"
                                class="btn-outline"
                                style="border-color:#E2E8F0; color:#475569;"
                                onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='transparent'">
@@ -182,7 +182,7 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
                             </a>
                             @endcan
                             @can('role_edit')
-                            <a href="{{ route('admin.roles.edit', $role->id) }}"
+                            <a href="{{ route('admin.roles.edit', $role) }}"
                                class="btn-outline"
                                style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);"
                                onmouseover="this.style.background='var(--accent-light)'" onmouseout="this.style.background='transparent'">
@@ -190,7 +190,7 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
                             </a>
                             @endcan
                             @can('role_delete')
-                            <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:inline;"
+                            <form action="{{ route('admin.roles.destroy', $role) }}" method="POST" style="display:inline;"
                                   onsubmit="return confirm('{{ trans('global.areYouSure') }}')">
                                 @method('DELETE') @csrf
                                 <button type="submit" class="btn-outline"

@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\TierPricingController;
 use App\Http\Controllers\Admin\HeroController;
 use App\Http\Controllers\Admin\GalleryController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\ContactController;
+use App\Http\Controllers\Admin\SettingController;
 
 
 Route::redirect('/', '/login');
@@ -64,6 +67,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // BRANDS
     // ----------------------------------------------------------------
     Route::resource('brands', 'BrandController');
+
+    // ----------------------------------------------------------------
+    // CONTACTS
+    // ----------------------------------------------------------------
+    Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
  
     // ----------------------------------------------------------------
     // PRODUCT VARIANTS (nested under products)

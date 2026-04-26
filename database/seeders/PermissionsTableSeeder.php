@@ -206,6 +206,106 @@ class PermissionsTableSeeder extends Seeder
                 'id'    => 49,
                 'title' => 'brand_delete',
             ],
+            [
+                'id'    => 50,
+                'title' => 'blog_access',
+            ],
+            [
+                'id'    => 51,
+                'title' => 'blog_create',
+            ],
+            [
+                'id'    => 52,
+                'title' => 'blog_edit',
+            ],
+            [
+                'id'    => 53,
+                'title' => 'blog_show',
+            ],
+            [
+                'id'    => 54,
+                'title' => 'blog_delete',
+            ],
+            [
+                'id'    => 55,
+                'title' => 'gallery_access',
+            ],
+            [
+                'id'    => 56,
+                'title' => 'gallery_create',
+            ],
+            [
+                'id'    => 57,
+                'title' => 'gallery_edit',
+            ],
+            [
+                'id'    => 58,
+                'title' => 'gallery_show',
+            ],
+            [
+                'id'    => 59,
+                'title' => 'gallery_delete',
+            ],
+            [
+                'id'    => 60,
+                'title' => 'hero_access',
+            ],
+            [
+                'id'    => 61,
+                'title' => 'hero_create',
+            ],
+            [
+                'id'    => 62,
+                'title' => 'hero_edit',
+            ],
+            [
+                'id'    => 63,
+                'title' => 'hero_show',
+            ],
+            [
+                'id'    => 64,
+                'title' => 'hero_delete',
+            ],
+            [
+                'id'    => 65,
+                'title' => 'testimonial_access',
+            ],
+            [
+                'id'    => 66,
+                'title' => 'testimonial_create',
+            ],
+            [
+                'id'    => 67,
+                'title' => 'testimonial_edit',
+            ],
+            [
+                'id'    => 68,
+                'title' => 'testimonial_show',
+            ],
+            [
+                'id'    => 69,
+                'title' => 'testimonial_delete',
+            ],
+            [
+                'id'    => 70,
+                'title' => 'contact_access',
+            ],
+            [
+                'id'    => 71,
+                'title' => 'contact_show',
+            ],
+            [
+                'id'    => 72,
+                'title' => 'contact_delete',
+            ],
+            [
+                'id'    => 73,
+                'title' => 'setting_access',
+            ],
+            [
+                'id'    => 74,
+                'title' => 'setting_edit',
+            ],
         ];
 
         foreach ($permissions as $permission) {

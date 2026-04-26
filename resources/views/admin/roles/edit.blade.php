@@ -160,7 +160,7 @@
     </div>
 </div>
 
-<form method="POST" action="{{ route('admin.roles.update', $role->id) }}">
+<form method="POST" action="{{ route('admin.roles.update', $role) }}">
 @method('PUT')
 @csrf
 
@@ -260,7 +260,7 @@
         </a>
     </div>
     @can('role_delete')
-    <form action="{{ route('admin.roles.destroy', $role->id) }}" method="POST" style="display:inline;"
+    <form action="{{ route('admin.roles.destroy', $role) }}" method="POST" style="display:inline;"
           onsubmit="return confirm('{{ trans('global.areYouSure') }}')">
         @method('DELETE') @csrf
         <button type="submit" class="btn-danger">

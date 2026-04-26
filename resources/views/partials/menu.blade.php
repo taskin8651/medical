@@ -320,6 +320,214 @@
         </div>
         @endcan
 
+        {{-- ── BLOG GROUP ── --}}
+        @can('blog_access')
+        @php
+        $blogActive = request()->is('admin/blog*');
+        @endphp
+        <div x-data="{ open: {{ $blogActive ? 'true' : 'false' }} }">
+
+            <button @click="open = !open" data-tooltip="Blog"
+                class="nav-link {{ $blogActive ? 'active' : '' }}"
+                style="justify-content: space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-pencil-alt nav-icon" style="color:{{ $blogActive ? '#fff' : '#64748B' }};"></i>
+                    <span class="nav-label">Blog</span>
+                </div>
+                <i class="fas fa-chevron-right chevron" style="font-size:10px; color:#475569; transition:transform .2s;"
+                   :style="open ? 'transform:rotate(90deg)' : ''"></i>
+            </button>
+
+            <div class="submenu" x-show="open"
+                 x-transition:enter="transition ease-out duration-150"
+                 x-transition:enter-start="opacity-0 -translate-y-1"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-1">
+
+                @can('blog_access')
+                <a href="{{ route('admin.blog.index') }}"
+                   class="sub-link {{ request()->is('admin/blog*') ? 'active' : '' }}">
+                    <i class="fas fa-list" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    All Blog Posts
+                </a>
+                @endcan
+
+                @can('blog_create')
+                <a href="{{ route('admin.blog.create') }}"
+                   class="sub-link {{ request()->is('admin/blog/create') ? 'active' : '' }}">
+                    <i class="fas fa-plus" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    Add Post
+                </a>
+                @endcan
+
+            </div>
+        </div>
+        @endcan
+
+        {{-- ── GALLERY GROUP ── --}}
+        @can('gallery_access')
+        @php
+        $galleryActive = request()->is('admin/gallery*');
+        @endphp
+        <div x-data="{ open: {{ $galleryActive ? 'true' : 'false' }} }">
+
+            <button @click="open = !open" data-tooltip="Gallery"
+                class="nav-link {{ $galleryActive ? 'active' : '' }}"
+                style="justify-content: space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-image nav-icon" style="color:{{ $galleryActive ? '#fff' : '#64748B' }};"></i>
+                    <span class="nav-label">Gallery</span>
+                </div>
+                <i class="fas fa-chevron-right chevron" style="font-size:10px; color:#475569; transition:transform .2s;"
+                   :style="open ? 'transform:rotate(90deg)' : ''"></i>
+            </button>
+
+            <div class="submenu" x-show="open"
+                 x-transition:enter="transition ease-out duration-150"
+                 x-transition:enter-start="opacity-0 -translate-y-1"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-1">
+
+                @can('gallery_access')
+                <a href="{{ route('admin.gallery.index') }}"
+                   class="sub-link {{ request()->is('admin/gallery*') ? 'active' : '' }}">
+                    <i class="fas fa-list" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    All Galleries
+                </a>
+                @endcan
+
+                @can('gallery_create')
+                <a href="{{ route('admin.gallery.create') }}"
+                   class="sub-link {{ request()->is('admin/gallery/create') ? 'active' : '' }}">
+                    <i class="fas fa-plus" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    Add Gallery
+                </a>
+                @endcan
+
+            </div>
+        </div>
+        @endcan
+
+        {{-- ── HERO GROUP ── --}}
+        @can('hero_access')
+        @php
+        $heroActive = request()->is('admin/hero*');
+        @endphp
+        <div x-data="{ open: {{ $heroActive ? 'true' : 'false' }} }">
+
+            <button @click="open = !open" data-tooltip="Hero"
+                class="nav-link {{ $heroActive ? 'active' : '' }}"
+                style="justify-content: space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-flag nav-icon" style="color:{{ $heroActive ? '#fff' : '#64748B' }};"></i>
+                    <span class="nav-label">Hero</span>
+                </div>
+                <i class="fas fa-chevron-right chevron" style="font-size:10px; color:#475569; transition:transform .2s;"
+                   :style="open ? 'transform:rotate(90deg)' : ''"></i>
+            </button>
+
+            <div class="submenu" x-show="open"
+                 x-transition:enter="transition ease-out duration-150"
+                 x-transition:enter-start="opacity-0 -translate-y-1"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-1">
+
+                @can('hero_access')
+                <a href="{{ route('admin.hero.index') }}"
+                   class="sub-link {{ request()->is('admin/hero*') ? 'active' : '' }}">
+                    <i class="fas fa-list" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    All Heroes
+                </a>
+                @endcan
+
+                @can('hero_create')
+                <a href="{{ route('admin.hero.create') }}"
+                   class="sub-link {{ request()->is('admin/hero/create') ? 'active' : '' }}">
+                    <i class="fas fa-plus" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    Add Hero Slide
+                </a>
+                @endcan
+
+            </div>
+        </div>
+        @endcan
+
+        {{-- ── TESTIMONIALS GROUP ── --}}
+        @can('testimonial_access')
+        @php
+        $testimonialActive = request()->is('admin/testimonial*');
+        @endphp
+        <div x-data="{ open: {{ $testimonialActive ? 'true' : 'false' }} }">
+
+            <button @click="open = !open" data-tooltip="Testimonials"
+                class="nav-link {{ $testimonialActive ? 'active' : '' }}"
+                style="justify-content: space-between;">
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <i class="fas fa-comment-alt nav-icon" style="color:{{ $testimonialActive ? '#fff' : '#64748B' }};"></i>
+                    <span class="nav-label">Testimonials</span>
+                </div>
+                <i class="fas fa-chevron-right chevron" style="font-size:10px; color:#475569; transition:transform .2s;"
+                   :style="open ? 'transform:rotate(90deg)' : ''"></i>
+            </button>
+
+            <div class="submenu" x-show="open"
+                 x-transition:enter="transition ease-out duration-150"
+                 x-transition:enter-start="opacity-0 -translate-y-1"
+                 x-transition:enter-end="opacity-100 translate-y-0"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100 translate-y-0"
+                 x-transition:leave-end="opacity-0 -translate-y-1">
+
+                @can('testimonial_access')
+                <a href="{{ route('admin.testimonial.index') }}"
+                   class="sub-link {{ request()->is('admin/testimonial*') ? 'active' : '' }}">
+                    <i class="fas fa-list" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    All Testimonials
+                </a>
+                @endcan
+
+                @can('testimonial_create')
+                <a href="{{ route('admin.testimonial.create') }}"
+                   class="sub-link {{ request()->is('admin/testimonial/create') ? 'active' : '' }}">
+                    <i class="fas fa-plus" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    Add Testimonial
+                </a>
+                @endcan
+
+            </div>
+        </div>
+        @endcan
+
+        {{-- ── CONTACT GROUP ── --}}
+        @can('contact_access')
+        @php
+        $contactActive = request()->is('admin/contacts*');
+        @endphp
+        <a href="{{ route('admin.contacts.index') }}" data-tooltip="Contacts"
+           class="nav-link {{ $contactActive ? 'active' : '' }}">
+            <i class="fas fa-envelope nav-icon" style="color:{{ $contactActive ? '#fff' : '#64748B' }};"></i>
+            <span class="nav-label">Contacts</span>
+        </a>
+        @endcan
+
+        {{-- ── SETTINGS GROUP ── --}}
+        @can('setting_access')
+        @php
+        $settingActive = request()->is('admin/settings*');
+        @endphp
+        <a href="{{ route('admin.settings.index') }}" data-tooltip="Settings"
+           class="nav-link {{ $settingActive ? 'active' : '' }}">
+            <i class="fas fa-cog nav-icon" style="color:{{ $settingActive ? '#fff' : '#64748B' }};"></i>
+            <span class="nav-label">Settings</span>
+        </a>
+        @endcan
+
         {{-- ── DIVIDER ── --}}
         <div style="height:1px; background:rgba(255,255,255,.05); margin:6px 4px;"></div>
         <p style="font-size:10px; font-weight:700; color:#334155; text-transform:uppercase; letter-spacing:.08em; padding:4px 10px; margin:0;" class="nav-label">Account</p>

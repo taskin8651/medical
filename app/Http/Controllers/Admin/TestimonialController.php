@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Testimonial;
 use Illuminate\Http\Request;
 
@@ -33,7 +34,7 @@ class TestimonialController extends Controller
                         ->toMediaCollection('testimonial');
         }
 
-        return redirect()->route('testimonial.index')->with('success','Added');
+        return redirect()->route('admin.testimonial.index')->with('success','Added');
     }
 
     public function edit($id)
@@ -60,7 +61,7 @@ class TestimonialController extends Controller
                         ->toMediaCollection('testimonial');
         }
 
-        return redirect()->route('testimonial.index')->with('success','Updated');
+        return redirect()->route('admin.testimonial.index')->with('success','Updated');
     }
 
     public function destroy($id)

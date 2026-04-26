@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Hero;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,7 @@ class HeroController extends Controller
 
         Hero::create($data);
 
-        return redirect()->route('hero.index')->with('success','Hero Added');
+        return redirect()->route('admin.hero.index')->with('success','Hero Added');
     }
 
     public function edit($id)
@@ -48,7 +49,7 @@ class HeroController extends Controller
 
         $hero->update($data);
 
-        return redirect()->route('hero.index')->with('success','Hero Updated');
+        return redirect()->route('admin.hero.index')->with('success','Hero Updated');
     }
 
     public function destroy($id)

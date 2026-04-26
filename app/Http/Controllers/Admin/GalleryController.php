@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Gallery;
 use Illuminate\Http\Request;
 
@@ -31,7 +32,7 @@ class GalleryController extends Controller
             }
         }
 
-        return redirect()->route('gallery.index')->with('success','Gallery Added');
+        return redirect()->route('admin.gallery.index')->with('success','Gallery Added');
     }
 
     public function edit($id)
@@ -55,7 +56,7 @@ class GalleryController extends Controller
             }
         }
 
-        return redirect()->route('gallery.index')->with('success','Updated');
+        return redirect()->route('admin.gallery.index')->with('success','Updated');
     }
 
     public function destroy($id)

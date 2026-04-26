@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -43,7 +44,7 @@ class BlogController extends Controller
             }
         }
 
-        return redirect()->route('blog.index')->with('success','Blog Added');
+        return redirect()->route('admin.blog.index')->with('success','Blog Added');
     }
 
     public function edit($id)
@@ -80,7 +81,7 @@ class BlogController extends Controller
             }
         }
 
-        return redirect()->route('blog.index')->with('success','Updated');
+        return redirect()->route('admin.blog.index')->with('success','Updated');
     }
 
     public function destroy($id)

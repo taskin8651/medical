@@ -71,7 +71,7 @@
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">View role details and assigned permissions</p>
     </div>
     @can('role_edit')
-    <a href="{{ route('admin.roles.edit', $role->id) }}" class="btn-primary">
+    <a href="{{ route('admin.roles.edit', $role) }}" class="btn-primary">
         <i class="fas fa-pencil-alt" style="font-size:11px;"></i>
         {{ trans('global.edit') }}
     </a>
