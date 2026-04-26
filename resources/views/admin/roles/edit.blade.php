@@ -259,6 +259,7 @@
             {{ trans('global.cancel') }}
         </a>
     </div>
+    </form>
     @can('role_delete')
     <form action="{{ route('admin.roles.destroy', $role) }}" method="POST" style="display:inline;"
           onsubmit="return confirm('{{ trans('global.areYouSure') }}')">
@@ -270,7 +271,6 @@
     @endcan
 </div>
 
-</form>
 @endsection
 
 @section('scripts')
