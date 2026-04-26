@@ -129,3 +129,7 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
     }
 });
 
+
+// Frontend routes
+Route::get('/', [App\Http\Controllers\Custom\HomeController::class, 'index'])->name('home');
+
