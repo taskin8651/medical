@@ -3,6 +3,9 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProductVariantController;
 use App\Http\Controllers\Admin\TierPricingController;
+use App\Http\Controllers\Admin\HeroController;
+use App\Http\Controllers\Admin\GalleryController;
+use App\Http\Controllers\Admin\BlogController;
 
 
 Route::redirect('/', '/login');
@@ -100,6 +103,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::post('orders/{order}/payment',         [OrderController::class, 'recordPayment'])->name('orders.payment');
     Route::get('orders/{order}/invoice',          [OrderController::class, 'generateInvoice'])->name('orders.invoice');
     Route::get('orders/stats',                    [OrderController::class, 'stats'])->name('orders.stats');
+
+    Route::resource('hero', HeroController::class);
+     Route::resource('gallery', GalleryController::class);
+     Route::resource('blog', BlogController::class);
+     Route::resource('testimonial', TestimonialController::class);
+     Route::get('settings', [SettingController::class,'index'])->name('settings.index');
+    Route::post('settings', [SettingController::class,'update'])->name('settings.update');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password
