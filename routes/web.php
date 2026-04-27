@@ -132,4 +132,6 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
 
 // Frontend routes
 Route::get('/', [App\Http\Controllers\Custom\HomeController::class, 'index'])->name('home');
+Route::get('/shop', [App\Http\Controllers\Custom\ShopController::class, 'index'])->name('shop');
+Route::get('/shop/filter', [App\Http\Controllers\Custom\ShopController::class, 'filter'])->name('shop.filter');
 
