@@ -6,10 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
  
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
  
     protected $fillable = [
         'category_id', 'subcategory_id', 'brand_id',
@@ -34,17 +38,40 @@ class Product extends Model
         'is_active', 'is_featured',
     ];
  
-    protected $casts = [
-        'requires_prescription' => 'boolean',
-        'is_active'             => 'boolean',
-        'is_featured'           => 'boolean',
-        'mrp'                   => 'decimal:2',
-        'ptr'                   => 'decimal:2',
-        'pts'                   => 'decimal:2',
-        'price'                 => 'decimal:2',
-        'sale_price'            => 'decimal:2',
-        'gst_rate'              => 'decimal:2',
-    ];
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($product) {
+            if (empty($product->slug)) {
+                $baseSlug = Str::slug($product->name);
+                $slug = $baseSlug;
+                $counter = 1;
+
+                while (static::where('slug', $slug)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+
+                $product->slug = $slug;
+            }
+        });
+
+        static::updating(function ($product) {
+            if ($product->isDirty('name') && empty($product->slug)) {
+                $baseSlug = Str::slug($product->name);
+                $slug = $baseSlug;
+                $counter = 1;
+
+                while (static::where('slug', $slug)->where('id', '!=', $product->id)->exists()) {
+                    $slug = $baseSlug . '-' . $counter;
+                    $counter++;
+                }
+
+                $product->slug = $slug;
+            }
+        });
+    }
  
     // ---- Relationships ----
  
@@ -68,24 +95,20 @@ class Product extends Model
         return $this->hasMany(ProductVariant::class);
     }
  
-    public function media()
-    {
-        return $this->hasMany(ProductMedia::class)->orderBy('sort_order');
-    }
- 
+    // Spatie Media Library relationships
     public function images()
     {
-        return $this->hasMany(ProductMedia::class)->where('type', 'image')->orderBy('sort_order');
+        return $this->media()->where('collection_name', 'images');
     }
  
     public function primaryImage()
     {
-        return $this->hasOne(ProductMedia::class)->where('type', 'image')->where('is_primary', true);
+        return $this->media()->where('collection_name', 'images')->where('custom_properties->is_primary', true)->first();
     }
  
     public function documents()
     {
-        return $this->hasMany(ProductMedia::class)->whereIn('type', ['brochure', 'certificate', 'prescription_sample']);
+        return $this->media()->where('collection_name', 'documents');
     }
  
     // ---- Helpers ----

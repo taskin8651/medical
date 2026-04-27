@@ -48,10 +48,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
  
     // AJAX helpers on products
     Route::post('products/{product}/toggle-status',  [ProductController::class, 'toggleStatus'])->name('products.toggleStatus');
-    Route::delete('products/media/{media}',          [ProductController::class, 'deleteMedia'])->name('products.media.delete');
-    Route::post('products/media/{media}/set-primary',[ProductController::class, 'setPrimaryImage'])->name('products.media.setPrimary');
+    Route::delete('products/{product}/media/{media}', [ProductController::class, 'deleteMedia'])->name('products.media.delete');
+    Route::post('products/{product}/media/{media}/set-primary',[ProductController::class, 'setPrimaryImage'])->name('products.media.setPrimary');
     Route::post('products/{product}/media/reorder',  [ProductController::class, 'reorderMedia'])->name('products.media.reorder');
     Route::get('products/{category}/subcategories',  [ProductController::class, 'getSubcategories'])->name('products.subcategories');
+    Route::get('products/{product}/media',           [ProductController::class, 'getMedia'])->name('products.media.index');
+    Route::post('products/{product}/media/upload',   [ProductController::class, 'uploadMedia'])->name('products.media.upload');
 
     // ----------------------------------------------------------------
     // CATEGORIES

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\ProductMedia;
+use App\Models\Media;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,7 +21,7 @@ class ProductController extends Controller
  
     public function index(Request $request)
     {
-        $query = Product::with(['brand', 'category', 'primaryImage'])
+        $query = Product::with(['brand', 'category', 'media'])
             ->withCount('variants');
  
         if ($request->filled('search')) {
@@ -118,11 +118,10 @@ class ProductController extends Controller
  
     public function destroy(Product $product)
     {
-        foreach ($product->media as $media) {
-            Storage::disk('public')->delete($media->file_path);
-        }
-        $product->delete();
- 
+        // Delete all media files
+        $product->clearMediaCollection('images');
+        $product->clearMediaCollection('documents');
+        
         return redirect()->route('admin.products.index')->with('success', 'Product deleted.');
     }
  
@@ -138,36 +137,105 @@ class ProductController extends Controller
     }
  
     /** Delete one media file */
-    public function deleteMedia(ProductMedia $media)
+    public function deleteMedia(Product $product, $mediaId)
     {
-        Storage::disk('public')->delete($media->file_path);
+        $media = $product->media()->findOrFail($mediaId);
         $media->delete();
         return response()->json(['success' => true]);
     }
- 
+
     /** Mark one image as primary, unset others */
-    public function setPrimaryImage(ProductMedia $media)
+    public function setPrimaryImage(Product $product, $mediaId)
     {
-        ProductMedia::where('product_id', $media->product_id)->update(['is_primary' => false]);
-        $media->update(['is_primary' => true]);
-        return response()->json(['success' => true]);
+        // Remove primary flag from all images
+        $product->media()->where('collection_name', 'images')->update(['custom_properties->is_primary' => false]);
+        
+        // Set primary flag on selected image
+        $media = $product->media()->findOrFail($mediaId);
+        $media->setCustomProperty('is_primary', true);
+        $media->save();
+        
     }
+
+    
  
     /** Drag-and-drop sort: POST body { ids: [3,1,5,2] } */
     public function reorderMedia(Request $request, Product $product)
     {
         $ids = $request->validate(['ids' => 'required|array'])['ids'];
         foreach ($ids as $order => $id) {
-            ProductMedia::where('id', $id)->where('product_id', $product->id)
-                ->update(['sort_order' => $order]);
+            $media = $product->media()->findOrFail($id);
+            $media->setCustomProperty('sort_order', $order);
+            $media->save();
         }
         return response()->json(['success' => true]);
     }
  
-    /** Return subcategories for a category (for cascading dropdown) */
-    public function getSubcategories(Category $category)
+    /** Get media data for modal */
+    public function getMedia(Product $product)
     {
-        return response()->json($category->subcategories()->select('id', 'name')->get());
+        $images = $product->getMedia('images')->map(function ($media) {
+            return [
+                'id' => $media->id,
+                'name' => $media->name,
+                'url' => $media->getUrl(),
+                'custom_properties' => $media->custom_properties,
+            ];
+        });
+
+        $documents = $product->getMedia('documents')->map(function ($media) {
+            return [
+                'id' => $media->id,
+                'name' => $media->name,
+                'url' => $media->getUrl(),
+                'size' => $media->size,
+                'custom_properties' => $media->custom_properties,
+            ];
+        });
+
+        return response()->json([
+            'images' => $images,
+            'documents' => $documents,
+        ]);
+    }
+
+    /** Upload media via AJAX */
+    public function uploadMedia(Request $request, Product $product)
+    {
+        $request->validate([
+            'files' => 'required|array|max:10',
+            'files.*' => 'required|file|max:5120', // 5MB max
+        ]);
+
+        $uploaded = [];
+
+        foreach ($request->file('files') as $file) {
+            // Determine collection based on file type
+            $collection = str_starts_with($file->getMimeType(), 'image/') ? 'images' : 'documents';
+
+            $mediaFile = $product->addMedia($file->getPathname())
+                ->setName($file->getClientOriginalName())
+                ->setFileName($file->getClientOriginalName())
+                ->toMediaCollection($collection);
+
+            // Set first image as primary if no primary exists
+            if ($collection === 'images' && !$product->media()->where('collection_name', 'images')->where('custom_properties->is_primary', true)->exists()) {
+                $mediaFile->setCustomProperty('is_primary', true);
+                $mediaFile->save();
+            }
+
+            $uploaded[] = [
+                'id' => $mediaFile->id,
+                'name' => $mediaFile->name,
+                'url' => $mediaFile->getUrl(),
+                'collection' => $collection,
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'uploaded' => $uploaded,
+        ]);
     }
  
     // ----------------------------------------------------------------
@@ -219,34 +287,30 @@ class ProductController extends Controller
     private function handleMediaUploads(Request $request, Product $product): void
     {
         if ($request->hasFile('images')) {
-            $hasPrimary = $product->media()->where('type', 'image')->where('is_primary', true)->exists();
+            $hasPrimary = $product->media()->where('collection_name', 'images')->where('custom_properties->is_primary', true)->exists();
+            
             foreach ($request->file('images') as $i => $image) {
-                $this->storeMedia($product, $image, 'image', !$hasPrimary && $i === 0);
+                $mediaFile = $product->addMedia($image->getPathname())
+                    ->setName($image->getClientOriginalName())
+                    ->setFileName($image->getClientOriginalName())
+                    ->toMediaCollection('images');
+                
+                // Set first image as primary if no primary exists
+                if (!$hasPrimary && $i === 0) {
+                    $mediaFile->setCustomProperty('is_primary', true);
+                    $mediaFile->save();
+                }
             }
         }
- 
+
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $doc) {
-                $this->storeMedia($product, $doc, 'brochure', false);
+                $product->addMedia($doc->getPathname())
+                    ->setName($doc->getClientOriginalName())
+                    ->setFileName($doc->getClientOriginalName())
+                    ->toMediaCollection('documents');
             }
         }
-    }
- 
-    private function storeMedia(Product $product, $file, string $type, bool $isPrimary): ProductMedia
-    {
-        $path     = $file->store("products/{$product->id}/{$type}s", 'public');
-        $maxOrder = $product->media()->max('sort_order') ?? 0;
- 
-        return $product->media()->create([
-            'file_path'  => $path,
-            'file_name'  => $file->getClientOriginalName(),
-            'mime_type'  => $file->getMimeType(),
-            'file_size'  => $file->getSize(),
-            'type'       => $type,
-            'alt_text'   => $product->name,
-            'is_primary' => $isPrimary,
-            'sort_order' => $maxOrder + 1,
-        ]);
     }
  
     private function uniqueSlug(string $name): string

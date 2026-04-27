@@ -154,22 +154,32 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Primary Image</span>
-                    <span class="detail-value">{{ optional($product->primaryImage)->file_name ?? 'None' }}</span>
-                </div>
+@if($product->primaryImage())
+    <img src="{{ $product->primaryImage()->getUrl() }}" width="80">
+@endif                </div>
             </div>
         </div>
-        @if($product->media->where('type', 'image')->count())
-        <div class="detail-card" style="padding:18px;">
-            <p style="font-size:13px; font-weight:700; color:#0F172A; margin:0 0 12px;">Product images</p>
-            <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px;">
-                @foreach($product->media->where('type','image') as $media)
-                <div style="border:1px solid #E2E8F0; border-radius:14px; overflow:hidden; background:#F8FAFC;">
-                    <img src="{{ asset('storage/'.$media->file_path) }}" alt="{{ $product->name }}" style="width:100%; height:140px; object-fit:cover;">
-                </div>
-                @endforeach
-            </div>
+       @if($product->getMedia('images')->count())
+<div class="detail-card" style="padding:18px;">
+    <p style="font-size:13px; font-weight:700; color:#0F172A; margin:0 0 12px;">
+        Product images
+    </p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px;">
+
+        @foreach($product->getMedia('images') as $media)
+        <div style="border:1px solid #E2E8F0; border-radius:14px; overflow:hidden; background:#F8FAFC;">
+
+            <img src="{{ $media->getUrl() }}"
+                 alt="{{ $product->name }}"
+                 style="width:100%; height:140px; object-fit:cover;">
+
         </div>
-        @endif
+        @endforeach
+
+    </div>
+</div>
+@endif
         @if($product->media->where('type', 'brochure')->count())
         <div class="detail-card" style="padding:18px;">
             <p style="font-size:13px; font-weight:700; color:#0F172A; margin:0 0 12px;">Documents</p>

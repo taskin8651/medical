@@ -38,7 +38,7 @@ class SubcategoryController extends Controller
             'slug' => Str::slug($request->name),
         ]);
 
-        return redirect()->route('subcategories.index')
+        return redirect()->route('admin.subcategories.index')
             ->with('success', 'Subcategory Created');
     }
 
