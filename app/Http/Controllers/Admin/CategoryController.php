@@ -23,16 +23,27 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name'
+            'name' => 'required|unique:categories,name',
+            'description' => 'nullable|string|max:1000',
+            'is_active' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
-        Category::create([
+        $category = Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'is_active' => $request->is_active ?? true,
         ]);
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Category Created');
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $category->addMediaFromRequest('image')
+                ->toMediaCollection('category');
+        }
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category Created Successfully');
     }
 
     public function edit(Category $category)
@@ -43,22 +54,37 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id
+            'name' => 'required|unique:categories,name,' . $category->id,
+            'description' => 'nullable|string|max:1000',
+            'is_active' => 'boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048'
         ]);
 
         $category->update([
             'name' => $request->name,
             'slug' => Str::slug($request->name),
+            'description' => $request->description,
+            'is_active' => $request->is_active ?? true,
         ]);
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Category Updated');
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            $category->clearMediaCollection('category');
+            $category->addMediaFromRequest('image')
+                ->toMediaCollection('category');
+        }
+
+        return redirect()->route('admin.categories.index')
+            ->with('success', 'Category Updated Successfully');
     }
 
     public function destroy(Category $category)
     {
+        // Clear media before deleting
+        $category->clearMediaCollection('category');
+
         $category->delete();
 
-        return back()->with('success', 'Category Deleted');
+        return back()->with('success', 'Category Deleted Successfully');
     }
 }

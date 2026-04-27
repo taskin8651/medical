@@ -77,6 +77,32 @@
                 <input type="text" name="name" id="name" value="{{ old('name', $category->name) }}" class="field-input {{ $errors->has('name') ? 'error' : '' }}" required>
                 @error('name')<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</p>@enderror
             </div>
+
+            <div class="field-group">
+                <label class="field-label" for="description">Description</label>
+                <textarea name="description" id="description" class="field-textarea {{ $errors->has('description') ? 'error' : '' }}" rows="4">{{ old('description', $category->description) }}</textarea>
+                @error('description')<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</p>@enderror
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="image">Category Image</label>
+                @if($category->getFirstMediaUrl('category'))
+                    <div style="margin-bottom:12px;">
+                        <img src="{{ $category->getFirstMediaUrl('category', 'thumb') }}" alt="Current Image" style="max-width:150px; max-height:150px; border-radius:8px; border:1px solid #E2E8F0;">
+                    </div>
+                @endif
+                <input type="file" name="image" id="image" class="field-input {{ $errors->has('image') ? 'error' : '' }}" accept="image/*">
+                <small style="color:#64748B; font-size:12px; margin-top:4px; display:block;">Leave empty to keep current image. Supported formats: JPEG, PNG, JPG, GIF, WebP. Max size: 2MB</small>
+                @error('image')<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</p>@enderror
+            </div>
+
+            <div class="field-group">
+                <label class="field-checkbox" style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                    <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $category->is_active) ? 'checked' : '' }} style="width:16px; height:16px; accent-color:var(--accent);">
+                    <span style="font-size:13px; font-weight:600; color:#374151;">Active Category</span>
+                </label>
+                <small style="color:#64748B; font-size:12px; margin-top:4px; display:block;">Uncheck to hide this category from the frontend</small>
+            </div>
         </div>
     </div>
 

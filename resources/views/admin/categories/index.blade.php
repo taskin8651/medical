@@ -63,8 +63,10 @@
             <thead>
                 <tr style="background:#F8FAFC; color:#64748B; font-size:11px; text-transform:uppercase; letter-spacing:.06em;">
                     <th style="padding:12px 16px; text-align:left;">ID</th>
+                    <th style="padding:12px 16px; text-align:left;">Image</th>
                     <th style="padding:12px 16px; text-align:left;">Name</th>
                     <th style="padding:12px 16px; text-align:left;">Slug</th>
+                    <th style="padding:12px 16px; text-align:left;">Status</th>
                     <th style="padding:12px 16px; text-align:left;">Created</th>
                     <th style="padding:12px 16px; text-align:right;">Actions</th>
                 </tr>
@@ -73,8 +75,24 @@
                 @forelse($categories as $category)
                 <tr style="border-bottom:1px solid #F1F5F9;">
                     <td style="padding:14px 16px; color:#475569;">#{{ $category->id }}</td>
+                    <td style="padding:14px 16px;">
+                        @if($category->getFirstMediaUrl('category'))
+                            <img src="{{ $category->getFirstMediaUrl('category', 'thumb') }}" alt="{{ $category->name }}" style="width:40px; height:40px; border-radius:6px; object-fit:cover; border:1px solid #E2E8F0;">
+                        @else
+                            <div style="width:40px; height:40px; border-radius:6px; background:#F1F5F9; display:flex; align-items:center; justify-content:center; color:#94A3B8; font-size:16px;">
+                                <i class="fas fa-image"></i>
+                            </div>
+                        @endif
+                    </td>
                     <td style="padding:14px 16px; color:#0F172A; font-weight:600;">{{ $category->name }}</td>
                     <td style="padding:14px 16px; color:#475569; font-family:monospace;">{{ $category->slug }}</td>
+                    <td style="padding:14px 16px;">
+                        @if($category->is_active)
+                            <span style="background:#DCFCE7; color:#166534; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:600;">Active</span>
+                        @else
+                            <span style="background:#FEF2F2; color:#991B1B; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:600;">Inactive</span>
+                        @endif
+                    </td>
                     <td style="padding:14px 16px; color:#475569;">{{ $category->created_at->format('d M Y') }}</td>
                     <td style="padding:14px 16px; text-align:right;">
                         <div style="display:flex; justify-content:flex-end; gap:6px; flex-wrap:wrap;">
@@ -92,7 +110,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" style="padding:24px 16px; color:#64748B; text-align:center;">No categories found.</td>
+                    <td colspan="7" style="padding:24px 16px; color:#64748B; text-align:center;">No categories found.</td>
                 </tr>
                 @endforelse
             </tbody>

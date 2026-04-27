@@ -52,7 +52,7 @@
     </div>
 </div>
 
-<form method="POST" action="{{ route('admin.categories.store') }}">
+<form method="POST" action="{{ route('admin.categories.store') }}" enctype="multipart/form-data">
     @csrf
 
     <div class="form-card">
@@ -68,6 +68,27 @@
                 <label class="field-label" for="name">Name <span class="req">*</span></label>
                 <input type="text" name="name" id="name" value="{{ old('name') }}" class="field-input {{ $errors->has('name') ? 'error' : '' }}" required>
                 @error('name')<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</p>@enderror
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="description">Description</label>
+                <textarea name="description" id="description" class="field-textarea {{ $errors->has('description') ? 'error' : '' }}" rows="4">{{ old('description') }}</textarea>
+                @error('description')<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</p>@enderror
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="image">Category Image</label>
+                <input type="file" name="image" id="image" class="field-input {{ $errors->has('image') ? 'error' : '' }}" accept="image/*">
+                <small style="color:#64748B; font-size:12px; margin-top:4px; display:block;">Supported formats: JPEG, PNG, JPG, GIF, WebP. Max size: 2MB</small>
+                @error('image')<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $message }}</p>@enderror
+            </div>
+
+            <div class="field-group">
+                <label class="field-checkbox" style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+                    <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }} style="width:16px; height:16px; accent-color:var(--accent);">
+                    <span style="font-size:13px; font-weight:600; color:#374151;">Active Category</span>
+                </label>
+                <small style="color:#64748B; font-size:12px; margin-top:4px; display:block;">Uncheck to hide this category from the frontend</small>
             </div>
         </div>
     </div>
