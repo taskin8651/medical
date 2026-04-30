@@ -8,7 +8,7 @@
                 <div class="site-breadcrumb-wrap">
                     <h4 class="breadcrumb-title">Shop</h4>
                     <ul class="breadcrumb-menu">
-                        <li><a href="{{ route('home') }}"><i class="far fa-home"></i> Home</a></li>
+                        <li><a href="{{ route('home') }}"><i class="fas fa-home"></i> Home</a></li>
                         <li class="active">Shop</li>
                     </ul>
                 </div>
@@ -31,7 +31,7 @@
                                     <form action="{{ route('shop') }}" method="GET" id="filter-form">
                                         <div class="form-group">
                                             <input type="text" name="search" class="form-control" placeholder="Search products..." value="{{ $filters['search'] ?? '' }}">
-                                            <button type="submit"><i class="far fa-search"></i></button>
+                                            <button type="submit"><i class="fas fa-search"></i></button>
                                         </div>
                                     </form>
                                 </div>
@@ -92,7 +92,7 @@
                                         @endforeach
                                         <input type="hidden" name="min_price" id="filter-min-price" value="{{ $filters['min_price'] ?? $minPrice }}">
                                         <input type="hidden" name="max_price" id="filter-max-price" value="{{ $filters['max_price'] ?? $maxPrice }}">
-                                        <button type="submit" class="btn btn-sm btn-primary w-100">Apply Price</button>
+                                        <button type="submit" class="theme-btn w-100">Apply Price</button>
                                     </form>
                                 </div>
                             </div>
@@ -174,7 +174,7 @@
                                     </div>
                                 </div>
                                 <div class="shop-sort-gl">
-                                    <a href="#" class="shop-sort-grid active" data-bs-toggle="tooltip" title="Grid View"><i class="far fa-grid-round-2"></i></a>
+                                    <a href="#" class="shop-sort-grid active" data-bs-toggle="tooltip" title="Grid View"><i class="fas fa-th"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -195,19 +195,29 @@
                                                         <span class="type">New</span>
                                                     @endif
                                                     
-                                                    <a href="{{ route('product.show', $product->slug) }}">
-                                                        <img src="{{ asset('storage/' . $product->image ?? 'assets/img/product/01.png') }}" alt="{{ $product->name }}">
+                                                    <a href="{{ route('shop.show', $product->slug) }}">
+                                                        <img src="{{ asset($product->image?->getUrl() ?? 'assets/img/product/01.png') }}" alt="{{ $product->name }}">
                                                     </a>
                                                     <div class="product-action-wrap">
                                                         <div class="product-action">
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-product-id="{{ $product->id }}" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                            <a href="javascript:void(0)" class="add-to-wishlist" data-product-id="{{ $product->id }}" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                            <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
+                                                          <a href="#" data-bs-toggle="modal" data-bs-target="#quickview"
+   data-product-id="{{ $product->id }}" title="Quick View">
+   <i class="fas fa-eye"></i>
+</a>
+
+<a href="javascript:void(0)" class="add-to-wishlist"
+   data-product-id="{{ $product->id }}" title="Add To Wishlist">
+   <i class="fas fa-heart"></i>
+</a>
+
+<a href="#" title="Add To Compare">
+   <i class="fas fa-sync-alt"></i>
+</a>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="product-content">
-                                                    <h3 class="product-title"><a href="{{ route('product.show', $product->slug) }}">{{ $product->name }}</a></h3>
+                                                    <h3 class="product-title"><a href="{{ route('shop.show', $product->slug) }}">{{ $product->name }}</a></h3>
                                                     
                                                     <div class="product-rate">
                                                         @for($i = 0; $i < 5; $i++)
@@ -228,9 +238,14 @@
                                                                 <span>${{ number_format($product->price, 2) }}</span>
                                                             @endif
                                                         </div>
-                                                        <button type="button" class="product-cart-btn add-to-cart" data-product-id="{{ $product->id }}" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                            <i class="far fa-shopping-bag"></i>
-                                                        </button>
+                                                        <button type="button"
+    class="product-cart-btn add-to-cart"
+    data-product-id="{{ $product->id }}"
+    data-bs-placement="left"
+    title="Add To Cart">
+
+    <i class="fas fa-shopping-bag"></i>
+</button>
                                                     </div>
                                                     
                                                     @if($product->stock <= 0)
@@ -248,12 +263,12 @@
                                         <ul class="pagination">
                                             @if($products->onFirstPage())
                                                 <li class="page-item disabled">
-                                                    <span class="page-link"><i class="far fa-arrow-left"></i></span>
+                                                    <span class="page-link"><i class="fas fa-arrow-left"></i></span>
                                                 </li>
                                             @else
                                                 <li class="page-item">
                                                     <a class="page-link" href="{{ $products->previousPageUrl() }}" aria-label="Previous">
-                                                        <i class="far fa-arrow-left"></i>
+                                                        <i class="fas fa-arrow-left"></i>
                                                     </a>
                                                 </li>
                                             @endif
@@ -269,12 +284,12 @@
                                             @if($products->hasMorePages())
                                                 <li class="page-item">
                                                     <a class="page-link" href="{{ $products->nextPageUrl() }}" aria-label="Next">
-                                                        <i class="far fa-arrow-right"></i>
+                                                        <i class="fas fa-arrow-right"></i>
                                                     </a>
                                                 </li>
                                             @else
                                                 <li class="page-item disabled">
-                                                    <span class="page-link"><i class="far fa-arrow-right"></i></span>
+                                                    <span class="page-link"><i class="fas fa-arrow-right"></i></span>
                                                 </li>
                                             @endif
                                         </ul>

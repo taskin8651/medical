@@ -136,6 +136,7 @@ Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 
 Route::get('/', [App\Http\Controllers\Custom\HomeController::class, 'index'])->name('home');
 Route::get('/shop', [App\Http\Controllers\Custom\ShopController::class, 'index'])->name('shop');
 Route::get('/shop/filter', [App\Http\Controllers\Custom\ShopController::class, 'filter'])->name('shop.filter');
+Route::get('/shop/{slug}', [App\Http\Controllers\Custom\ShopController::class, 'show'])->name('shop.show');
 // Category routes
 Route::get('/categories', [App\Http\Controllers\Custom\CategoryController::class, 'index'])->name('categories');
 Route::get('/category/{slug}', [App\Http\Controllers\Custom\CategoryController::class, 'show'])->name('category.show');
