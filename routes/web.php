@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Custom\CartController;
+use App\Http\Controllers\Custom\CheckoutController;
 
 
 Route::redirect('/', '/login');
@@ -140,3 +142,19 @@ Route::get('/shop/{slug}', [App\Http\Controllers\Custom\ShopController::class, '
 // Category routes
 Route::get('/categories', [App\Http\Controllers\Custom\CategoryController::class, 'index'])->name('categories');
 Route::get('/category/{slug}', [App\Http\Controllers\Custom\CategoryController::class, 'show'])->name('category.show');
+
+Route::prefix('cart')->name('cart.')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('index');
+    Route::post('/add/{product}', [CartController::class, 'add'])->name('add');
+    Route::post('/update/{productId}', [CartController::class, 'update'])->name('update');
+    Route::get('/remove/{productId}', [CartController::class, 'remove'])->name('remove');
+    Route::get('/clear', [CartController::class, 'clear'])->name('clear');
+});
+
+
+
+Route::prefix('checkout')->name('checkout.')->group(function () {
+    Route::get('/', [CheckoutController::class, 'index'])->name('index');
+    Route::post('/place-order', [CheckoutController::class, 'placeOrder'])->name('placeOrder');
+    Route::get('/success/{order}', [CheckoutController::class, 'success'])->name('success');
+});

@@ -32,12 +32,12 @@
 <body>
 
     <!-- preloader -->
-    <div class="preloader">
+    <!-- <div class="preloader">
         <div class="loader-ripple">
             <div></div>
             <div></div>
         </div>
-    </div>
+    </div> -->
     <!-- preloader end -->
 
 

@@ -126,4 +126,28 @@ class ShopController extends Controller
     {
         return $this->index($request);
     }
+
+   public function show($slug)
+{
+    $product = Product::with(['category', 'brand', 'images'])
+        ->where('slug', $slug)
+        ->where('is_active', 1)
+        ->firstOrFail();
+
+    $relatedProducts = Product::with(['category', 'brand', 'images'])
+        ->where('is_active', 1)
+        ->where('id', '!=', $product->id)
+        ->where(function ($query) use ($product) {
+            $query->where('category_id', $product->category_id);
+
+            if (!empty($product->brand_id)) {
+                $query->orWhere('brand_id', $product->brand_id);
+            }
+        })
+        ->latest()
+        ->take(8)
+        ->get();
+
+    return view('custom.shop-detail', compact('product', 'relatedProducts'));
+}
 }

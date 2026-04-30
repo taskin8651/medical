@@ -21,50 +21,57 @@
         <!-- shop single -->
         <div class="shop-single py-90">
             <div class="container">
-                <div class="row">
+                @php
+            $galleryImages = $product->images;
+        @endphp
+        <div class="row">
                     <div class="col-md-9 col-lg-6 col-xxl-5">
                         <div class="shop-single-gallery">
-                            <a class="shop-single-video popup-youtube" href="https://www.youtube.com/watch?v=ckHzmP1evNU" data-tooltip="tooltip" title="Watch Video">
+                            <a class="shop-single-video popup-youtube" href="{{ $product->video_url ?? 'https://www.youtube.com/watch?v=ckHzmP1evNU' }}" data-tooltip="tooltip" title="Watch Video">
                                 <i class="far fa-play"></i>
                             </a>
                             <div class="flexslider-thumbnails">
                                 <ul class="slides">
-                                    <li data-thumb="assets/img/product/01.png" rel="adjustX:10, adjustY:">
-                                        <img src="assets/img/product/01.png" alt="#">
-                                    </li>
-                                    <li data-thumb="assets/img/product/02.html">
-                                        <img src="assets/img/product/02.html" alt="#">
-                                    </li>
-                                    <li data-thumb="assets/img/product/03.html">
-                                        <img src="assets/img/product/03.html" alt="#">
-                                    </li>
-                                    <li data-thumb="assets/img/product/04.png">
-                                        <img src="assets/img/product/04.png" alt="#">
-                                    </li>
+                                    @if($galleryImages->count())
+                                        @foreach($galleryImages as $image)
+                                            <li data-thumb="{{ $image->getUrl() }}" rel="adjustX:10, adjustY:">
+                                                <img src="{{ $image->getUrl() }}" alt="{{ $product->name }}">
+                                            </li>
+                                        @endforeach
+                                    @else
+                                        <li data-thumb="{{ asset('assets/img/product/01.png') }}" rel="adjustX:10, adjustY:">
+                                            <img src="{{ asset('assets/img/product/01.png') }}" alt="{{ $product->name }}">
+                                        </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 col-lg-6 col-xxl-6">
                         <div class="shop-single-info">
-                            <h4 class="shop-single-title">Surgical Face Mask</h4>
+                            <h4 class="shop-single-title">{{ $product->name }}</h4>
                             <div class="shop-single-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                                <i class="far fa-star"></i>
-                                <span class="rating-count"> (4 Customer Reviews)</span>
+                                @php $rating = $product->rating ?? 4; @endphp
+                                @for($i = 1; $i <= 5; $i++)
+                                    @if($i <= $rating)
+                                        <i class="fas fa-star"></i>
+                                    @else
+                                        <i class="far fa-star"></i>
+                                    @endif
+                                @endfor
+                                <span class="rating-count"> ({{ $product->reviews_count ?? 4 }} Customer Reviews)</span>
                             </div>
                             <div class="shop-single-price">
-                                <del>$690</del>
-                                <span class="amount">$650</span>
-                                <span class="discount-percentage">30% Off</span>
+                                @if($product->sale_price && $product->sale_price < $product->price)
+                                    <del>${{ number_format($product->price, 2) }}</del>
+                                    <span class="amount">${{ number_format($product->sale_price, 2) }}</span>
+                                    <span class="discount-percentage">{{ round((1 - $product->sale_price / max($product->price, 1)) * 100) }}% Off</span>
+                                @else
+                                    <span class="amount">${{ number_format($product->price, 2) }}</span>
+                                @endif
                             </div>
                             <p class="mb-3">
-                                There are many variations of passages of Lorem Ipsum available, but the majority have
-                                suffered alteration in some form, by injected humour, or randomised words which don't
-                                look even slightly believable.
+                                {!! nl2br(e($product->short_description ?: $product->description ?: 'No description available.')) !!}
                             </p>
                             <div class="shop-single-cs">
                                 <div class="row">
@@ -78,83 +85,93 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-lg-4 col-xl-3">
-                                        <div class="shop-single-size">
-                                            <h6>Size</h6>
-                                           <select class="select">
-                                                <option value="">Choose Size</option>
-                                                <option value="1">Extra Small</option>
-                                                <option value="2">Small</option>
-                                                <option value="3">Medium</option>
-                                                <option value="4">Extra Large</option>
-                                           </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-lg-12 col-xl-6">
-                                        <div class="shop-single-color">
-                                            <h6>Color</h6>
-                                            <ul class="shop-checkbox-list color">
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="color1">
-                                                        <label class="form-check-label" for="color1"><span style="background-color: #606ddd"></span></label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="color2">
-                                                        <label class="form-check-label" for="color2"><span style="background-color: #4caf50"></span></label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="color3">
-                                                        <label class="form-check-label" for="color3"><span style="background-color: #17a2b8"></span></label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="color4">
-                                                        <label class="form-check-label" for="color4"><span style="background-color: #ffc107"></span></label>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" id="color5">
-                                                        <label class="form-check-label" for="color5"><span style="background-color: #f44336"></span></label>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                    
+                                   
                                 </div>
                             </div>
                             <div class="shop-single-sortinfo">
                                 <ul>
-                                    <li>Stock: <span>Available</span></li>
-                                    <li>SKU: <span>656TYTR</span></li>
-                                    <li>Category: <span>Medicine</span></li>
-                                    <li>Brand: <a href="#">Novak</a></li>
-                                    <li>Tags: <a href="#">Medicine</a>,<a href="#">Healthcare</a>,<a href="#">Modern</a>,<a href="#">Shop</a></li>
+                                    <li>Stock: <span>{{ $product->stock > 0 ? 'Available' : 'Out of Stock' }}</span></li>
+                                    <li>SKU: <span>{{ $product->sku ?? '-' }}</span></li>
+                                    <li>Category: <span>{{ $product->category->name ?? 'N/A' }}</span></li>
+                                    <li>Brand: <span>{{ $product->brand->name ?? 'N/A' }}</span></li>
+                                    <li>Pack: <span>{{ trim(($product->pack_size ?? '') . ' ' . ($product->pack_type ?? '')) ?: '-' }}</span></li>
                                 </ul>
                             </div>
                             <div class="shop-single-action">
                                 <div class="row align-items-center">
                                     <div class="col-md-6 col-lg-12 col-xl-6">
                                         <div class="shop-single-btn">
-                                            <a href="#" class="theme-btn"><span class="far fa-shopping-bag"></span>Add To Cart</a>
-                                            <a href="#" class="theme-btn theme-btn2" data-tooltip="tooltip" title="Add To Wishlist"><span class="far fa-heart"></span></a>
-                                            <a href="#" class="theme-btn theme-btn2" data-tooltip="tooltip" title="Add To Compare"><span class="far fa-arrows-repeat"></span></a>
+<form action="{{ route('cart.add', $product->id) }}" method="POST">
+    @csrf
+
+    @php
+        $minQty = $product->min_qty ?? 1;
+        $maxQty = $product->max_qty ?? $product->stock;
+        $packLabel = trim(($product->pack_size ?? '') . ' ' . ($product->pack_type ?? ''));
+    @endphp
+
+    <div class="mb-3">
+        @if($packLabel)
+            <small class="d-block mb-1">
+                Pack: {{ $packLabel }}
+            </small>
+        @endif
+
+        @if($product->units_per_pack)
+            <small class="d-block mb-1">
+                Units Per Pack: {{ $product->units_per_pack }}
+            </small>
+        @endif
+
+        <input type="number"
+               name="quantity"
+               value="{{ $minQty }}"
+               min="{{ $minQty }}"
+               max="{{ $maxQty }}"
+               class="form-control"
+               style="max-width: 120px;">
+    </div>
+
+    <button type="submit" class="theme-btn">
+        <span class="fa fa-shopping-bag"></span> Add To Cart
+    </button>
+</form>
+                                         <a href="#" class="theme-btn "><span class="fa fa-download"></span>Download</a>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-12 col-xl-6">
                                         <div class="shop-single-share">
-                                            <span>Share:</span>
-                                            <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                            <a href="#"><i class="fab fa-x-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                            <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                                        </div>
+                                            @php
+    $shareUrl = urlencode(url()->current());
+    $shareTitle = urlencode($product->name ?? 'Product');
+@endphp
+
+<span>Share:</span>
+
+<a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}"
+   target="_blank"
+   rel="noopener">
+    <i class="fab fa-facebook-f"></i>
+</a>
+
+<a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareTitle }}"
+   target="_blank"
+   rel="noopener">
+    <i class="fab fa-x-twitter"></i>
+</a>
+
+<a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareUrl }}"
+   target="_blank"
+   rel="noopener">
+    <i class="fab fa-linkedin-in"></i>
+</a>
+
+<a href="https://pinterest.com/pin/create/button/?url={{ $shareUrl }}&description={{ $shareTitle }}"
+   target="_blank"
+   rel="noopener">
+    <i class="fab fa-pinterest-p"></i>
+</a>
                                     </div>
                                 </div>
                             </div>
@@ -171,339 +188,200 @@
                             <button class="nav-link" id="nav-tab2" data-bs-toggle="tab" data-bs-target="#tab2"
                                 type="button" role="tab" aria-controls="tab2" aria-selected="false">Additional
                                 Info</button>
-                            <button class="nav-link" id="nav-tab3" data-bs-toggle="tab" data-bs-target="#tab3"
-                                type="button" role="tab" aria-controls="tab3" aria-selected="false">Reviews
-                                (05)</button>
+                           
                         </div>
                     </nav>
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="nav-tab1">
                             <div class="shop-single-desc">
-                                <p>
-                                    There are many variations of passages of Lorem Ipsum available, but the majority
-                                    have suffered alteration in some form, by injected humour, or randomised words which
-                                    don't look even slightly believable. If you are going to use a passage of Lorem
-                                    Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of
-                                    text. All the Lorem Ipsum generators on the Internet tend to repeat predefined
-                                    chunks as necessary, making this the first true generator on the Internet.
-                                </p>
-                                <p>
-                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-                                    doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
-                                    veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
-                                    magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
-                                    qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
-                                </p>
-                                <div class="row">
-                                    <div class="col-lg-5 col-xl-4">
-                                        <div class="shop-single-list">
-                                            <h5 class="title">Features</h5>
-                                            <ul>
-                                                <li>Modern Art Deco Chaise Lounge</li>
-                                                <li>Unique cylindrical design copper finish</li>
-                                                <li>Covered in grey velvet fabric</li>
-                                                <li>Modern Bookcase in Copper Colored Finish</li>
-                                                <li>Use of Modern Materials</li>
-                                                <li>Mirrored compartments and upgraded interior</li>
-                                            </ul>
+                                <p>{!! nl2br(e($product->description ?: $product->short_description ?: 'Description not available.')) !!}</p>
+                                @if($product->generic_name || $product->composition || $product->strength)
+                                    <div class="row">
+                                        <div class="col-lg-5 col-xl-4">
+                                            <div class="shop-single-list">
+                                                <h5 class="title">Key Medical Details</h5>
+                                                <ul>
+                                                    @if($product->generic_name)
+                                                        <li><span>Generic Name:</span> {{ $product->generic_name }}</li>
+                                                    @endif
+                                                    @if($product->composition)
+                                                        <li><span>Composition:</span> {{ $product->composition }}</li>
+                                                    @endif
+                                                    @if($product->form)
+                                                        <li><span>Form:</span> {{ $product->form }}</li>
+                                                    @endif
+                                                    @if($product->strength)
+                                                        <li><span>Strength:</span> {{ $product->strength }}</li>
+                                                    @endif
+                                                    @if($product->drug_schedule)
+                                                        <li><span>Schedule:</span> {{ $product->drug_schedule }}</li>
+                                                    @endif
+                                                    @if($product->requires_prescription)
+                                                        <li><span>Prescription Required:</span> Yes</li>
+                                                    @endif
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6 col-xl-5">
+                                            <div class="shop-single-list">
+                                                <h5 class="title">Product Information</h5>
+                                                <ul>
+                                                    @if($product->pack_size)
+                                                        <li><span>Pack Size:</span> {{ $product->pack_size }}</li>
+                                                    @endif
+                                                    @if($product->pack_type)
+                                                        <li><span>Pack Type:</span> {{ $product->pack_type }}</li>
+                                                    @endif
+                                                    @if($product->units_per_pack)
+                                                        <li><span>Units Per Pack:</span> {{ $product->units_per_pack }}</li>
+                                                    @endif
+                                                    @if($product->storage_conditions)
+                                                        <li><span>Storage:</span> {{ $product->storage_conditions }}</li>
+                                                    @endif
+                                                    @if($product->shelf_life)
+                                                        <li><span>Shelf Life:</span> {{ $product->shelf_life }}</li>
+                                                    @endif
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-6 col-xl-5">
-                                        <div class="shop-single-list">
-                                            <h5 class="title">Specifications</h5>
-                                            <ul>
-                                                <li><span>Dimensions:</span> 4ft W x 7ft h</li>
-                                                <li><span>Model Year:</span> 2024</li>
-                                                <li><span>Available Sizes:</span> 8.5, 9.0, 9.5, 10.0</li>
-                                                <li><span>Manufacturer:</span> Reebok Inc.</li>
-                                                <li><span>Available Colors:</span> White/Red/Blue,Black/Orange/Green</li>
-                                                <li><span>Made In:</span> USA</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endif
                             </div>
                         </div>
                         <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="nav-tab2">
                             <div class="shop-single-additional">
-                                <p>
-                                    There are many variations of passages of Lorem Ipsum available, but the majority
-                                    have suffered alteration in some form, by injected humour, or randomised words which
-                                    don't look even slightly believable. If you are going to use a passage of Lorem
-                                    Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of
-                                    text. All the Lorem Ipsum generators on the Internet tend to repeat predefined
-                                    chunks as necessary, making this the first true generator on the Internet.
-                                </p>
-                                <p>
-                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-                                    doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
-                                    veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
-                                    voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur
-                                    magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est,
-                                    qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
-                                </p>
-                                <div class="shop-single-list">
-                                    <h5 class="title">Shipping Options:</h5>
-                                    <ul>
-                                        <li><span>Standard:</span> 6-7 Days, Shipping Cost - Free</li>
-                                        <li><span>Express:</span> 1-2 Days, Shipping Cost - $20</li>
-                                        <li><span>Courier:</span> 2-3 Days, Shipping Cost - $30</li>
-                                        <li><span>Fastgo:</span> 1-3 Days, Shipping Cost - $15</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab3" role="tabpanel" aria-labelledby="nav-tab3">
-                            <div class="shop-single-review">
-                                <div class="blog-comments">
-                                    <h5>Reviews (05)</h5>
-                                    <div class="blog-comments-wrap">
-                                        <div class="blog-comments-item mt-0">
-                                            <img src="assets/img/blog/com-1.html" alt="thumb">
-                                            <div class="blog-comments-content">
-                                                <h5>Sinkler Denola</h5>
-                                                <span><i class="far fa-clock"></i> August 20, 2024</span>
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries but also the leap electronic typesetting, remaining essentially unchanged. It was popularised in the with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                                <a href="#"><i class="far fa-reply"></i> Reply</a>
-                                                <div class="review-rating">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="blog-comments-item ms-md-5">
-                                            <img src="assets/img/blog/com-2.html" alt="thumb">
-                                            <div class="blog-comments-content">
-                                                <h5>Daniel Wellman</h5>
-                                                <span><i class="far fa-clock"></i> August 20, 2024</span>
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries but also the leap electronic typesetting, remaining essentially unchanged. It was popularised in the with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                                <a href="#"><i class="far fa-reply"></i> Reply</a>
-                                                <div class="review-rating">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="far fa-star"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="blog-comments-item">
-                                            <img src="assets/img/blog/com-3.jpg" alt="thumb">
-                                            <div class="blog-comments-content">
-                                                <h5>Kenneth Evans</h5>
-                                                <span><i class="far fa-clock"></i> August 20, 2024</span>
-                                                <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries but also the leap electronic typesetting, remaining essentially unchanged. It was popularised in the with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-                                                <a href="#"><i class="far fa-reply"></i> Reply</a>
-                                                <div class="review-rating">
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star"></i>
-                                                    <i class="fas fa-star-half-alt"></i>
-                                                    <i class="far fa-star"></i>
-                                                </div>
-                                            </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="shop-single-list">
+                                            <h5 class="title">Detailed Product Specs</h5>
+                                            <table class="table table-bordered">
+                                                <tbody>
+                                                    <tr><th>MRP</th><td>${{ number_format($product->mrp ?? 0, 2) }}</td></tr>
+                                                    <tr><th>PTR</th><td>${{ number_format($product->ptr ?? 0, 2) }}</td></tr>
+                                                    <tr><th>PTS</th><td>${{ number_format($product->pts ?? 0, 2) }}</td></tr>
+                                                    <tr><th>GST Rate</th><td>{{ $product->gst_rate ? $product->gst_rate . '%' : '-' }}</td></tr>
+                                                    <tr><th>Price + GST</th><td>${{ number_format($product->price_with_gst ?? $product->price, 2) }}</td></tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
-                                    <div class="blog-comments-form">
-                                        <h4 class="mb-4">Leave A Review</h4>
-                                        <form action="#">
-                                            <div class="row">
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" placeholder="Your Name*">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input type="email" class="form-control" placeholder="Your Email*">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <input type="text" class="form-control" placeholder="Your Subject*">
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="form-group">
-                                                        <select class="form-control form-select">
-                                                            <option value="">Your Rating</option>
-                                                            <option value="5">5 Stars</option>
-                                                            <option value="4">4 Stars</option>
-                                                            <option value="3">3 Stars</option>
-                                                            <option value="2">2 Stars</option>
-                                                            <option value="1">1 Star</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <div class="form-group">
-                                                        <textarea class="form-control" rows="5" placeholder="Your Review*"></textarea>
-                                                    </div>
-                                                    <button type="submit" class="theme-btn"><span class="far fa-paper-plane"></span> Submit Review</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                    <div class="col-lg-6">
+                                        <div class="shop-single-list">
+                                            <h5 class="title">Safety & Usage</h5>
+                                            <ul>
+                                                @if($product->side_effects)
+                                                    <li><span>Side Effects:</span> {{ $product->side_effects }}</li>
+                                                @endif
+                                                @if($product->contraindications)
+                                                    <li><span>Contraindications:</span> {{ $product->contraindications }}</li>
+                                                @endif
+                                                <li><span>Minimum Order Qty:</span> {{ $product->min_qty ?? 'N/A' }}</li>
+                                                <li><span>Maximum Order Qty:</span> {{ $product->max_qty ?? 'N/A' }}</li>
+                                            </ul>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
                 <!-- shop single details end -->
 
             
                 <!-- related item -->
-                <div class="product-area related-item pt-40">
-                    <div class="container px-0">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="site-heading-inline">
-                                    <h2 class="site-title">Related Items</h2>
-                                    <a href="#">View More <i class="fas fa-arrow-right"></i></a>
+              <div class="product-area related-item pt-40">
+    <div class="container px-0">
+
+        <div class="row">
+            <div class="col-12">
+                <div class="site-heading-inline">
+                    <h2 class="site-title">Related Items</h2>
+                    <a href="{{ route('shop') }}">
+                        View More <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 item-2">
+
+            @forelse($relatedProducts as $related)
+                @php
+                    $primaryImage = $related->primaryImage();
+                    $imageUrl = $primaryImage
+                        ? $primaryImage->getUrl()
+                        : asset('assets/img/product/no-image.png');
+                @endphp
+
+                <div class="col-md-6 col-lg-3">
+                    <div class="product-item">
+
+                        <div class="product-img">
+                            @if($related->created_at && $related->created_at->gt(now()->subDays(15)))
+                                <span class="type new">New</span>
+                            @endif
+
+                            <a href="{{ route('shop.show', $related->slug) }}">
+                                <img src="{{ $imageUrl }}" alt="{{ $related->name }}">
+                            </a>
+
+                            <div class="product-action-wrap">
+                                <div class="product-action">
+                                    <a href="{{ route('shop.show', $related->slug) }}"
+                                       data-bs-placement="right"
+                                       data-tooltip="tooltip"
+                                       title="Quick View">
+                                        <i class="far fa-eye"></i>
+                                    </a>
+
+                                    
+
+                                  
                                 </div>
                             </div>
                         </div>
-                        <div class="row g-4 item-2">
-                            <div class="col-md-6 col-lg-3">
-                                <div class="product-item">
-                                    <div class="product-img">
-                                        <span class="type new">New</span>
-                                        <a href="shop-single.html"><img src="assets/img/product/07.html" alt=""></a>
-                                        <div class="product-action-wrap">
-                                            <div class="product-action">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-bs-placement="right" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                <a href="#" data-bs-placement="right" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                <a href="#" data-bs-placement="right" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                        <div class="product-rate">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                        <div class="product-bottom">
-                                            <div class="product-price">
-                                                <span>$100.00</span>
-                                            </div>
-                                            <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                <i class="far fa-shopping-bag"></i>
-                                            </button>
-                                        </div>
-                                    </div>
+
+                        <div class="product-content">
+                            <h3 class="product-title">
+                                <a href="{{ route('shop.show', $related->slug) }}">
+                                    {{ $related->name }}
+                                </a>
+                            </h3>
+
+                           
+
+                            <div class="product-bottom">
+                                <div class="product-price">
+                                    @if($related->sale_price)
+                                        <span>₹{{ number_format($related->sale_price, 2) }}</span>
+                                        <del>₹{{ number_format($related->price, 2) }}</del>
+                                    @else
+                                        <span>₹{{ number_format($related->price, 2) }}</span>
+                                    @endif
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="product-item">
-                                    <div class="product-img">
-                                        <span class="type hot">Hot</span>
-                                        <a href="shop-single.html"><img src="assets/img/product/08.png" alt=""></a>
-                                        <div class="product-action-wrap">
-                                            <div class="product-action">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-bs-placement="right" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                <a href="#" data-bs-placement="right" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                <a href="#" data-bs-placement="right" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                        <div class="product-rate">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                        <div class="product-bottom">
-                                            <div class="product-price">
-                                                <span>$100.00</span>
-                                            </div>
-                                            <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                <i class="far fa-shopping-bag"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="product-item">
-                                    <div class="product-img">
-                                        <span class="type oos">Out Of Stock</span>
-                                        <a href="shop-single.html"><img src="assets/img/product/12.html" alt=""></a>
-                                        <div class="product-action-wrap">
-                                            <div class="product-action">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-bs-placement="right" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                <a href="#" data-bs-placement="right" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                <a href="#" data-bs-placement="right" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                        <div class="product-rate">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                        <div class="product-bottom">
-                                            <div class="product-price">
-                                                <span>$100.00</span>
-                                            </div>
-                                            <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                <i class="far fa-shopping-bag"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-3">
-                                <div class="product-item">
-                                    <div class="product-img">
-                                        <span class="type discount">10% Off</span>
-                                        <a href="shop-single.html"><img src="assets/img/product/14.html" alt=""></a>
-                                        <div class="product-action-wrap">
-                                            <div class="product-action">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-bs-placement="right" data-tooltip="tooltip" title="Quick View"><i class="far fa-eye"></i></a>
-                                                <a href="#" data-bs-placement="right" data-tooltip="tooltip" title="Add To Wishlist"><i class="far fa-heart"></i></a>
-                                                <a href="#" data-bs-placement="right" data-tooltip="tooltip" title="Add To Compare"><i class="far fa-arrows-repeat"></i></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="product-content">
-                                        <h3 class="product-title"><a href="shop-single.html">Surgical Face Mask</a></h3>
-                                        <div class="product-rate">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                        <div class="product-bottom">
-                                            <div class="product-price">
-                                                <del>$120.00</del>
-                                                <span>$100.00</span>
-                                            </div>
-                                            <button type="button" class="product-cart-btn" data-bs-placement="left" data-tooltip="tooltip" title="Add To Cart">
-                                                <i class="far fa-shopping-bag"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+
+                                <button type="button"
+                                        class="product-cart-btn"
+                                        data-bs-placement="left"
+                                        data-tooltip="tooltip"
+                                        title="Add To Cart">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </button>
                             </div>
                         </div>
+
                     </div>
                 </div>
+            @empty
+                <div class="col-12">
+                    <p>No related products found.</p>
+                </div>
+            @endforelse
+
+        </div>
+    </div>
+</div>
                 <!-- related item end -->
             </div>
         </div>
