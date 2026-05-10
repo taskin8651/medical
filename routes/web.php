@@ -158,3 +158,6 @@ Route::prefix('checkout')->name('checkout.')->group(function () {
     Route::post('/place-order', [CheckoutController::class, 'placeOrder'])->name('placeOrder');
     Route::get('/success/{order}', [CheckoutController::class, 'success'])->name('success');
 });
+
+Route::get('/blog', [App\Http\Controllers\Custom\BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [App\Http\Controllers\Custom\BlogController::class, 'show'])->name('blog.show');
