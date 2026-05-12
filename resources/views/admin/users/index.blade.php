@@ -40,6 +40,14 @@
 .status-dot {
     width: 7px; height: 7px; border-radius: 50%; display: inline-block;
 }
+.approval-tag {
+    display:inline-flex; align-items:center; gap:5px;
+    padding:4px 9px; border-radius:20px;
+    font-size:11px; font-weight:700; text-transform:capitalize;
+}
+.approval-pending { background:#FEF9C3; color:#92400E; }
+.approval-approved { background:#DCFCE7; color:#15803D; }
+.approval-rejected { background:#FEE2E2; color:#991B1B; }
 /* DataTable overrides */
 table.dataTable thead th {
     background: #F8FAFC !important; color: #64748B !important;
@@ -110,8 +118,12 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
         <p style="font-size:24px; font-weight:700; color:#0F172A; margin:0;">{{ $users->whereNull('email_verified_at')->count() }}</p>
     </div>
     <div style="background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:16px 18px;">
-        <p style="font-size:11px; font-weight:700; color:#94A3B8; text-transform:uppercase; letter-spacing:.05em; margin:0 0 6px;">Added Today</p>
-        <p style="font-size:24px; font-weight:700; color:#0F172A; margin:0;">{{ $users->where('created_at', '>=', now()->startOfDay())->count() }}</p>
+        <p style="font-size:11px; font-weight:700; color:#94A3B8; text-transform:uppercase; letter-spacing:.05em; margin:0 0 6px;">Approved Buyers</p>
+        <p style="font-size:24px; font-weight:700; color:#0F172A; margin:0;">{{ $users->where('approval_status', 'approved')->count() }}</p>
+    </div>
+    <div style="background:#fff; border:1px solid #E2E8F0; border-radius:12px; padding:16px 18px;">
+        <p style="font-size:11px; font-weight:700; color:#94A3B8; text-transform:uppercase; letter-spacing:.05em; margin:0 0 6px;">Pending Approval</p>
+        <p style="font-size:24px; font-weight:700; color:#0F172A; margin:0;">{{ $users->where('approval_status', 'pending')->count() }}</p>
     </div>
 </div>
 
@@ -133,6 +145,9 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
                     <th>{{ trans('cruds.user.fields.id') }}</th>
                     <th>{{ trans('cruds.user.fields.name') }}</th>
                     <th>{{ trans('cruds.user.fields.email') }}</th>
+                    <th>Phone</th>
+                    <th>Business</th>
+                    <th>Approval</th>
                     <th>{{ trans('cruds.user.fields.email_verified_at') }}</th>
                     <th>{{ trans('cruds.user.fields.roles') }}</th>
                     <th style="text-align:right;">{{ trans('global.actions') }}</th>
@@ -164,6 +179,23 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
                     </td>
 
                     <td style="color:#475569;">{{ $user->email }}</td>
+
+                    <td style="color:#475569;">{{ $user->phone ?: '-' }}</td>
+
+                    <td>
+                        <div>
+                            <p style="font-size:13px; font-weight:600; color:#0F172A; margin:0;">{{ $user->business_name ?: '-' }}</p>
+                            <p style="font-size:11px; color:#94A3B8; margin:1px 0 0;">{{ $user->business_type ?: 'Wholesale buyer' }}</p>
+                        </div>
+                    </td>
+
+                    <td>
+                        @php $approval = $user->approval_status ?? 'pending'; @endphp
+                        <span class="approval-tag approval-{{ $approval }}">
+                            <i class="fas {{ $approval === 'approved' ? 'fa-check-circle' : ($approval === 'rejected' ? 'fa-times-circle' : 'fa-clock') }}"></i>
+                            {{ $approval }}
+                        </span>
+                    </td>
 
                     <td>
                         @if($user->email_verified_at)

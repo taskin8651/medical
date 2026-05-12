@@ -96,6 +96,12 @@
                 </div>
                 <p style="font-size:17px; font-weight:700; color:#0F172A; margin:0 0 4px;">{{ $user->name }}</p>
                 <p style="font-size:13px; color:#64748B; margin:0 0 12px;">{{ $user->email }}</p>
+                @php $approval = $user->approval_status ?? 'pending'; @endphp
+                <span style="display:inline-flex; align-items:center; gap:5px; padding:4px 12px; border-radius:20px; background:{{ $approval === 'approved' ? '#DCFCE7' : ($approval === 'rejected' ? '#FEE2E2' : '#FEF9C3') }}; color:{{ $approval === 'approved' ? '#15803D' : ($approval === 'rejected' ? '#991B1B' : '#92400E') }}; font-size:12px; font-weight:600; margin-bottom:8px;">
+                    <i class="fas {{ $approval === 'approved' ? 'fa-check-circle' : ($approval === 'rejected' ? 'fa-times-circle' : 'fa-clock') }}" style="font-size:11px;"></i>
+                    {{ ucfirst($approval) }}
+                </span>
+                <br>
                 @if($user->email_verified_at)
                     <span style="display:inline-flex; align-items:center; gap:5px; padding:4px 12px; border-radius:20px; background:#DCFCE7; color:#15803D; font-size:12px; font-weight:600;">
                         <i class="fas fa-check-circle" style="font-size:11px;"></i> Verified
@@ -183,11 +189,16 @@
                 </div>
 
                 <div class="detail-row">
+                    <span class="detail-label">Phone</span>
+                    <span class="detail-value">{{ $user->phone ?: '-' }}</span>
+                </div>
+
+                <div class="detail-row">
                     <span class="detail-label">{{ trans('cruds.user.fields.email_verified_at') }}</span>
                     @if($user->email_verified_at)
                         <div style="display:flex; align-items:center; gap:8px;">
                             <i class="fas fa-check-circle" style="color:#10B981; font-size:14px;"></i>
-                            <span class="detail-value">{{ $user->email_verified_at->format('d M Y, H:i') }}</span>
+                            <span class="detail-value">{{ is_object($user->email_verified_at) ? $user->email_verified_at->format('d M Y, H:i') : $user->email_verified_at }}</span>
                         </div>
                     @else
                         <div style="display:flex; align-items:center; gap:8px;">
@@ -207,6 +218,53 @@
                     <span class="detail-value">{{ optional($user->updated_at)->format('d M Y, H:i') ?? '-' }}</span>
                 </div>
 
+            </div>
+        </div>
+
+        {{-- Wholesale Details --}}
+        <div class="detail-card" style="margin-bottom:16px;">
+            <div style="padding:16px 22px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; gap:10px;">
+                <div style="width:32px; height:32px; border-radius:8px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px;">
+                    <i class="fas fa-store"></i>
+                </div>
+                <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">Wholesale Buyer Details</p>
+            </div>
+            <div style="padding:0 22px;">
+                <div class="detail-row">
+                    <span class="detail-label">Business Name</span>
+                    <span class="detail-value">{{ $user->business_name ?: '-' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Business Type</span>
+                    <span class="detail-value">{{ $user->business_type ?: '-' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">GST Number</span>
+                    <span class="detail-value">{{ $user->gst_no ?: '-' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Drug License</span>
+                    <span class="detail-value">{{ $user->drug_license_no ?: '-' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Approval</span>
+                    @php $approval = $user->approval_status ?? 'pending'; @endphp
+                    <span style="display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:20px; background:{{ $approval === 'approved' ? '#DCFCE7' : ($approval === 'rejected' ? '#FEE2E2' : '#FEF9C3') }}; color:{{ $approval === 'approved' ? '#15803D' : ($approval === 'rejected' ? '#991B1B' : '#92400E') }}; font-size:12px; font-weight:700;">
+                        {{ ucfirst($approval) }}
+                    </span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Address</span>
+                    <span class="detail-value">
+                        {{ $user->address ?: '-' }}
+                        @if($user->city || $user->state || $user->pincode)
+                            <br>{{ collect([$user->city, $user->state, $user->pincode])->filter()->implode(', ') }}
+                        @endif
+                        @if($user->country)
+                            <br>{{ $user->country }}
+                        @endif
+                    </span>
+                </div>
             </div>
         </div>
 

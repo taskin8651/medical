@@ -50,9 +50,19 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name'     => ['required', 'string', 'max:255'],
-            'email'    => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'name'            => ['required', 'string', 'max:255'],
+            'email'           => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone'           => ['required', 'string', 'max:30'],
+            'business_name'   => ['required', 'string', 'max:255'],
+            'business_type'   => ['required', 'string', 'max:100'],
+            'gst_no'          => ['nullable', 'string', 'max:20'],
+            'drug_license_no' => ['required', 'string', 'max:100'],
+            'address'         => ['required', 'string', 'max:1000'],
+            'city'            => ['required', 'string', 'max:100'],
+            'state'           => ['required', 'string', 'max:100'],
+            'pincode'         => ['required', 'string', 'max:20'],
+            'country'         => ['required', 'string', 'max:100'],
+            'password'        => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -65,9 +75,20 @@ class RegisterController extends Controller
          protected function create(array $data)
          {
              return User::create([
-                 'name'     => $data['name'],
-                 'email'    => $data['email'],
-                 'password' => Hash::make($data['password']),
+                 'name'            => $data['name'],
+                 'email'           => $data['email'],
+                 'phone'           => $data['phone'],
+                 'business_name'   => $data['business_name'],
+                 'business_type'   => $data['business_type'],
+                 'gst_no'          => $data['gst_no'] ?? null,
+                 'drug_license_no' => $data['drug_license_no'],
+                 'address'         => $data['address'],
+                 'city'            => $data['city'],
+                 'state'           => $data['state'],
+                 'pincode'         => $data['pincode'],
+                 'country'         => $data['country'] ?? 'India',
+                 'approval_status' => 'pending',
+                 'password'        => Hash::make($data['password']),
              ]);
          }
 }

@@ -143,6 +143,20 @@
                 @endif
             </div>
 
+            {{-- Phone --}}
+            <div class="field-group">
+                <label class="field-label" for="phone">Phone</label>
+                <div class="input-icon-wrap">
+                    <i class="fas fa-phone icon"></i>
+                    <input type="text" name="phone" id="phone"
+                           value="{{ old('phone', $user->phone) }}"
+                           class="field-input {{ $errors->has('phone') ? 'error' : '' }}">
+                </div>
+                @if($errors->has('phone'))
+                    <p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('phone') }}</p>
+                @endif
+            </div>
+
             {{-- Password --}}
             <div class="field-group">
                 <label class="field-label" for="password">
@@ -231,6 +245,107 @@
         </div>
     </div>
 
+    {{-- WHOLESALE DETAILS --}}
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="fas fa-store"></i></div>
+            <div>
+                <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">Wholesale Details</p>
+                <p style="font-size:12px; color:#94A3B8; margin:0;">Business and license information</p>
+            </div>
+        </div>
+        <div class="form-card-body">
+            <div class="field-group">
+                <label class="field-label" for="business_name">Business / Firm Name</label>
+                <div class="input-icon-wrap">
+                    <i class="fas fa-building icon"></i>
+                    <input type="text" name="business_name" id="business_name" value="{{ old('business_name', $user->business_name) }}" class="field-input {{ $errors->has('business_name') ? 'error' : '' }}">
+                </div>
+                @if($errors->has('business_name'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('business_name') }}</p>@endif
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="business_type">Business Type</label>
+                <select name="business_type" id="business_type" class="field-input {{ $errors->has('business_type') ? 'error' : '' }}">
+                    <option value="">Select business type</option>
+                    @foreach(['Retail Pharmacy', 'Hospital / Clinic', 'Distributor', 'Wholesaler', 'Medical Store', 'Other'] as $type)
+                        <option value="{{ $type }}" {{ old('business_type', $user->business_type) === $type ? 'selected' : '' }}>{{ $type }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('business_type'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('business_type') }}</p>@endif
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="gst_no">GST Number</label>
+                <div class="input-icon-wrap">
+                    <i class="fas fa-file-invoice icon"></i>
+                    <input type="text" name="gst_no" id="gst_no" value="{{ old('gst_no', $user->gst_no) }}" class="field-input {{ $errors->has('gst_no') ? 'error' : '' }}">
+                </div>
+                @if($errors->has('gst_no'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('gst_no') }}</p>@endif
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="drug_license_no">Drug License Number</label>
+                <div class="input-icon-wrap">
+                    <i class="fas fa-id-card icon"></i>
+                    <input type="text" name="drug_license_no" id="drug_license_no" value="{{ old('drug_license_no', $user->drug_license_no) }}" class="field-input {{ $errors->has('drug_license_no') ? 'error' : '' }}">
+                </div>
+                @if($errors->has('drug_license_no'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('drug_license_no') }}</p>@endif
+            </div>
+
+            <div class="field-group">
+                <label class="field-label" for="approval_status">Approval Status</label>
+                <select name="approval_status" id="approval_status" class="field-input {{ $errors->has('approval_status') ? 'error' : '' }}">
+                    @foreach(['pending' => 'Pending', 'approved' => 'Approved', 'rejected' => 'Rejected'] as $value => $label)
+                        <option value="{{ $value }}" {{ old('approval_status', $user->approval_status ?? 'pending') === $value ? 'selected' : '' }}>{{ $label }}</option>
+                    @endforeach
+                </select>
+                @if($errors->has('approval_status'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('approval_status') }}</p>@endif
+            </div>
+        </div>
+    </div>
+
+    {{-- BILLING ADDRESS --}}
+    <div class="form-card">
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="fas fa-location-dot"></i></div>
+            <div>
+                <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">Billing Address</p>
+                <p style="font-size:12px; color:#94A3B8; margin:0;">Customer business address</p>
+            </div>
+        </div>
+        <div class="form-card-body">
+            <div class="field-group">
+                <label class="field-label" for="address">Address</label>
+                <textarea name="address" id="address" rows="3" class="field-input {{ $errors->has('address') ? 'error' : '' }}" style="padding-left:13px;">{{ old('address', $user->address) }}</textarea>
+                @if($errors->has('address'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('address') }}</p>@endif
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                <div class="field-group">
+                    <label class="field-label" for="city">City</label>
+                    <input type="text" name="city" id="city" value="{{ old('city', $user->city) }}" class="field-input {{ $errors->has('city') ? 'error' : '' }}">
+                    @if($errors->has('city'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('city') }}</p>@endif
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="state">State</label>
+                    <input type="text" name="state" id="state" value="{{ old('state', $user->state) }}" class="field-input {{ $errors->has('state') ? 'error' : '' }}">
+                    @if($errors->has('state'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('state') }}</p>@endif
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="pincode">Pincode</label>
+                    <input type="text" name="pincode" id="pincode" value="{{ old('pincode', $user->pincode) }}" class="field-input {{ $errors->has('pincode') ? 'error' : '' }}">
+                    @if($errors->has('pincode'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('pincode') }}</p>@endif
+                </div>
+                <div class="field-group">
+                    <label class="field-label" for="country">Country</label>
+                    <input type="text" name="country" id="country" value="{{ old('country', $user->country ?? 'India') }}" class="field-input {{ $errors->has('country') ? 'error' : '' }}">
+                    @if($errors->has('country'))<p class="field-error"><i class="fas fa-exclamation-circle"></i> {{ $errors->first('country') }}</p>@endif
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 {{-- ── ACTIONS ── --}}
@@ -239,6 +354,9 @@
         <i class="fas fa-save"></i> {{ trans('global.save') }}
     </button>
     <a href="{{ route('admin.users.index') }}" class="btn-ghost">{{ trans('global.cancel') }}</a>
+
+    </form>
+
     @can('user_delete')
     <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="margin-left:auto;"
           onsubmit="return confirm('{{ trans('global.areYouSure') }}')">
@@ -252,7 +370,6 @@
     @endcan
 </div>
 
-</form>
 @endsection
 
 @section('scripts')
