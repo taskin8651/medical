@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Custom\CartController;
 use App\Http\Controllers\Custom\CheckoutController;
 use App\Http\Controllers\Custom\ContactController as CustomContactController;
+use App\Http\Controllers\Custom\OrderController as CustomOrderController;
 
 
 Route::get('/home', function () {
@@ -163,3 +164,6 @@ Route::get('/blog', [App\Http\Controllers\Custom\BlogController::class, 'index']
 Route::get('/blog/{slug}', [App\Http\Controllers\Custom\BlogController::class, 'show'])->name('blog.show');
 Route::get('/contact', [CustomContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [CustomContactController::class, 'store'])->name('contact.store');
+Route::get('/orders', [CustomOrderController::class, 'index'])->name('orders.index');
+Route::post('/orders/track', [CustomOrderController::class, 'track'])->name('orders.track');
+Route::get('/orders/{orderNumber}', [CustomOrderController::class, 'show'])->name('orders.show');

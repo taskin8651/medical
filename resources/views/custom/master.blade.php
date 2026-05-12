@@ -347,7 +347,7 @@
                             <a class="nav-right-link search-box-outer" href="#"><i class="fas fa-magnifying-glass"></i></a>
                             <a class="nav-right-link" href="{{ route('cart.index') }}"><i class="fas fa-bag-shopping"></i><span class="cart-count">{{ $cartQty }}</span></a>
                             <a class="nav-right-link" href="{{ route('shop') }}"><i class="fas fa-clock-rotate-left"></i> <span class="nav-right-text">Recently Viewed</span></a>
-                            <a class="nav-right-link" href="{{ route('cart.index') }}"><i class="fas fa-truck-fast"></i> <span class="nav-right-text">Track My Order</span></a>
+                            <a class="nav-right-link" href="{{ route('orders.index') }}"><i class="fas fa-truck-fast"></i> <span class="nav-right-text">Track My Order</span></a>
                         </div>
                     </div>
                 </div>

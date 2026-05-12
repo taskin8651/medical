@@ -251,6 +251,7 @@ class CheckoutController extends Controller
     public function success($orderId)
     {
         $order = Order::with('items')->findOrFail($orderId);
+        session()->put('verified_customer_orders.' . $order->id, true);
 
         return view('custom.order-success', compact('order'));
     }

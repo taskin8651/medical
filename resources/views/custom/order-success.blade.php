@@ -13,6 +13,10 @@
             <p>Total Amount: ₹{{ number_format($order->total, 2) }}</p>
             <p>Payment Status: {{ ucfirst($order->payment_status) }}</p>
 
+            <a href="{{ route('orders.show', $order->order_number) }}" class="theme-btn mt-3">
+                View Order
+            </a>
+
             <a href="{{ url('/shop') }}" class="theme-btn mt-3">
                 Continue Shopping
             </a>
