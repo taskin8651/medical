@@ -210,7 +210,7 @@
                         <div class="header-middle-right">
                             <ul class="header-middle-list">
                                 <li>
-                                    <a href="{{ auth()->check() ? route('admin.home') : route('login') }}" class="list-item">
+                                    <a href="{{ auth()->check() ? (auth()->user()->is_admin ? route('admin.home') : route('user.dashboard')) : route('login') }}" class="list-item">
                                         <div class="list-item-icon"><i class="fas fa-circle-user"></i></div>
                                         <div class="list-item-info">
                                             <h6>{{ auth()->check() ? 'Dashboard' : 'Sign In' }}</h6>

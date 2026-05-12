@@ -13,14 +13,20 @@ use App\Http\Controllers\Custom\CartController;
 use App\Http\Controllers\Custom\CheckoutController;
 use App\Http\Controllers\Custom\ContactController as CustomContactController;
 use App\Http\Controllers\Custom\OrderController as CustomOrderController;
+use App\Http\Controllers\Custom\UserDashboardController;
 
 
 Route::get('/home', function () {
     if (session('status')) {
-        return redirect()->route('admin.home')->with('status', session('status'));
+        $route = auth()->check() && auth()->user()->is_admin ? 'admin.home' : 'user.dashboard';
+        return redirect()->route($route)->with('status', session('status'));
     }
 
-    return redirect()->route('admin.home');
+    if (auth()->check() && auth()->user()->is_admin) {
+        return redirect()->route('admin.home');
+    }
+
+    return redirect()->route('user.dashboard');
 });
  
 Auth::routes();
@@ -167,3 +173,4 @@ Route::post('/contact', [CustomContactController::class, 'store'])->name('contac
 Route::get('/orders', [CustomOrderController::class, 'index'])->name('orders.index');
 Route::post('/orders/track', [CustomOrderController::class, 'track'])->name('orders.track');
 Route::get('/orders/{orderNumber}', [CustomOrderController::class, 'show'])->name('orders.show');
+Route::get('/dashboard', [UserDashboardController::class, 'index'])->middleware('auth')->name('user.dashboard');
