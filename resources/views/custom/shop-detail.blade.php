@@ -9,7 +9,7 @@
                 <div class="site-breadcrumb-wrap">
                     <h4 class="breadcrumb-title">Shop Single</h4>
                     <ul class="breadcrumb-menu">
-                        <li><a href="index.html"><i class="far fa-home"></i> Home</a></li>
+                        <li><a href="index.html"><i class="fas fa-house"></i> Home</a></li>
                         <li class="active">Shop Single</li>
                     </ul>
                 </div>
@@ -28,7 +28,7 @@
                     <div class="col-md-9 col-lg-6 col-xxl-5">
                         <div class="shop-single-gallery">
                             <a class="shop-single-video popup-youtube" href="{{ $product->video_url ?? 'https://www.youtube.com/watch?v=ckHzmP1evNU' }}" data-tooltip="tooltip" title="Watch Video">
-                                <i class="far fa-play"></i>
+                                <i class="fas fa-play"></i>
                             </a>
                             <div class="flexslider-thumbnails">
                                 <ul class="slides">
@@ -79,9 +79,9 @@
                                         <div class="shop-single-size">
                                             <h6>Quantity</h6>
                                             <div class="shop-cart-qty">
-                                                <button class="minus-btn"><i class="fal fa-minus"></i></button>
+                                                <button class="minus-btn"><i class="fas fa-minus"></i></button>
                                                 <input class="quantity" type="text" value="1" disabled="">
-                                                <button class="plus-btn"><i class="fal fa-plus"></i></button>
+                                                <button class="plus-btn"><i class="fas fa-plus"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -134,10 +134,10 @@
     </div>
 
     <button type="submit" class="theme-btn">
-        <span class="fa fa-shopping-bag"></span> Add To Cart
+        <span class="fas fa-bag-shopping"></span> Add To Cart
     </button>
 </form>
-                                         <a href="#" class="theme-btn "><span class="fa fa-download"></span>Download</a>
+                                         <a href="#" class="theme-btn "><span class="fas fa-download"></span>Download</a>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-12 col-xl-6">
@@ -332,7 +332,7 @@
                                        data-bs-placement="right"
                                        data-tooltip="tooltip"
                                        title="Quick View">
-                                        <i class="far fa-eye"></i>
+                                        <i class="fas fa-eye"></i>
                                     </a>
 
                                     
@@ -366,7 +366,7 @@
                                         data-bs-placement="left"
                                         data-tooltip="tooltip"
                                         title="Add To Cart">
-                                    <i class="fas fa-shopping-bag"></i>
+                                    <i class="fas fa-bag-shopping"></i>
                                 </button>
                             </div>
                         </div>

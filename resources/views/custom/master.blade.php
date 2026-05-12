@@ -1,50 +1,140 @@
+@php
+    $setting = $frontendSetting ?? null;
+    $siteName = $setting->site_name ?? 'Medion';
+    $siteTitle = $setting->site_title ?? $siteName . ' - Health And Medical Store';
+    $email = $setting->email ?? 'info@example.com';
+    $phone = $setting->phone ?? '+2 123 654 7898';
+    $address = $setting->address ?? '25/B Milford Road, New York';
+    $logo = !empty($setting?->logo) ? asset('storage/' . $setting->logo) : asset('assets/img/logo/logo.png');
+    $favicon = !empty($setting?->favicon) ? asset('storage/' . $setting->favicon) : asset('assets/img/logo/favicon.png');
+    $footerDescription = $setting->footer_description ?? 'Your trusted destination for healthcare, wellness, medical supplies and everyday essentials.';
+    $copyright = $setting->footer_copyright ?? ('Copyright ' . date('Y') . ' ' . $siteName . ' All Rights Reserved.');
+    $categories = ($frontendCategories ?? collect())->take(12);
+    $cart = $cartItems ?? [];
+    $cartQty = $cartCount ?? 0;
+    $cartAmount = $cartTotal ?? 0;
+    $categoryIcons = [
+        'medicine' => 'fa-capsules',
+        'medical' => 'fa-kit-medical',
+        'beauty' => 'fa-spa',
+        'baby' => 'fa-baby',
+        'health' => 'fa-heart-pulse',
+        'food' => 'fa-bowl-food',
+        'nutrition' => 'fa-apple-whole',
+        'lab' => 'fa-flask-vial',
+        'fitness' => 'fa-dumbbell',
+        'vitamin' => 'fa-tablets',
+        'supplement' => 'fa-tablets',
+        'pet' => 'fa-shield-heart',
+    ];
+    $iconFor = function ($name) use ($categoryIcons) {
+        $name = strtolower($name ?? '');
+        foreach ($categoryIcons as $needle => $icon) {
+            if (str_contains($name, $needle)) {
+                return $icon;
+            }
+        }
+        return 'fa-box-medical';
+    };
+@endphp
 <!DOCTYPE html>
 <html lang="en">
-
-
-<!-- Mirrored from live.themewild.com/medion/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 14:00:46 GMT -->
 <head>
-    <!-- meta tags -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="keywords" content="">
+    <meta name="description" content="{{ $setting->meta_description ?? '' }}">
+    <meta name="keywords" content="{{ $setting->meta_keywords ?? '' }}">
+    <title>@yield('title', $setting->meta_title ?? $siteTitle)</title>
+    <link rel="icon" type="image/x-icon" href="{{ $favicon }}">
 
-    <!-- title -->
-    <title>Medion - Health And Medical eCommerce HTML5 Template</title>
-
-    <!-- favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/logo/favicon.png') }}">
-
-    <!-- css -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/all-fontawesome.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/nice-select.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .main-navigation .navbar > .container {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+        }
+
+        .main-navigation .navbar-brand img {
+            max-height: 46px;
+            object-fit: contain;
+        }
+
+        .main-navigation .navbar-collapse {
+            flex-grow: 1;
+        }
+
+        .main-navigation .navbar-nav {
+            align-items: center;
+        }
+
+        .navbar .dropdown-toggle::after {
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+        }
+
+        .main-navigation .nav-right {
+            margin-left: auto;
+            white-space: nowrap;
+        }
+
+        .main-navigation .nav-right-link .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -12px;
+            min-width: 18px;
+            height: 18px;
+            line-height: 18px;
+            border-radius: 50px;
+            background: var(--theme-color);
+            color: var(--color-white);
+            font-size: 11px;
+            text-align: center;
+        }
+
+        .main-category li a .menu-category-icon {
+            width: 25px;
+            min-width: 25px;
+            height: 25px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--theme-color);
+        }
+
+        .main-category li a .menu-arrow {
+            margin-left: auto;
+            color: var(--body-text-color);
+        }
+
+        @media all and (max-width: 1399px) {
+            .main-navigation .nav-right-text {
+                display: none;
+            }
+        }
+
+        @media all and (max-width: 991px) {
+            .main-navigation .navbar > .container {
+                gap: 12px;
+            }
+
+            .main-navigation .mobile-menu-right {
+                margin-left: auto;
+            }
+        }
+    </style>
 </head>
 
 <body>
-
-    <!-- preloader -->
-    <!-- <div class="preloader">
-        <div class="loader-ripple">
-            <div></div>
-            <div></div>
-        </div>
-    </div> -->
-    <!-- preloader end -->
-
-
-    <!-- header area -->
     <header class="header">
-
-        <!-- header top -->
         <div class="header-top">
             <div class="container">
                 <div class="header-top-wrapper">
@@ -52,52 +142,34 @@
                         <div class="col-12 col-md-6 col-lg-6 col-xl-5">
                             <div class="header-top-left">
                                 <ul class="header-top-list">
-                                    <li><a href="mailto:info@example.com"><i class="far fa-envelopes"></i>
-                                            info@example.com</a></li>
-                                    <li><a href="tel:+21236547898"><i class="far fa-headset"></i> +2 123 654 7898</a></li>
-                                    <li class="help"><a href="#"><i class="far fa-comment-question"></i> Need Help?</a></li>
+                                    <li><a href="mailto:{{ $email }}"><i class="fas fa-envelope"></i> {{ $email }}</a></li>
+                                    <li><a href="tel:{{ preg_replace('/\s+/', '', $phone) }}"><i class="fas fa-headset"></i> {{ $phone }}</a></li>
+                                    <li class="help"><a href="{{ route('shop') }}"><i class="fas fa-circle-question"></i> Need Help?</a></li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-12 col-md-6 col-lg-6 col-xl-7">
                             <div class="header-top-right">
                                 <ul class="header-top-list">
-                                    <li><a href="#"><i class="far fa-timer"></i> Daily Deal</a></li>
+                                    <li><a href="{{ route('shop') }}"><i class="fas fa-tags"></i> Daily Deal</a></li>
                                     <li>
                                         <div class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <i class="far fa-usd"></i> USD
+                                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="fas fa-indian-rupee-sign"></i> INR
                                             </a>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">USD</a>
-                                                <a class="dropdown-item" href="#">EUR</a>
-                                                <a class="dropdown-item" href="#">AUD</a>
-                                                <a class="dropdown-item" href="#">CUD</a>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown"
-                                                aria-expanded="false">
-                                                <i class="far fa-globe-americas"></i> EN
-                                            </a>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">EN</a>
-                                                <a class="dropdown-item" href="#">FR</a>
-                                                <a class="dropdown-item" href="#">DE</a>
-                                                <a class="dropdown-item" href="#">RU</a>
+                                                <a class="dropdown-item" href="#">INR</a>
                                             </div>
                                         </div>
                                     </li>
                                     <li class="social">
                                         <div class="header-top-social">
                                             <span>Follow Us: </span>
-                                            <a href="#"><i class="fab fa-facebook"></i></a>
-                                            <a href="#"><i class="fab fa-x-twitter"></i></a>
-                                            <a href="#"><i class="fab fa-instagram"></i></a>
-                                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                                            @foreach (['facebook' => 'facebook-f', 'twitter' => 'x-twitter', 'instagram' => 'instagram', 'linkedin' => 'linkedin-in'] as $field => $icon)
+                                                @if (!empty($setting?->{$field}))
+                                                    <a href="{{ $setting->{$field} }}" target="_blank" rel="noopener"><i class="fab fa-{{ $icon }}"></i></a>
+                                                @endif
+                                            @endforeach
                                         </div>
                                     </li>
                                 </ul>
@@ -107,39 +179,29 @@
                 </div>
             </div>
         </div>
-        <!-- header top end -->
 
-        <!-- header middle -->
         <div class="header-middle">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-5 col-lg-3 col-xl-3">
                         <div class="header-middle-logo">
-                            <a class="navbar-brand" href="index.html">
-                                <img src="assets/img/logo/logo.png" alt="logo">
+                            <a class="navbar-brand" href="{{ route('home') }}">
+                                <img src="{{ $logo }}" alt="{{ $siteName }}">
                             </a>
                         </div>
                     </div>
                     <div class="d-none d-lg-block col-lg-6 col-xl-5">
                         <div class="header-middle-search">
-                            <form action="#">
+                            <form action="{{ route('shop') }}" method="GET">
                                 <div class="search-content">
-                                    <select class="select">
+                                    <select class="select" name="category">
                                         <option value="">All Category</option>
-                                        <option value="1">Medicine</option>
-                                        <option value="2">Medical Equipments</option>
-                                        <option value="3">Beauty Care</option>
-                                        <option value="4">Baby & Mom Care</option>
-                                        <option value="5">Healthcare</option>
-                                        <option value="6">Food & Nutrition</option>
-                                        <option value="7">Medical Supplies</option>
-                                        <option value="8">Lab Test</option>
-                                        <option value="9">Fitness</option>
-                                        <option value="10">Vitamins & Supplement</option>
-                                        <option value="11">Pet Care</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
                                     </select>
-                                    <input type="text" class="form-control" placeholder="Search Here...">
-                                    <button type="submit" class="search-btn"><i class="far fa-search"></i></button>
+                                    <input type="text" name="search" class="form-control" placeholder="Search Here..." value="{{ request('search') }}">
+                                    <button type="submit" class="search-btn"><i class="fas fa-magnifying-glass"></i></button>
                                 </div>
                             </form>
                         </div>
@@ -148,21 +210,17 @@
                         <div class="header-middle-right">
                             <ul class="header-middle-list">
                                 <li>
-                                    <a href="#" class="list-item">
-                                        <div class="list-item-icon">
-                                            <i class="far fa-user-circle"></i>
-                                        </div>
+                                    <a href="{{ auth()->check() ? route('admin.home') : route('login') }}" class="list-item">
+                                        <div class="list-item-icon"><i class="fas fa-circle-user"></i></div>
                                         <div class="list-item-info">
-                                            <h6>Sign In</h6>
+                                            <h6>{{ auth()->check() ? 'Dashboard' : 'Sign In' }}</h6>
                                             <h5>Account</h5>
                                         </div>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" class="list-item">
-                                        <div class="list-item-icon">
-                                            <i class="far fa-heart"></i><span>0</span>
-                                        </div>
+                                    <a href="{{ route('shop') }}" class="list-item">
+                                        <div class="list-item-icon"><i class="fas fa-heart"></i><span>0</span></div>
                                         <div class="list-item-info">
                                             <h6>Wishlist</h6>
                                             <h5>My Items</h5>
@@ -170,70 +228,44 @@
                                     </a>
                                 </li>
                                 <li class="dropdown-cart">
-                                    <a href="#" class="shop-cart list-item">
-                                        <div class="list-item-icon">
-                                            <i class="far fa-shopping-bag"></i><span>5</span>
-                                        </div>
+                                    <a href="{{ route('cart.index') }}" class="shop-cart list-item">
+                                        <div class="list-item-icon"><i class="fas fa-bag-shopping"></i><span>{{ $cartQty }}</span></div>
                                         <div class="list-item-info">
-                                            <h6>$350.00</h6>
+                                            <h6>₹{{ number_format($cartAmount, 2) }}</h6>
                                             <h5>My Cart</h5>
                                         </div>
                                     </a>
                                     <div class="dropdown-cart-menu">
                                         <div class="dropdown-cart-header">
-                                            <span>03 Items</span>
-                                            <a href="#">View Cart</a>
+                                            <span>{{ count($cart) }} Items</span>
+                                            <a href="{{ route('cart.index') }}">View Cart</a>
                                         </div>
                                         <ul class="dropdown-cart-list">
-                                            <li>
-                                                <div class="dropdown-cart-item">
-                                                    <div class="cart-img">
-                                                        <a href="#"><img src="assets/img/product/01.png" alt="#"></a>
+                                            @forelse (array_slice($cart, 0, 3, true) as $item)
+                                                <li>
+                                                    <div class="dropdown-cart-item">
+                                                        <div class="cart-img">
+                                                            <a href="{{ !empty($item['slug']) ? route('shop.show', $item['slug']) : route('shop') }}">
+                                                                <img src="{{ $item['image'] ?? asset('assets/img/product/01.png') }}" alt="{{ $item['name'] ?? 'Product' }}">
+                                                            </a>
+                                                        </div>
+                                                        <div class="cart-info">
+                                                            <h4><a href="{{ !empty($item['slug']) ? route('shop.show', $item['slug']) : route('shop') }}">{{ $item['name'] ?? 'Product' }}</a></h4>
+                                                            <p class="cart-qty">{{ $item['quantity'] ?? 1 }}x - <span class="cart-amount">₹{{ number_format($item['price_with_gst'] ?? $item['price'] ?? 0, 2) }}</span></p>
+                                                        </div>
+                                                        <a href="{{ route('cart.remove', $item['id'] ?? 0) }}" class="cart-remove" title="Remove this item"><i class="fas fa-circle-xmark"></i></a>
                                                     </div>
-                                                    <div class="cart-info">
-                                                        <h4><a href="#">Surgical Face Mask</a></h4>
-                                                        <p class="cart-qty">1x - <span
-                                                                class="cart-amount">$200.00</span></p>
-                                                    </div>
-                                                    <a href="#" class="cart-remove" title="Remove this item"><i
-                                                            class="far fa-times-circle"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="dropdown-cart-item">
-                                                    <div class="cart-img">
-                                                        <a href="#"><img src="assets/img/product/02.html" alt="#"></a>
-                                                    </div>
-                                                    <div class="cart-info">
-                                                        <h4><a href="#">Surgical Face Mask</a></h4>
-                                                        <p class="cart-qty">1x - <span
-                                                                class="cart-amount">$120.00</span></p>
-                                                    </div>
-                                                    <a href="#" class="cart-remove" title="Remove this item"><i
-                                                            class="far fa-times-circle"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="dropdown-cart-item">
-                                                    <div class="cart-img">
-                                                        <a href="#"><img src="assets/img/product/03.html" alt="#"></a>
-                                                    </div>
-                                                    <div class="cart-info">
-                                                        <h4><a href="#">Surgical Face Mask</a></h4>
-                                                        <p class="cart-qty">1x - <span
-                                                                class="cart-amount">$330.00</span></p>
-                                                    </div>
-                                                    <a href="#" class="cart-remove" title="Remove this item"><i
-                                                            class="far fa-times-circle"></i></a>
-                                                </div>
-                                            </li>
+                                                </li>
+                                            @empty
+                                                <li><div class="dropdown-cart-item"><div class="cart-info"><h4>Your cart is empty</h4></div></div></li>
+                                            @endforelse
                                         </ul>
                                         <div class="dropdown-cart-bottom">
                                             <div class="dropdown-cart-total">
                                                 <span>Total</span>
-                                                <span class="total-amount">$650.00</span>
+                                                <span class="total-amount">₹{{ number_format($cartAmount, 2) }}</span>
                                             </div>
-                                            <a href="#" class="theme-btn">Checkout</a>
+                                            <a href="{{ route('checkout.index') }}" class="theme-btn">Checkout</a>
                                         </div>
                                     </div>
                                 </li>
@@ -243,404 +275,115 @@
                 </div>
             </div>
         </div>
-        <!-- header middle end -->
 
-        <!-- navbar -->
         <div class="main-navigation">
             <nav class="navbar navbar-expand-lg">
                 <div class="container position-relative">
-                    <a class="navbar-brand" href="index.html">
-                        <img src="assets/img/logo/logo.png" class="logo-scrolled" alt="logo">
+                    <a class="navbar-brand" href="{{ route('home') }}">
+                        <img src="{{ $logo }}" class="logo-display" alt="{{ $siteName }}">
+                        <img src="{{ $logo }}" class="logo-scrolled" alt="{{ $siteName }}">
                     </a>
                     <div class="category-all">
                         <button class="category-btn" type="button">
                             <i class="fas fa-list-ul"></i><span>All Categories</span>
                         </button>
                         <ul class="main-category">
-                            <li>
-                                <a href="#">
-                                    <img src="assets/img/icon/medicine.html" alt="">
-                                    <span>Medicine</span><i class="far fa-angle-right"></i>
-                                </a>
-                                <div class="sub-category-mega">
-                                    <div class="row">
-                                        <div class="col-lg-3">
-                                            <div class="category-single">
-                                                <h6 class="category-title-text">Medicine</h6>
-                                                <div class="category-link">
-                                                    <a href="#">Allergies & Sinus</a>
-                                                    <a href="#">E.N.T Preparations</a>
-                                                    <a href="#">Eye Preparations</a>
-                                                    <a href="#">Vitamin & Nutritional</a>
-                                                    <a href="#">Fever & Pain Relief</a>
-                                                    <a href="#">Dermatological</a>
-                                                    <a href="#">Bone Formation</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="category-single">
-                                                <h6 class="category-title-text">Medicine</h6>
-                                                <div class="category-link">
-                                                    <a href="#">Allergies & Sinus</a>
-                                                    <a href="#">E.N.T Preparations</a>
-                                                    <a href="#">Eye Preparations</a>
-                                                    <a href="#">Vitamin & Nutritional</a>
-                                                    <a href="#">Fever & Pain Relief</a>
-                                                    <a href="#">Dermatological</a>
-                                                    <a href="#">Bone Formation</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="category-single">
-                                                <h6 class="category-title-text">Medicine</h6>
-                                                <div class="category-link">
-                                                    <a href="#">Allergies & Sinus</a>
-                                                    <a href="#">E.N.T Preparations</a>
-                                                    <a href="#">Eye Preparations</a>
-                                                    <a href="#">Vitamin & Nutritional</a>
-                                                    <a href="#">Fever & Pain Relief</a>
-                                                    <a href="#">Dermatological</a>
-                                                    <a href="#">Bone Formation</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-3">
-                                            <div class="category-img">
-                                                <a href="#"><img src="assets/img/banner/category-banner.html" alt=""></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li><a href="#"><img src="assets/img/icon/health-care.html" alt=""><span>Healthcare</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/beauty-care.html" alt=""><span>Beauty Care</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/sexual.html" alt=""><span>Sexual Wellness</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/fitness.html" alt=""><span>Fitness</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/lab-test.html" alt=""><span>Lab Test</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/baby-mom-care.html" alt=""><span>Baby & Mom Care</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/supplements.html" alt=""><span>Vitamins & Supplement</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/food-nutrition.html" alt=""><span>Food & Nutrition</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/medical-equipements.html" alt=""><span>Medical Equipments</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/medical-supplies.html" alt=""><span>Medical Supplies</span></a></li>
-                            <li><a href="#"><img src="assets/img/icon/pet-care.html" alt=""><span>Pet Care</span></a></li>
-                        </ul>
-                    </div>
-                    <div class="mobile-menu-right">
-                        <div class="mobile-menu-btn">
-                            <a href="#" class="nav-right-link search-box-outer"><i class="far fa-search"></i></a>
-                            <a href="wishlist.html" class="nav-right-link"><i
-                                    class="far fa-heart"></i><span>2</span></a>
-                            <a href="shop-cart.html" class="nav-right-link"><i
-                                    class="far fa-shopping-bag"></i><span>5</span></a>
-                        </div>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
-                            aria-label="Toggle navigation">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </button>
-                    </div>
-                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
-                        aria-labelledby="offcanvasNavbarLabel">
-                        <div class="offcanvas-header">
-                            <a href="index.html" class="offcanvas-brand" id="offcanvasNavbarLabel">
-                                <img src="assets/img/logo/logo.png" alt="">
-                            </a>
-                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                                aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            <ul class="navbar-nav justify-content-end flex-grow-1">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle active" href="#"
-                                        data-bs-toggle="dropdown">Home</a>
-                                    <ul class="dropdown-menu fade-down">
-                                        <li><a class="dropdown-item" href="index.html">Home Demo 01</a></li>
-                                        <li><a class="dropdown-item" href="index-2.html">Home Demo 02</a></li>
-                                        <li><a class="dropdown-item" href="index-3.html">Home Demo 03</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Pages</a>
-                                    <ul class="dropdown-menu fade-down">
-                                        <li><a class="dropdown-item" href="about.html">About Us</a></li>
-                                        <li><a class="dropdown-item" href="brand.html">Brands</a></li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Category</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="category.html">Category One</a></li>
-                                                <li><a class="dropdown-item" href="category-2.html">Category Two</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Authentication</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="login.html">Login</a></li>
-                                                <li><a class="dropdown-item" href="register.html">Register</a></li>
-                                                <li><a class="dropdown-item" href="forgot-password.html">Forgot
-                                                        Password</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Extra Pages</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="coming-soon.html">Coming Soon</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="return.html">Return Policy</a></li>
-                                                <li><a class="dropdown-item" href="terms.html">Terms Of Service</a></li>
-                                                <li><a class="dropdown-item" href="privacy.html">Privacy Policy</a></li>
-                                                <li><a class="dropdown-item" href="mail-success.html">Mail Success</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a class="dropdown-item" href="team.html">Our Team</a></li>
-                                        <li><a class="dropdown-item" href="affiliate.html">Affiliate</a></li>
-                                        <li><a class="dropdown-item" href="gallery.html">Our Gallery</a></li>
-                                        <li><a class="dropdown-item" href="contact.html">Contact Us</a></li>
-                                        <li><a class="dropdown-item" href="help.html">Help</a></li>
-                                        <li><a class="dropdown-item" href="invoice.html">Invoices</a></li>
-                                        <li><a class="dropdown-item" href="faq.html">Faq</a></li>
-                                        <li><a class="dropdown-item" href="testimonial.html">Testimonials</a></li>
-                                        <li><a class="dropdown-item" href="404.html">404 Error</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Account</a>
-                                    <ul class="dropdown-menu fade-down">
-                                        <li><a class="dropdown-item" href="user-dashboard.html">Dashboard</a></li>
-                                        <li><a class="dropdown-item" href="user-profile.html">My Profile</a></li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Orders</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="order-list.html">Orders List</a></li>
-                                                <li><a class="dropdown-item" href="order-detail.html">Order Details</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a class="dropdown-item" href="wishlist.html">My Wishlist</a></li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Address</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="address-list.html">Address List</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="add-address.html">Add Address</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Support Tickets</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="support-ticket.html">Support
-                                                        Tickets</a></li>
-                                                <li><a class="dropdown-item" href="ticket-detail.html">Ticket
-                                                        Details</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a class="dropdown-item" href="track-order.html">Track My Order</a></li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Payment Methods</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="payment-method.html">Payment
-                                                        Methods</a></li>
-                                                <li><a class="dropdown-item" href="add-payment.html">Add Payment</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a class="dropdown-item" href="user-notification.html">Notification</a></li>
-                                        <li><a class="dropdown-item" href="user-message.html">Messages</a></li>
-                                        <li><a class="dropdown-item" href="user-setting.html">Settings</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item mega-menu dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Menu</a>
-                                    <div class="dropdown-menu fade-down">
-                                        <div class="mega-content">
-                                            <div class="container-fluid px-lg-0">
-                                                <div class="row">
-                                                    <div class="col-12 col-lg-2">
-                                                        <h5 class="mega-menu-title">Medicine</h5>
-                                                        <ul class="mega-menu-item">
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Allergies & Sinus</a></li>
-                                                            <li><a class="dropdown-item" href="shop-grid.html">E.N.T Preparations</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Eye Preparations</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Vitamin & Nutritional</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Fever & Pain Relief</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Dermatological</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-12 col-lg-2">
-                                                        <h5 class="mega-menu-title">Equipment</h5>
-                                                        <ul class="mega-menu-item">
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Biopsy Tools</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Monitoring</a></li>
-                                                            <li><a class="dropdown-item" href="shop-grid.html">Infusion Stands</a>
-                                                            </li>
-                                                            <li><a class="dropdown-item" href="shop-grid.html">Lighting</a>
-                                                            </li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Machines</a></li>
-                                                            <li><a class="dropdown-item" href="shop-grid.html">Thermometer</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-12 col-lg-2">
-                                                        <h5 class="mega-menu-title">Wound Care</h5>
-                                                        <ul class="mega-menu-item">
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Surgical Sutures</a></li>
-                                                            <li><a class="dropdown-item" href="shop-grid.html">Bandages</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Patches and Tapes</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Stomatology</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Wound Healing</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Uniforms</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-12 col-lg-2">
-                                                        <h5 class="mega-menu-title">Higiene</h5>
-                                                        <ul class="mega-menu-item">
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Face Masks</a></li>
-                                                            <li><a class="dropdown-item" href="shop-grid.html">Sterilization</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Surgical Foils</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Disposable Products</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Protective Covers</a></li>
-                                                            <li><a class="dropdown-item"
-                                                                    href="shop-grid.html">Diagnostic Tests</a></li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-12 col-lg-4">
-                                                        <div class="mega-menu-img">
-                                                            <a href="#"><img
-                                                                    src="assets/img/banner/mega-menu-banner.jpg"
-                                                                    alt=""></a>
+                            @forelse ($categories as $category)
+                                <li>
+                                    <a href="{{ route('category.show', $category->slug) }}">
+                                        <i class="fas {{ $iconFor($category->name) }} menu-category-icon"></i>
+                                        <span>{{ $category->name }}</span>
+                                        @if ($category->subcategories->isNotEmpty())
+                                            <i class="fas fa-angle-right menu-arrow"></i>
+                                        @endif
+                                    </a>
+                                    @if ($category->subcategories->isNotEmpty())
+                                        <div class="sub-category-mega">
+                                            <div class="row">
+                                                <div class="col-lg-8">
+                                                    <div class="category-single">
+                                                        <h6 class="category-title-text">{{ $category->name }}</h6>
+                                                        <div class="category-link">
+                                                            @foreach ($category->subcategories->take(12) as $subcategory)
+                                                                <a href="{{ route('shop', ['category' => $category->id]) }}">{{ $subcategory->name }}</a>
+                                                            @endforeach
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="col-lg-4">
+                                                    <div class="category-img">
+                                                        <a href="{{ route('category.show', $category->slug) }}">
+                                                            <img src="{{ $category->getFirstMediaUrl('category') ?: asset('assets/img/banner/mini-banner-1.jpg') }}" alt="{{ $category->name }}">
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    @endif
                                 </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Shop</a>
-                                    <ul class="dropdown-menu fade-down">
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Shop Grid</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="shop-grid.html">Shop Grid One</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="shop-grid-2.html">Shop Grid Two</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="dropdown-submenu">
-                                            <a class="dropdown-item dropdown-toggle" href="#">Shop List</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a class="dropdown-item" href="shop-list.html">Shop List One</a>
-                                                </li>
-                                                <li><a class="dropdown-item" href="shop-list-2.html">Shop List Two</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a class="dropdown-item" href="shop-search.html">Shop Search</a></li>
-                                        <li><a class="dropdown-item" href="shop-cart.html">Shop Cart</a></li>
-                                        <li><a class="dropdown-item" href="shop-checkout.html">Checkout</a></li>
-                                        <li><a class="dropdown-item" href="shop-checkout-complete.html">Checkout
-                                                Complete</a></li>
-                                        <li><a class="dropdown-item" href="shop-single.html">Shop Single</a></li>
-                                        <li><a class="dropdown-item" href="shop-compare.html">Shop Compare</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Blog</a>
-                                    <ul class="dropdown-menu fade-down">
-                                        <li><a class="dropdown-item" href="blog-grid.html">Blog Grid</a></li>
-                                        <li><a class="dropdown-item" href="blog-grid-sidebar.html">Blog Grid Sidebar</a>
-                                        </li>
-                                        <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
-                                        <li><a class="dropdown-item" href="blog-single-sidebar.html">Blog Single
-                                                Sidebar</a></li>
-                                    </ul>
-                                </li>
-                                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                            </ul>
-                            <!-- nav-right -->
-                            <div class="nav-right">
-                                <a class="nav-right-link" href="#"><i class="fal fa-star"></i> Recently Viewed</a>
-                                <a class="nav-right-link" href="track-order.html"><i class="fal fa-truck-fast"></i> Track My Order</a>
-                            </div>
+                            @empty
+                                <li><a href="{{ route('shop') }}"><i class="fas fa-box-medical menu-category-icon"></i><span>All Products</span></a></li>
+                            @endforelse
+                        </ul>
+                    </div>
+                    <div class="mobile-menu-right">
+                        <a class="nav-right-link search-box-outer" href="#"><i class="fas fa-magnifying-glass"></i></a>
+                        <a class="nav-right-link" href="{{ route('cart.index') }}"><i class="fas fa-bag-shopping"></i><span class="cart-count">{{ $cartQty }}</span></a>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main_nav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="main_nav">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('shop*') ? 'active' : '' }}" href="{{ route('shop') }}">Shop</a></li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('categories*') || request()->routeIs('category.*') ? 'active' : '' }}" href="{{ route('categories') }}">Categories</a></li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}" href="{{ route('blog.index') }}">Blog</a></li>
+                            <li class="nav-item"><a class="nav-link {{ request()->routeIs('contact.*') ? 'active' : '' }}" href="{{ route('contact.index') }}">Contact</a></li>
+                        </ul>
+                        <div class="nav-right">
+                            <a class="nav-right-link search-box-outer" href="#"><i class="fas fa-magnifying-glass"></i></a>
+                            <a class="nav-right-link" href="{{ route('cart.index') }}"><i class="fas fa-bag-shopping"></i><span class="cart-count">{{ $cartQty }}</span></a>
+                            <a class="nav-right-link" href="{{ route('shop') }}"><i class="fas fa-clock-rotate-left"></i> <span class="nav-right-text">Recently Viewed</span></a>
+                            <a class="nav-right-link" href="{{ route('cart.index') }}"><i class="fas fa-truck-fast"></i> <span class="nav-right-text">Track My Order</span></a>
                         </div>
                     </div>
                 </div>
             </nav>
         </div>
-        <!-- navbar end -->
-
     </header>
-    <!-- header area end -->
 
-
-    <!-- mobile popup search -->
     <div class="search-popup">
-        <button class="close-search"><span class="far fa-times"></span></button>
-        <form action="#">
+        <button class="close-search"><span class="fas fa-xmark"></span></button>
+        <form action="{{ route('shop') }}" method="GET">
             <div class="form-group">
-                <input type="search" name="search-field" class="form-control" placeholder="Search Here..." required>
-                <button type="submit"><i class="far fa-search"></i></button>
+                <input type="search" name="search" class="form-control" placeholder="Search Here..." value="{{ request('search') }}" required>
+                <button type="submit"><i class="fas fa-magnifying-glass"></i></button>
             </div>
         </form>
     </div>
-    <!-- mobile popup search end -->
-
 
     <main class="main">
-
-    @yield('content')
-
-
-    
+        @yield('content')
     </main>
 
-
-    <!-- footer area -->
     <footer class="footer-area ft-bg">
         <div class="footer-widget">
             <div class="container">
                 <div class="row footer-widget-wrapper pt-100 pb-40">
                     <div class="col-md-6 col-lg-3">
                         <div class="footer-widget-box about-us">
-                            <a href="index.html" class="footer-logo">
-                                <img src="assets/img/logo/logo-light.html" alt="">
+                            <a href="{{ route('home') }}" class="footer-logo">
+                                <img src="{{ $logo }}" alt="{{ $siteName }}">
                             </a>
-                            <p class="mb-3">
-                                We are many variations of the passages available but the majoro have suffered alteration
-                                injected.
-                            </p>
+                            <p class="mb-3">{{ $footerDescription }}</p>
                             <ul class="footer-contact">
-                                <li><a href="tel:+21236547898"><i class="far fa-phone"></i>+2 123 654 7898</a></li>
-                                <li><i class="far fa-map-marker-alt"></i>25/B Milford Road, New York</li>
-                                <li><a href="mailto:info@example.com"><i
-                                            class="far fa-envelope"></i>info@example.com</a></li>
-                                <li><i class="far fa-clock"></i>Mon-Fri (9.00AM - 8.00PM)</li>
+                                <li><a href="tel:{{ preg_replace('/\s+/', '', $phone) }}"><i class="fas fa-phone"></i>{{ $phone }}</a></li>
+                                <li><i class="fas fa-location-dot"></i>{{ $address }}</li>
+                                <li><a href="mailto:{{ $email }}"><i class="fas fa-envelope"></i>{{ $email }}</a></li>
+                                <li><i class="fas fa-clock"></i>Mon-Fri (9.00AM - 8.00PM)</li>
                             </ul>
                         </div>
                     </div>
@@ -648,13 +391,11 @@
                         <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Quick Links</h4>
                             <ul class="footer-list">
-                                <li><a href="about.html">About Us</a></li>
-                                <li><a href="help.html">Delivery Info</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
-                                <li><a href="blog.html">Update News</a></li>
-                                <li><a href="testimonial.html">Our Testimonials</a></li>
-                                <li><a href="terms.html">Terms Of Service</a></li>
-                                <li><a href="privacy.html">Privacy policy</a></li>
+                                <li><a href="{{ route('home') }}">Home</a></li>
+                                <li><a href="{{ route('shop') }}">Shop</a></li>
+                                <li><a href="{{ route('categories') }}">Categories</a></li>
+                                <li><a href="{{ route('blog.index') }}">Update News</a></li>
+                                <li><a href="{{ route('cart.index') }}">Cart</a></li>
                             </ul>
                         </div>
                     </div>
@@ -662,13 +403,11 @@
                         <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Browse Category</h4>
                             <ul class="footer-list">
-                                <li><a href="shop-grid.html">Medicine</a></li>
-                                <li><a href="shop-grid.html">Medical Equipments</a></li>
-                                <li><a href="shop-grid.html">Beauty Care</a></li>
-                                <li><a href="shop-grid.html">Baby & Mom Care</a></li>
-                                <li><a href="shop-grid.html">Healthcare</a></li>
-                                <li><a href="shop-grid.html">Food & Nutrition</a></li>
-                                <li><a href="shop-grid.html">Medical Supplies</a></li>
+                                @forelse ($categories->take(7) as $category)
+                                    <li><a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a></li>
+                                @empty
+                                    <li><a href="{{ route('shop') }}">All Products</a></li>
+                                @endforelse
                             </ul>
                         </div>
                     </div>
@@ -676,46 +415,29 @@
                         <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Support Center</h4>
                             <ul class="footer-list">
-                                <li><a href="faq.html">FAQ's</a></li>
-                                <li><a href="help.html">How To Buy</a></li>
-                                <li><a href="help.html">Support Center</a></li>
-                                <li><a href="track-order.html">Track Your Order</a></li>
-                                <li><a href="return.html">Returns Policy</a></li>
-                                <li><a href="affiliate.html">Our Affiliates</a></li>
-                                <li><a href="contact.html">Sitemap</a></li>
+                                <li><a href="{{ route('contact.index') }}">Contact Us</a></li>
+                                <li><a href="{{ route('checkout.index') }}">How To Buy</a></li>
+                                <li><a href="{{ route('cart.index') }}">Track Your Order</a></li>
+                                <li><a href="{{ route('shop') }}">Returns Policy</a></li>
+                                <li><a href="{{ route('shop') }}">Support Center</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-3">
                         <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Get Mobile App</h4>
-                            <p>Medica App is now available on App Store & Google Play.</p>
+                            <p>{{ $siteName }} app is now available on App Store and Google Play.</p>
                             <div class="footer-download">
                                 <h5>Download Our Mobile App</h5>
                                 <div class="footer-download-btn">
-                                    <a href="#">
-                                        <i class="fab fa-google-play"></i>
-                                        <div class="download-btn-info">
-                                            <span>Get It On</span>
-                                            <h6>Google Play</h6>
-                                        </div>
-                                    </a>
-                                    <a href="#">
-                                        <i class="fab fa-app-store"></i>
-                                        <div class="download-btn-info">
-                                            <span>Get It On</span>
-                                            <h6>App Store</h6>
-                                        </div>
-                                    </a>
+                                    <a href="#"><i class="fab fa-google-play"></i><div class="download-btn-info"><span>Get It On</span><h6>Google Play</h6></div></a>
+                                    <a href="#"><i class="fab fa-app-store-ios"></i><div class="download-btn-info"><span>Get It On</span><h6>App Store</h6></div></a>
                                 </div>
                             </div>
                             <div class="footer-payment mt-20">
                                 <span>We Accept:</span>
-                                <img src="assets/img/payment/visa.html" alt="">
-                                <img src="assets/img/payment/mastercard.html" alt="">
-                                <img src="assets/img/payment/amex.svg" alt="">
-                                <img src="assets/img/payment/discover.html" alt="">
-                                <img src="assets/img/payment/paypal.html" alt="">
+                                <img src="{{ asset('assets/img/payment/amex.svg') }}" alt="Payment">
+                                <img src="{{ asset('assets/img/payment/paypal-2.svg') }}" alt="Payment">
                             </div>
                         </div>
                     </div>
@@ -727,17 +449,16 @@
                 <div class="copyright-wrap">
                     <div class="row">
                         <div class="col-12 col-lg-6 align-self-center">
-                            <p class="copyright-text">
-                                &copy; Copyright <span id="date"></span> <a href="index.html"> Medion </a> All Rights Reserved.
-                            </p>
+                            <p class="copyright-text">&copy; {{ $copyright }}</p>
                         </div>
                         <div class="col-12 col-lg-6 align-self-center">
                             <div class="footer-social">
                                 <span>Follow Us:</span>
-                                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                                <a href="#"><i class="fab fa-x-twitter"></i></a>
-                                <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                                <a href="#"><i class="fab fa-youtube"></i></a>
+                                @foreach (['facebook' => 'facebook-f', 'twitter' => 'x-twitter', 'linkedin' => 'linkedin-in', 'youtube' => 'youtube', 'instagram' => 'instagram'] as $field => $icon)
+                                    @if (!empty($setting?->{$field}))
+                                        <a href="{{ $setting->{$field} }}" target="_blank" rel="noopener"><i class="fab fa-{{ $icon }}"></i></a>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
@@ -745,51 +466,26 @@
             </div>
         </div>
     </footer>
-    <!-- footer area end -->
 
+    <a href="#" id="scroll-top"><i class="fas fa-arrow-up"></i></a>
 
-    <!-- scroll-top -->
-    <a href="#" id="scroll-top"><i class="far fa-arrow-up-from-arc"></i></a>
-    <!-- scroll-top end -->
-
-
-    <!-- modal quick shop-->
-    <div class="modal quickview fade" id="quickview" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="quickview" aria-hidden="true">
+    <div class="modal quickview fade" id="quickview" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="quickview" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i
-                        class="far fa-xmark"></i></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"><i class="fas fa-xmark"></i></button>
                 <div class="modal-body">
                     <div class="row">
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                            <div class="quickview-img">
-                                <img src="assets/img/product/04.png" alt="#">
-                            </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="quickview-img"><img src="{{ asset('assets/img/product/04.png') }}" alt="Product"></div>
                         </div>
-                        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-6 col-md-12">
                             <div class="quickview-content">
-                                <h4 class="quickview-title">Surgical Face Mask</h4>
+                                <h4 class="quickview-title">Product Details</h4>
                                 <div class="quickview-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                    <i class="far fa-star"></i>
+                                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-stroke"></i><i class="far fa-star"></i>
                                     <span class="rating-count"> (4 Customer Reviews)</span>
                                 </div>
-                                <div class="quickview-price">
-                                    <h5><del>$860</del><span>$740</span></h5>
-                                </div>
-                                <ul class="quickview-list">
-                                    <li>Brand:<span>Medica</span></li>
-                                    <li>Category:<span>Healthcare</span></li>
-                                    <li>Stock:<span class="stock">Available</span></li>
-                                    <li>Code:<span>789FGDF</span></li>
-                                </ul>
-                                <div class="quickview-cart">
-                                    <a href="#" class="theme-btn">Add to cart</a>
-                                </div>
+                                <div class="quickview-cart"><a href="{{ route('shop') }}" class="theme-btn">View Products</a></div>
                                 <div class="quickview-social">
                                     <span>Share:</span>
                                     <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -805,10 +501,7 @@
             </div>
         </div>
     </div>
-    <!-- modal quick shop end -->
 
-
-    <!-- js -->
     <script src="{{ asset('assets/js/jquery-3.7.1.min.js') }}"></script>
     <script src="{{ asset('assets/js/modernizr.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
@@ -824,9 +517,5 @@
     <script src="{{ asset('assets/js/countdown.min.js') }}"></script>
     <script src="{{ asset('assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
-
 </body>
-
-
-<!-- Mirrored from live.themewild.com/medion/index-2.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 24 Apr 2026 14:00:49 GMT -->
 </html>

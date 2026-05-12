@@ -31,7 +31,7 @@
                                     <form action="{{ route('shop') }}" method="GET" id="filter-form">
                                         <div class="form-group">
                                             <input type="text" name="search" class="form-control" placeholder="Search products..." value="{{ $filters['search'] ?? '' }}">
-                                            <button type="submit"><i class="fas fa-search"></i></button>
+                                            <button type="submit"><i class="fas fa-magnifying-glass"></i></button>
                                         </div>
                                     </form>
                                 </div>
@@ -211,7 +211,7 @@
 </a>
 
 <a href="#" title="Add To Compare">
-   <i class="fas fa-sync-alt"></i>
+   <i class="fas fa-rotate"></i>
 </a>
                                                         </div>
                                                     </div>
@@ -244,7 +244,7 @@
     data-bs-placement="left"
     title="Add To Cart">
 
-    <i class="fas fa-shopping-bag"></i>
+    <i class="fas fa-bag-shopping"></i>
 </button>
                                                     </div>
                                                     

@@ -11,7 +11,7 @@
             <ul class="breadcrumb-menu">
                 <li>
                     <a href="{{ url('/') }}">
-                        <i class="fa fa-home"></i> Home
+                        <i class="fas fa-house"></i> Home
                     </a>
                 </li>
                 <li>
@@ -45,12 +45,12 @@
                             <ul>
                                 <li>
                                     <a href="#">
-                                        <i class="far fa-user-circle"></i> By Admin
+                                        <i class="fas fa-circle-user"></i> By Admin
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#">
-                                        <i class="far fa-calendar-alt"></i>
+                                        <i class="fas fa-calendar-days"></i>
                                         {{ $blog->created_at->format('M d, Y') }}
                                     </a>
                                 </li>
@@ -116,7 +116,7 @@
                                         </a>
                                     </h6>
                                     <small>
-                                        <i class="far fa-calendar-alt"></i>
+                                        <i class="fas fa-calendar-days"></i>
                                         {{ $recent->created_at->format('M d, Y') }}
                                     </small>
                                 </div>

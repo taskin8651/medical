@@ -11,9 +11,9 @@ use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Custom\CartController;
 use App\Http\Controllers\Custom\CheckoutController;
+use App\Http\Controllers\Custom\ContactController as CustomContactController;
 
 
-Route::redirect('/', '/login');
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));
@@ -161,3 +161,5 @@ Route::prefix('checkout')->name('checkout.')->group(function () {
 
 Route::get('/blog', [App\Http\Controllers\Custom\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{slug}', [App\Http\Controllers\Custom\BlogController::class, 'show'])->name('blog.show');
+Route::get('/contact', [CustomContactController::class, 'index'])->name('contact.index');
+Route::post('/contact', [CustomContactController::class, 'store'])->name('contact.store');

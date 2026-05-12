@@ -11,7 +11,7 @@
             <ul class="breadcrumb-menu">
                 <li>
                     <a href="{{ url('/') }}">
-                        <i class="far fa-home"></i> Home
+                        <i class="fas fa-house"></i> Home
                     </a>
                 </li>
                 <li class="active">Shop Cart</li>
@@ -165,7 +165,7 @@
                                                         <input type="hidden" name="action" value="minus">
 
                                                         <button type="submit" class="minus-btn">
-                                                            <i class="fal fa-minus"></i>
+                                                            <i class="fas fa-minus"></i>
                                                         </button>
                                                     </form>
 
@@ -179,7 +179,7 @@
                                                         <input type="hidden" name="action" value="plus">
 
                                                         <button type="submit" class="plus-btn">
-                                                            <i class="fal fa-plus"></i>
+                                                            <i class="fas fa-plus"></i>
                                                         </button>
                                                     </form>
 
@@ -206,7 +206,7 @@
                                                 <a href="{{ route('cart.remove', $productId) }}"
                                                    class="shop-cart-remove"
                                                    onclick="return confirm('Remove this product from cart?')">
-                                                    <i class="fa fa-times"></i>
+                                                    <i class="fas fa-xmark"></i>
                                                 </a>
                                             </td>
                                         </tr>

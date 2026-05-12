@@ -8,7 +8,7 @@
                 <div class="site-breadcrumb-wrap">
                     <h4 class="breadcrumb-title">Categories</h4>
                     <ul class="breadcrumb-menu">
-                        <li><a href="{{ route('home') }}"><i class="far fa-home"></i> Home</a></li>
+                        <li><a href="{{ route('home') }}"><i class="fas fa-house"></i> Home</a></li>
                         <li class="active">Categories</li>
                     </ul>
                 </div>

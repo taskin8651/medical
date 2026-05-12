@@ -11,7 +11,7 @@
             <ul class="breadcrumb-menu">
                 <li>
                     <a href="{{ url('/') }}">
-                        <i class="far fa-home"></i> Home
+                        <i class="fas fa-house"></i> Home
                     </a>
                 </li>
                 <li class="active">Shop Checkout</li>
