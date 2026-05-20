@@ -166,7 +166,7 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
                             @forelse($role->permissions as $permission)
                                 <span class="role-tag">{{ $permission->title }}</span>
                             @empty
-                                <span style="font-size:12px; color:#94A3B8;">—</span>
+                                <span style="font-size:12px; color:#94A3B8;">-</span>
                             @endforelse
                         </div>
                     </td>
@@ -247,7 +247,7 @@ $(function () {
             search: '',
             searchPlaceholder: 'Search roles...',
             lengthMenu: 'Show _MENU_ entries',
-            info: 'Showing _START_–_END_ of _TOTAL_ roles',
+            info: 'Showing _START_-_END_ of _TOTAL_ roles',
         }
     });
 });

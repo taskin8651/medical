@@ -10,19 +10,15 @@ class SettingController extends Controller
 {
     public function index()
     {
-        $setting = Setting::first();
+        $setting = Setting::getSettings();
         return view('admin.settings.index', compact('setting'));
     }
 
     public function update(Request $request)
     {
-        $setting = Setting::first();
+        $setting = Setting::getSettings();
 
-        if (!$setting) {
-            $setting = new Setting();
-        }
-
-        $data = $request->all();
+        $data = $request->except(['_token']);
 
         // File uploads
         foreach (['logo','favicon','loader','og_image','popup_image'] as $file) {
@@ -33,7 +29,7 @@ class SettingController extends Controller
             }
         }
 
-        $setting->update($data);
+        $setting->fill($data)->save();
 
         return back()->with('success','Settings Updated');
     }

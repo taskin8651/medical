@@ -258,7 +258,7 @@
         <div class="form-card-icon"><i class="fas fa-images"></i></div>
         <div>
             <p style="font-size:14px;font-weight:800;color:#0f172a;margin:0">Images and PDF Documents</p>
-            <p style="font-size:12px;color:#94a3b8;margin:0">Images up to 2MB, PDF up to 5MB each</p>
+            <p style="font-size:12px;color:#94a3b8;margin:0">Images and PDF documents up to 20MB each</p>
         </div>
     </div>
     <div class="form-card-body">

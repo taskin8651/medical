@@ -22,7 +22,7 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; flex-wrap:wrap;">
     <div>
-        <a href="{{ route('admin.hero.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600;">← Back to hero slides</a>
+        <a href="{{ route('admin.hero.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to hero slides</a>
         <h2 style="font-size:22px; font-weight:700; margin:8px 0 0; color:#0F172A;">Add Hero Slide</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Create a new homepage hero slide.</p>
     </div>
@@ -33,7 +33,7 @@
 
     <div class="form-card">
         <div class="form-card-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-flag"></i></div>
+            <div class="form-card-icon"><i class="fas fa-flag"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Hero Slide Fields</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">Add hero title, button and image.</p>
@@ -78,7 +78,7 @@
 
     <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:18px;">
         <a href="{{ route('admin.hero.index') }}" class="btn-ghost">Cancel</a>
-        <button type="submit" class="btn-primary">Save Hero</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Hero</button>
     </div>
 </form>
 @endsection

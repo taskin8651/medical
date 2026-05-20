@@ -48,13 +48,13 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
     <div>
-        <a href="{{ route('admin.products.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">← Back to products</a>
+        <a href="{{ route('admin.products.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to products</a>
         <h2 style="font-size:22px; font-weight:700; color:#0F172A; margin:0;">Product Details</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Review the complete product information below.</p>
     </div>
     <div style="display:flex; gap:10px; flex-wrap:wrap;">
         @can('product_edit')
-        <a href="{{ route('admin.products.edit', $product) }}" class="btn-primary">Edit</a>
+        <a href="{{ route('admin.products.edit', $product) }}" class="btn-primary"><i class="fas fa-pencil-alt"></i> Edit</a>
         @endcan
     </div>
 </div>
@@ -88,21 +88,21 @@
         </div>
         <div class="detail-card">
             <div style="padding:16px 22px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; gap:10px;">
-                <div style="width:32px; height:32px; border-radius:8px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px;"><i class="fas fa-info-circle"></i></div>
+                <div class="form-card-icon"><i class="fas fa-info-circle"></i></div>
                 <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">Product overview</p>
             </div>
             <div style="padding:18px 22px;">
                 <div class="detail-row">
                     <span class="detail-label">Generic name</span>
-                    <span class="detail-value">{{ $product->generic_name ?? '—' }}</span>
+                    <span class="detail-value">{{ $product->generic_name ?? '-' }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Form</span>
-                    <span class="detail-value">{{ $product->form ?? '—' }}</span>
+                    <span class="detail-value">{{ $product->form ?? '-' }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Strength</span>
-                    <span class="detail-value">{{ $product->strength ?? '—' }}</span>
+                    <span class="detail-value">{{ $product->strength ?? '-' }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Requires prescription</span>
@@ -116,11 +116,11 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Created at</span>
-                    <span class="detail-value">{{ optional($product->created_at)->format('d M Y, H:i') ?? '—' }}</span>
+                    <span class="detail-value">{{ optional($product->created_at)->format('d M Y, H:i') ?? '-' }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Updated at</span>
-                    <span class="detail-value">{{ optional($product->updated_at)->format('d M Y, H:i') ?? '—' }}</span>
+                    <span class="detail-value">{{ optional($product->updated_at)->format('d M Y, H:i') ?? '-' }}</span>
                 </div>
             </div>
         </div>
@@ -128,7 +128,7 @@
     <div>
         <div class="detail-card" style="margin-bottom:16px;">
             <div style="padding:16px 22px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; gap:10px;">
-                <div style="width:32px; height:32px; border-radius:8px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px;"><i class="fas fa-list"></i></div>
+                <div class="form-card-icon"><i class="fas fa-list"></i></div>
                 <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">Detailed specs</p>
             </div>
             <div style="padding:18px 22px;">
@@ -138,11 +138,11 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Composition</span>
-                    <span class="detail-value">{!! nl2br(e($product->composition ?: '—')) !!}</span>
+                    <span class="detail-value">{!! nl2br(e($product->composition ?: '-')) !!}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Sale price</span>
-                    <span class="detail-value">{{ $product->sale_price ? '₹'.number_format($product->sale_price, 2) : '—' }}</span>
+                    <span class="detail-value">{{ $product->sale_price ? '₹'.number_format($product->sale_price, 2) : '-' }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">GST</span>

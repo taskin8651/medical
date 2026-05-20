@@ -214,7 +214,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'files' => 'required|array|max:10',
-            'files.*' => 'required|file|mimes:jpg,jpeg,png,webp,pdf|max:5120',
+            'files.*' => 'required|file|mimes:jpg,jpeg,png,webp,pdf|max:20480',
         ]);
 
         $uploaded = [];
@@ -288,9 +288,9 @@ class ProductController extends Controller
             'is_active'             => 'boolean',
             'is_featured'           => 'boolean',
             'images'                => 'nullable|array|max:10',
-            'images.*'              => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'images.*'              => 'image|mimes:jpg,jpeg,png,webp|max:20480',
             'documents'             => 'nullable|array|max:5',
-            'documents.*'           => 'file|mimes:pdf|max:5120',
+            'documents.*'           => 'file|mimes:pdf|max:20480',
         ]);
     }
  

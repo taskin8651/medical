@@ -21,19 +21,19 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:24px;">
     <div>
-        <a href="{{ route('admin.blog.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600;">← Back to blog</a>
+        <a href="{{ route('admin.blog.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to blog</a>
         <h2 style="font-size:22px; font-weight:700; color:#0F172A; margin:8px 0 0;">{{ $blog->title }}</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Blog post details and media.</p>
     </div>
     @can('blog_edit')
-    <a href="{{ route('admin.blog.edit', $blog) }}" style="font-size:13px; padding:10px 16px; border-radius:10px; background:var(--accent); color:#fff; text-decoration:none;">Edit Post</a>
+    <a href="{{ route('admin.blog.edit', $blog) }}" style="font-size:13px; padding:10px 16px; border-radius:10px; background:var(--accent); color:#fff; text-decoration:none;"><i class="fas fa-pencil-alt"></i> Edit Post</a>
     @endcan
 </div>
 
 <div class="detail-grid">
     <div class="detail-card">
         <div class="detail-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-file-alt"></i></div>
+            <div class="form-card-icon"><i class="fas fa-file-alt"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Post Overview</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">All main blog data</p>
@@ -73,7 +73,7 @@
 
     <div class="detail-card">
         <div class="detail-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-image"></i></div>
+            <div class="form-card-icon"><i class="fas fa-image"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Media</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">Featured image and gallery</p>

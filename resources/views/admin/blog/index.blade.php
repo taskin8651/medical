@@ -24,7 +24,7 @@
         <p style="font-size:13px; color:#64748B; margin:6px 0 0;">Manage blog content, featured images and galleries.</p>
     </div>
     @can('blog_create')
-    <a href="{{ route('admin.blog.create') }}" class="action-btn" style="border-color:var(--accent); color:var(--accent);">+ Add Post</a>
+    <a href="{{ route('admin.blog.create') }}" class="action-btn" style="border-color:var(--accent); color:var(--accent);"><i class="fas fa-plus"></i> Add Post</a>
     @endcan
 </div>
 
@@ -55,13 +55,13 @@
                     </td>
                     <td>{{ $blog->created_at->format('d M Y') }}</td>
                     <td style="white-space:nowrap;">
-                        <a href="{{ route('admin.blog.show', $blog) }}" class="action-btn">View</a>
-                        @can('blog_edit')<a href="{{ route('admin.blog.edit', $blog) }}" class="action-btn">Edit</a>@endcan
+                        <a href="{{ route('admin.blog.show', $blog) }}" class="action-btn"><i class="fas fa-eye"></i> View</a>
+                        @can('blog_edit')<a href="{{ route('admin.blog.edit', $blog) }}" class="action-btn"><i class="fas fa-pencil-alt"></i> Edit</a>@endcan
                         @can('blog_delete')
                         <form action="{{ route('admin.blog.destroy', $blog) }}" method="POST" style="display:inline-block; margin:0;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;">Delete</button>
+                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                         @endcan
                     </td>

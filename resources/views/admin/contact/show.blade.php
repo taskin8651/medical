@@ -18,7 +18,7 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:24px;">
     <div>
-        <a href="{{ route('admin.contacts.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600;">← Back to contacts</a>
+        <a href="{{ route('admin.contacts.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to contacts</a>
         <h2 style="font-size:22px; font-weight:700; margin:8px 0 0; color:#0F172A;">Message from {{ $contact->name }}</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Contact form entry details.</p>
     </div>
@@ -26,14 +26,14 @@
     <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" style="margin:0;">
         @csrf
         @method('DELETE')
-        <button type="submit" style="font-size:13px; padding:10px 16px; border-radius:10px; background:#FECACA; color:#B91C1C; border:none; cursor:pointer;">Delete</button>
+        <button type="submit" style="display:inline-flex; align-items:center; gap:7px; font-size:13px; font-weight:600; padding:10px 16px; border-radius:10px; background:#FFF1F2; color:#BE123C; border:1.5px solid #FECDD3; cursor:pointer;"><i class="fas fa-trash-alt"></i> Delete</button>
     </form>
     @endcan
 </div>
 
 <div class="detail-card">
     <div class="detail-header">
-        <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-envelope"></i></div>
+        <div class="form-card-icon"><i class="fas fa-envelope"></i></div>
         <div>
             <p style="font-size:14px; font-weight:700; margin:0;">Contact Details</p>
             <p style="font-size:12px; color:#94A3B8; margin:0;">Information submitted by the visitor.</p>

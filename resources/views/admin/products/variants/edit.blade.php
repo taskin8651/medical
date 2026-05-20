@@ -54,7 +54,7 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
     <div>
-        <a href="{{ route('admin.products.variants.index', $product) }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">← Back to variants</a>
+        <a href="{{ route('admin.products.variants.index', $product) }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to variants</a>
         <h2 style="font-size:22px; font-weight:700; color:#0F172A; margin:0;">Edit Product Variant</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Update variant details for {{ $variant->name }}</p>
     </div>
@@ -269,7 +269,7 @@
 
     <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:18px;">
         <a href="{{ route('admin.products.variants.index', $product) }}" class="btn-ghost">Cancel</a>
-        <button type="submit" class="btn-primary">Update Variant</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Variant</button>
     </div>
 </form>
 

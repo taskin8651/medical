@@ -22,7 +22,7 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; flex-wrap:wrap;">
     <div>
-        <a href="{{ route('admin.testimonial.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600;">← Back to testimonials</a>
+        <a href="{{ route('admin.testimonial.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to testimonials</a>
         <h2 style="font-size:22px; font-weight:700; margin:8px 0 0; color:#0F172A;">Edit Testimonial</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Update testimonial details.</p>
     </div>
@@ -34,7 +34,7 @@
 
     <div class="form-card">
         <div class="form-card-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-comment-alt"></i></div>
+            <div class="form-card-icon"><i class="fas fa-comment-alt"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Testimonial Details</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">Modify existing testimonial content.</p>
@@ -74,7 +74,7 @@
 
     <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:18px;">
         <a href="{{ route('admin.testimonial.index') }}" class="btn-ghost">Cancel</a>
-        <button type="submit" class="btn-primary">Update Testimonial</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Testimonial</button>
     </div>
 </form>
 @endsection

@@ -58,7 +58,7 @@
 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
     <div>
         <a href="{{ route('admin.users.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">
-            ← {{ trans('global.back_to_list') }}
+            &larr; {{ trans('global.back_to_list') }}
         </a>
         <h2 style="font-size:22px; font-weight:700; color:#0F172A; margin:0;">User Profile</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Full details for this user account</p>
@@ -163,9 +163,7 @@
         {{-- Account Details --}}
         <div class="detail-card" style="margin-bottom:16px;">
             <div style="padding:16px 22px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; gap:10px;">
-                <div style="width:32px; height:32px; border-radius:8px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px;">
-                    <i class="fas fa-id-card"></i>
-                </div>
+                <div class="form-card-icon"><i class="fas fa-id-card"></i></div>
                 <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">Account Details</p>
             </div>
             <div style="padding:0 22px;">
@@ -224,9 +222,7 @@
         {{-- Wholesale Details --}}
         <div class="detail-card" style="margin-bottom:16px;">
             <div style="padding:16px 22px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; gap:10px;">
-                <div style="width:32px; height:32px; border-radius:8px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px;">
-                    <i class="fas fa-store"></i>
-                </div>
+                <div class="form-card-icon"><i class="fas fa-store"></i></div>
                 <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">Wholesale Buyer Details</p>
             </div>
             <div style="padding:0 22px;">
@@ -272,9 +268,7 @@
         <div class="detail-card">
             <div style="padding:16px 22px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; justify-content:space-between;">
                 <div style="display:flex; align-items:center; gap:10px;">
-                    <div style="width:32px; height:32px; border-radius:8px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px;">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
+                    <div class="form-card-icon"><i class="fas fa-shield-alt"></i></div>
                     <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">{{ trans('cruds.user.fields.roles') }}</p>
                 </div>
                 <span style="font-size:12px; font-weight:700; color:var(--accent); background:var(--accent-light); padding:3px 10px; border-radius:20px;">

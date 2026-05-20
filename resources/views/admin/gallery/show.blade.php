@@ -17,7 +17,7 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:24px;">
     <div>
-        <a href="{{ route('admin.gallery.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600;">← Back to galleries</a>
+        <a href="{{ route('admin.gallery.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to galleries</a>
         <h2 style="font-size:22px; font-weight:700; margin:8px 0 0; color:#0F172A;">{{ $gallery->title ?? 'Gallery' }}</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">View gallery images and metadata.</p>
     </div>
@@ -29,7 +29,7 @@
 <div class="detail-grid">
     <div class="detail-card">
         <div class="detail-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-file-alt"></i></div>
+            <div class="form-card-icon"><i class="fas fa-file-alt"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Gallery Info</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">Title and timestamps</p>
@@ -57,7 +57,7 @@
 
     <div class="detail-card">
         <div class="detail-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-images"></i></div>
+            <div class="form-card-icon"><i class="fas fa-images"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Gallery Images</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">Uploaded images in this gallery</p>

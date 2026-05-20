@@ -71,7 +71,7 @@
 <div class="page-card">
     <div style="padding:16px 20px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
         <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">All Orders</p>
-        <span style="font-size:12px; color:#94A3B8;">Showing {{ $orders->firstItem() ?? 0 }}–{{ $orders->lastItem() ?? 0 }} of {{ $orders->total() }}</span>
+        <span style="font-size:12px; color:#94A3B8;">Showing {{ $orders->firstItem() ?? 0 }}-{{ $orders->lastItem() ?? 0 }} of {{ $orders->total() }}</span>
     </div>
     <div style="overflow-x:auto; padding:4px 10px;">
         <table class="min-w-full" style="width:100%; border-collapse:collapse;">
@@ -100,11 +100,11 @@
                     <td style="padding:14px 16px; text-align:right;">
                         <div style="display:flex; justify-content:flex-end; gap:6px; flex-wrap:wrap;">
                             @can('order_show')
-                            <a href="{{ route('admin.orders.show', $order) }}" class="btn-outline" style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);">View</a>
+                            <a href="{{ route('admin.orders.show', $order) }}" class="btn-outline" style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);"><i class="fas fa-eye"></i> View</a>
                             @endcan
                             <a href="{{ route('admin.orders.manualBill', $order) }}" class="btn-outline" style="border-color:#BBF7D0; color:#15803D;">Bill</a>
                             @can('order_edit')
-                            <a href="{{ route('admin.orders.edit', $order) }}" class="btn-outline" style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);">Edit</a>
+                            <a href="{{ route('admin.orders.edit', $order) }}" class="btn-outline" style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);"><i class="fas fa-pencil-alt"></i> Edit</a>
                             @endcan
                         </div>
                     </td>

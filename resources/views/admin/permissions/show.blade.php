@@ -51,7 +51,7 @@
 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
     <div>
         <a href="{{ route('admin.permissions.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">
-            ← {{ trans('global.back_to_list') }}
+            &larr; {{ trans('global.back_to_list') }}
         </a>
         <h2 style="font-size:22px; font-weight:700; color:#0F172A; margin:0;">Permission Details</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Full details for this permission</p>
@@ -140,9 +140,7 @@
         {{-- Permission Details --}}
         <div class="detail-card">
             <div style="padding:16px 22px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; gap:10px;">
-                <div style="width:32px; height:32px; border-radius:8px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px;">
-                    <i class="fas fa-info-circle"></i>
-                </div>
+                <div class="form-card-icon"><i class="fas fa-info-circle"></i></div>
                 <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">Permission Details</p>
             </div>
             <div style="padding:0 22px;">

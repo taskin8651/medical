@@ -56,7 +56,7 @@
 <div class="page-card">
     <div style="padding:16px 20px; border-bottom:1px solid #F1F5F9; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
         <p style="font-size:14px; font-weight:700; color:#0F172A; margin:0;">All Categories</p>
-        <span style="font-size:12px; color:#94A3B8;">Showing {{ $categories->firstItem() ?? 0 }}–{{ $categories->lastItem() ?? 0 }} of {{ $categories->total() }}</span>
+        <span style="font-size:12px; color:#94A3B8;">Showing {{ $categories->firstItem() ?? 0 }}-{{ $categories->lastItem() ?? 0 }} of {{ $categories->total() }}</span>
     </div>
     <div style="overflow-x:auto; padding:4px 10px;">
         <table class="min-w-full" style="width:100%; border-collapse:collapse;">
@@ -97,12 +97,12 @@
                     <td style="padding:14px 16px; text-align:right;">
                         <div style="display:flex; justify-content:flex-end; gap:6px; flex-wrap:wrap;">
                             @can('category_edit')
-                            <a href="{{ route('admin.categories.edit', $category) }}" class="btn-outline" style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);">Edit</a>
+                            <a href="{{ route('admin.categories.edit', $category) }}" class="btn-outline" style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);"><i class="fas fa-pencil-alt"></i> Edit</a>
                             @endcan
                             @can('category_delete')
                             <form action="{{ route('admin.categories.destroy', $category) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
                                 @method('DELETE') @csrf
-                                <button type="submit" class="btn-outline" style="border-color:#FECDD3; color:#BE123C;">Delete</button>
+                                <button type="submit" class="btn-outline" style="border-color:#FECDD3; color:#BE123C;"><i class="fas fa-trash-alt"></i> Delete</button>
                             </form>
                             @endcan
                         </div>

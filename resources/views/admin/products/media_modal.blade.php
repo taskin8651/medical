@@ -23,7 +23,7 @@
         <div class="media-modal-header">
             <div>
                 <h3 id="mediaModalTitle" style="font-size:16px;font-weight:800;color:#0f172a;margin:0">Manage Media</h3>
-                <p style="font-size:12px;color:#64748b;margin:3px 0 0">Upload product images and PDF documents.</p>
+                <p style="font-size:12px;color:#64748b;margin:3px 0 0">Upload product images and PDF documents up to 20MB each.</p>
             </div>
             <button type="button" class="media-btn" onclick="closeMediaModal()">Close</button>
         </div>

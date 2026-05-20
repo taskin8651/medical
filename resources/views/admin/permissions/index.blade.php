@@ -216,7 +216,7 @@ $(function () {
             search: '',
             searchPlaceholder: 'Search permissions...',
             lengthMenu: 'Show _MENU_ entries',
-            info: 'Showing _START_–_END_ of _TOTAL_ permissions',
+            info: 'Showing _START_-_END_ of _TOTAL_ permissions',
         }
     });
 });

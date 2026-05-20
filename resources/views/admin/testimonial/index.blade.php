@@ -24,7 +24,7 @@
         <p style="font-size:13px; color:#64748B; margin:6px 0 0;">Manage customer testimonials and reviews.</p>
     </div>
     @can('testimonial_create')
-    <a href="{{ route('admin.testimonial.create') }}" class="action-btn" style="border-color:var(--accent); color:var(--accent);">+ Add Testimonial</a>
+    <a href="{{ route('admin.testimonial.create') }}" class="action-btn" style="border-color:var(--accent); color:var(--accent);"><i class="fas fa-plus"></i> Add Testimonial</a>
     @endcan
 </div>
 
@@ -48,20 +48,20 @@
                 <tr>
                     <td>#{{ $testimonial->id }}</td>
                     <td>{{ $testimonial->name }}</td>
-                    <td>{{ $testimonial->designation ?? '—' }}</td>
+                    <td>{{ $testimonial->designation ?? '-' }}</td>
                     <td>
                         <span class="status-badge {{ $testimonial->status ? 'status-active' : 'status-inactive' }}">
                             {{ $testimonial->status ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
                     <td style="white-space:nowrap;">
-                        <a href="{{ route('admin.testimonial.show', $testimonial) }}" class="action-btn">View</a>
-                        @can('testimonial_edit')<a href="{{ route('admin.testimonial.edit', $testimonial) }}" class="action-btn">Edit</a>@endcan
+                        <a href="{{ route('admin.testimonial.show', $testimonial) }}" class="action-btn"><i class="fas fa-eye"></i> View</a>
+                        @can('testimonial_edit')<a href="{{ route('admin.testimonial.edit', $testimonial) }}" class="action-btn"><i class="fas fa-pencil-alt"></i> Edit</a>@endcan
                         @can('testimonial_delete')
                         <form action="{{ route('admin.testimonial.destroy', $testimonial) }}" method="POST" style="display:inline-block; margin:0;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;">Delete</button>
+                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                         @endcan
                     </td>

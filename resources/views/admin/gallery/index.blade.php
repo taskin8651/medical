@@ -21,7 +21,7 @@
         <p style="font-size:13px; color:#64748B; margin:6px 0 0;">Manage galleries and uploaded images.</p>
     </div>
     @can('gallery_create')
-    <a href="{{ route('admin.gallery.create') }}" class="action-btn" style="border-color:var(--accent); color:var(--accent);">+ Add Gallery</a>
+    <a href="{{ route('admin.gallery.create') }}" class="action-btn" style="border-color:var(--accent); color:var(--accent);"><i class="fas fa-plus"></i> Add Gallery</a>
     @endcan
 </div>
 
@@ -48,13 +48,13 @@
                     <td>{{ $gallery->getMedia('gallery')->count() }}</td>
                     <td>{{ $gallery->created_at->format('d M Y') }}</td>
                     <td style="white-space:nowrap;">
-                        <a href="{{ route('admin.gallery.show', $gallery) }}" class="action-btn">View</a>
-                        @can('gallery_edit')<a href="{{ route('admin.gallery.edit', $gallery) }}" class="action-btn">Edit</a>@endcan
+                        <a href="{{ route('admin.gallery.show', $gallery) }}" class="action-btn"><i class="fas fa-eye"></i> View</a>
+                        @can('gallery_edit')<a href="{{ route('admin.gallery.edit', $gallery) }}" class="action-btn"><i class="fas fa-pencil-alt"></i> Edit</a>@endcan
                         @can('gallery_delete')
                         <form action="{{ route('admin.gallery.destroy', $gallery) }}" method="POST" style="display:inline-block; margin:0;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;">Delete</button>
+                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                         @endcan
                     </td>

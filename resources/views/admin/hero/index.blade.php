@@ -24,7 +24,7 @@
         <p style="font-size:13px; color:#64748B; margin:6px 0 0;">Manage homepage hero content and imagery.</p>
     </div>
     @can('hero_create')
-    <a href="{{ route('admin.hero.create') }}" class="action-btn" style="border-color:var(--accent); color:var(--accent);">+ Add Hero</a>
+    <a href="{{ route('admin.hero.create') }}" class="action-btn" style="border-color:var(--accent); color:var(--accent);"><i class="fas fa-plus"></i> Add Hero</a>
     @endcan
 </div>
 
@@ -48,20 +48,20 @@
                 <tr>
                     <td>#{{ $hero->id }}</td>
                     <td>{{ Str::limit($hero->title, 40) }}</td>
-                    <td>{{ $hero->button_text ?? '—' }}</td>
+                    <td>{{ $hero->button_text ?? '-' }}</td>
                     <td>
                         <span class="status-badge {{ $hero->status ? 'status-active' : 'status-inactive' }}">
                             {{ $hero->status ? 'Active' : 'Inactive' }}
                         </span>
                     </td>
                     <td style="white-space:nowrap;">
-                        <a href="{{ route('admin.hero.show', $hero) }}" class="action-btn">View</a>
-                        @can('hero_edit')<a href="{{ route('admin.hero.edit', $hero) }}" class="action-btn">Edit</a>@endcan
+                        <a href="{{ route('admin.hero.show', $hero) }}" class="action-btn"><i class="fas fa-eye"></i> View</a>
+                        @can('hero_edit')<a href="{{ route('admin.hero.edit', $hero) }}" class="action-btn"><i class="fas fa-pencil-alt"></i> Edit</a>@endcan
                         @can('hero_delete')
                         <form action="{{ route('admin.hero.destroy', $hero) }}" method="POST" style="display:inline-block; margin:0;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;">Delete</button>
+                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                         @endcan
                     </td>

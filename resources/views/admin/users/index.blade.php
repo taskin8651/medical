@@ -201,7 +201,7 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
                         @if($user->email_verified_at)
                             <div style="display:flex; align-items:center; gap:6px;">
                                 <span class="status-dot" style="background:#10B981;"></span>
-                                <span style="font-size:12.5px; color:#374151;">{{ $user->email_verified_at->format('d M Y') }}</span>
+                                <span style="font-size:12.5px; color:#374151;">{{ optional($user->email_verified_at)->format('d M Y') }}</span>
                             </div>
                         @else
                             <div style="display:flex; align-items:center; gap:6px;">
@@ -216,7 +216,7 @@ table.dataTable tbody tr:last-child td { border-bottom: none !important; }
                             @forelse($user->roles as $role)
                                 <span class="role-tag">{{ $role->title }}</span>
                             @empty
-                                <span style="font-size:12px; color:#94A3B8;">—</span>
+                                <span style="font-size:12px; color:#94A3B8;">-</span>
                             @endforelse
                         </div>
                     </td>
@@ -297,7 +297,7 @@ $(function () {
             search: '',
             searchPlaceholder: 'Search users...',
             lengthMenu: 'Show _MENU_ entries',
-            info: 'Showing _START_–_END_ of _TOTAL_ users',
+            info: 'Showing _START_-_END_ of _TOTAL_ users',
         }
     });
 });

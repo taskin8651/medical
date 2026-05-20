@@ -104,7 +104,7 @@
 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
     <div>
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-            <a href="{{ route('admin.users.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600;">
+            <a href="{{ route('admin.users.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">
                 ← {{ trans('global.back_to_list') }}
             </a>
         </div>

@@ -132,14 +132,14 @@ class ShopController extends Controller
         return $this->index($request);
     }
 
-   public function show($slug)
-{
-    $product = Product::with(['category', 'brand', 'images'])
+    public function show($slug)
+    {
+        $product = Product::with(['category', 'brand', 'media'])
         ->where('slug', $slug)
         ->where('is_active', 1)
         ->firstOrFail();
 
-    $relatedProducts = Product::with(['category', 'brand', 'images'])
+        $relatedProducts = Product::with(['category', 'brand', 'media'])
         ->where('is_active', 1)
         ->where('id', '!=', $product->id)
         ->where(function ($query) use ($product) {
@@ -153,6 +153,6 @@ class ShopController extends Controller
         ->take(8)
         ->get();
 
-    return view('custom.shop-detail', compact('product', 'relatedProducts'));
-}
+        return view('custom.shop-detail', compact('product', 'relatedProducts'));
+    }
 }

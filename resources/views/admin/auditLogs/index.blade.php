@@ -230,7 +230,7 @@ $(function () {
             search: '',
             searchPlaceholder: 'Search audit logs...',
             lengthMenu: 'Show _MENU_ entries',
-            info: 'Showing _START_–_END_ of _TOTAL_ logs',
+            info: 'Showing _START_-_END_ of _TOTAL_ logs',
         }
     });
 });

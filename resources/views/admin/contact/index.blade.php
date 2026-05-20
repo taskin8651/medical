@@ -48,7 +48,7 @@
                     <td>#{{ $contact->id }}</td>
                     <td>{{ $contact->name }}</td>
                     <td>{{ $contact->email }}</td>
-                    <td>{{ $contact->subject ?? '—' }}</td>
+                    <td>{{ $contact->subject ?? '-' }}</td>
                     <td>
                         <span class="status-badge {{ $contact->is_read ? 'status-read' : 'status-unread' }}">
                             {{ $contact->is_read ? 'Read' : 'Unread' }}
@@ -56,12 +56,12 @@
                     </td>
                     <td>{{ $contact->created_at->format('d M Y') }}</td>
                     <td style="white-space:nowrap;">
-                        <a href="{{ route('admin.contacts.show', $contact) }}" class="action-btn">View</a>
+                        <a href="{{ route('admin.contacts.show', $contact) }}" class="action-btn"><i class="fas fa-eye"></i> View</a>
                         @can('contact_delete')
                         <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" style="display:inline-block; margin:0;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;">Delete</button>
+                            <button type="submit" class="action-btn" style="border-color:#FECACA; color:#B91C1C;"><i class="fas fa-trash-alt"></i> Delete</button>
                         </form>
                         @endcan
                     </td>

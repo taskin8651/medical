@@ -28,7 +28,7 @@
 @section('content')
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;gap:12px;flex-wrap:wrap">
     <div>
-        <a href="{{ route('admin.products.index') }}" style="font-size:13px;color:var(--accent);font-weight:700;text-decoration:none">Back to products</a>
+        <a href="{{ route('admin.products.index') }}" style="font-size:13px;color:var(--accent);font-weight:700;text-decoration:none">&larr; Back to products</a>
         <h2 style="font-size:22px;font-weight:800;color:#0f172a;margin:6px 0 0">Add Product</h2>
         <p style="font-size:13px;color:#64748b;margin:4px 0 0">Create product details, pricing, stock, images and PDF documents.</p>
     </div>

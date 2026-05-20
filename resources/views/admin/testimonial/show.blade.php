@@ -16,7 +16,7 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:24px;">
     <div>
-        <a href="{{ route('admin.testimonial.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600;">← Back to testimonials</a>
+        <a href="{{ route('admin.testimonial.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to testimonials</a>
         <h2 style="font-size:22px; font-weight:700; margin:8px 0 0; color:#0F172A;">{{ $testimonial->name }}</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Testimonial details and preview.</p>
     </div>
@@ -28,7 +28,7 @@
 <div class="detail-grid">
     <div class="detail-card">
         <div class="detail-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-user"></i></div>
+            <div class="form-card-icon"><i class="fas fa-user"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Reviewer</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">Name, role and message</p>
@@ -41,7 +41,7 @@
             </div>
             <div style="margin-bottom:16px;">
                 <div class="detail-label">Designation</div>
-                <div class="detail-value">{{ $testimonial->designation ?? '—' }}</div>
+                <div class="detail-value">{{ $testimonial->designation ?? '-' }}</div>
             </div>
             <div style="margin-bottom:16px;">
                 <div class="detail-label">Message</div>
@@ -56,7 +56,7 @@
 
     <div class="detail-card">
         <div class="detail-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-image"></i></div>
+            <div class="form-card-icon"><i class="fas fa-image"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Image</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">Reviewer photo or logo</p>

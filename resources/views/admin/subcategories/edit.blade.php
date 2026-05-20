@@ -46,7 +46,7 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;">
     <div>
-        <a href="{{ route('admin.subcategories.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">← Back to subcategories</a>
+        <a href="{{ route('admin.subcategories.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to subcategories</a>
         <h2 style="font-size:22px; font-weight:700; color:#0F172A; margin:0;">Edit Subcategory</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Update subcategory details for {{ $subcategory->name }}.</p>
     </div>
@@ -92,7 +92,7 @@
 
     <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:18px;">
         <a href="{{ route('admin.subcategories.index') }}" class="btn-ghost">Cancel</a>
-        <button type="submit" class="btn-primary">Update Subcategory</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Subcategory</button>
     </div>
 </form>
 

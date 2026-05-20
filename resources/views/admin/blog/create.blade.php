@@ -22,7 +22,7 @@
 @section('content')
 <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:24px; flex-wrap:wrap;">
     <div>
-        <a href="{{ route('admin.blog.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600;">← Back to blog</a>
+        <a href="{{ route('admin.blog.index') }}" style="font-size:13px; color:var(--accent); text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:5px; margin-bottom:6px;">&larr; Back to blog</a>
         <h2 style="font-size:22px; font-weight:700; margin:8px 0 0; color:#0F172A;">Add Blog Post</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Create a new blog post with images and rich content.</p>
     </div>
@@ -33,7 +33,7 @@
 
     <div class="form-card">
         <div class="form-card-header">
-            <div style="width:34px; height:34px; border-radius:9px; background:var(--accent-light); color:var(--accent); display:flex; align-items:center; justify-content:center;"><i class="fas fa-pencil-alt"></i></div>
+            <div class="form-card-icon"><i class="fas fa-pencil-alt"></i></div>
             <div>
                 <p style="font-size:14px; font-weight:700; margin:0;">Post Details</p>
                 <p style="font-size:12px; color:#94A3B8; margin:0;">Add title, description and images.</p>
@@ -77,7 +77,7 @@
 
     <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:18px;">
         <a href="{{ route('admin.blog.index') }}" class="btn-ghost">Cancel</a>
-        <button type="submit" class="btn-primary">Save Post</button>
+        <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Save Post</button>
     </div>
 </form>
 @endsection
