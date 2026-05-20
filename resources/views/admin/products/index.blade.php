@@ -32,6 +32,145 @@
 .status-pill.active { background: #DCFCE7; color: #166534; border: 1px solid #A7F3D0; }
 .status-pill.inactive { background: #FFF1F2; color: #B91C1C; border: 1px solid #FECACA; }
 .status-pill.prescription { background: #E0E7FF; color: #3730A3; border: 1px solid #C7D2FE; }
+/* ================= PRODUCT FILTER CARD ================= */
+
+.product-filter-card {
+    margin-bottom: 24px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 18px;
+    box-shadow: 0 14px 35px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+}
+
+.product-filter-form {
+    padding: 20px 22px;
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr auto;
+    gap: 14px;
+    align-items: end;
+}
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.filter-field label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #475569;
+    letter-spacing: 0.02em;
+}
+
+.filter-field input,
+.filter-field select {
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1.5px solid #e2e8f0;
+    background: #f8fafc;
+    color: #0f172a;
+    font-size: 13.5px;
+    font-weight: 500;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.filter-field input::placeholder {
+    color: #94a3b8;
+}
+
+.filter-field input:focus,
+.filter-field select:focus {
+    border-color: var(--accent);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.filter-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.filter-btn {
+    min-height: 44px;
+    padding: 11px 17px;
+    border-radius: 12px;
+    border: 1.5px solid transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 13px;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.filter-btn-primary {
+    background: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.filter-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px color-mix(in srgb, var(--accent) 34%, transparent);
+}
+
+.filter-btn-light {
+    background: #f8fafc;
+    color: #475569;
+    border-color: #e2e8f0;
+}
+
+.filter-btn-light:hover {
+    background: #ffffff;
+    color: #0f172a;
+    transform: translateY(-2px);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1199px) {
+    .product-filter-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .filter-actions {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 767px) {
+    .product-filter-form {
+        padding: 16px;
+        grid-template-columns: 1fr;
+    }
+
+    .filter-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .filter-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .filter-actions {
+        grid-template-columns: 1fr;
+    }
+}
 </style>
 @endsection
 
@@ -65,38 +204,56 @@
     </div>
 </div>
 
-<div class="page-card" style="margin-bottom:24px;">
-    <div style="padding:18px 22px; display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px; align-items:end;">
-        <form method="GET" action="{{ route('admin.products.index') }}" style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; width:100%;">
-            <div>
-                <label style="font-size:12px; font-weight:700; color:#475569;">Search</label>
-                <input type="search" name="search" value="{{ request('search') }}" placeholder="Search name or SKU"
-                    style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #E2E8F0; background:#F8FAFC; color:#0F172A;" />
-            </div>
-            <div>
-                <label style="font-size:12px; font-weight:700; color:#475569;">Category</label>
-                <select name="category_id" style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #E2E8F0; background:#F8FAFC; color:#0F172A;">
-                    <option value="">All categories</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div>
-                <label style="font-size:12px; font-weight:700; color:#475569;">Brand</label>
-                <select name="brand_id" style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid #E2E8F0; background:#F8FAFC; color:#0F172A;">
-                    <option value="">All brands</option>
-                    @foreach($brands as $brand)
-                        <option value="{{ $brand->id }}" {{ request('brand_id') == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div style="display:flex; gap:10px; justify-content:flex-end;">
-                <button type="submit" class="btn-primary" style="width:100%;">Filter</button>
-                <a href="{{ route('admin.products.index') }}" class="btn-outline" style="width:100%; justify-content:center;">Clear</a>
-            </div>
-        </form>
-    </div>
+<div class="page-card product-filter-card">
+
+    <form method="GET" action="{{ route('admin.products.index') }}" class="product-filter-form">
+
+        <div class="filter-field">
+            <label>Search</label>
+            <input type="search"
+                   name="search"
+                   value="{{ request('search') }}"
+                   placeholder="Search name or SKU">
+        </div>
+
+        <div class="filter-field">
+            <label>Category</label>
+            <select name="category_id">
+                <option value="">All categories</option>
+                @foreach($categories as $category)
+                    <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="filter-field">
+            <label>Brand</label>
+            <select name="brand_id">
+                <option value="">All brands</option>
+                @foreach($brands as $brand)
+                    <option value="{{ $brand->id }}" {{ request('brand_id') == $brand->id ? 'selected' : '' }}>
+                        {{ $brand->name }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="filter-btn filter-btn-primary">
+                <i class="fas fa-filter"></i>
+                Filter
+            </button>
+
+            <a href="{{ route('admin.products.index') }}" class="filter-btn filter-btn-light">
+                <i class="fas fa-rotate-left"></i>
+                Clear
+            </a>
+        </div>
+
+    </form>
+
 </div>
 
 <div class="page-card">
