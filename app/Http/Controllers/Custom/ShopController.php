@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ShopController extends Controller
 {
@@ -56,11 +57,11 @@ class ShopController extends Controller
         // Sale/On Sale filter
         if ($request->filled('on_sale') && $request->on_sale == 1) {
             $query->whereNotNull('sale_price')
-                  ->where('sale_price', '<', 'price');
+                  ->whereColumn('sale_price', '<', 'price');
         }
 
         // Rating filter
-        if ($request->filled('rating')) {
+        if ($request->filled('rating') && Schema::hasColumn('products', 'rating')) {
             $rating = (int)$request->rating;
             $query->where('rating', '>=', $rating);
         }
@@ -72,7 +73,11 @@ class ShopController extends Controller
                 $query->orderBy('created_at', 'desc');
                 break;
             case 'best_seller':
-                $query->orderBy('sales_count', 'desc');
+                if (Schema::hasColumn('products', 'sales_count')) {
+                    $query->orderBy('sales_count', 'desc');
+                } else {
+                    $query->orderBy('created_at', 'desc');
+                }
                 break;
             case 'price_low':
                 $query->orderBy('price', 'asc');

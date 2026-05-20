@@ -62,8 +62,7 @@ class OrderController extends Controller
  
     public function create()
     {
-        $buyers = User::where('role', 'buyer')->where('is_active', true)->get();
-        return view('admin.orders.create', compact('buyers'));
+        return redirect()->route('admin.orders.manualBilling');
     }
 
     public function manualBilling()

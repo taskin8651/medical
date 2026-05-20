@@ -131,6 +131,7 @@
             }
         }
     </style>
+    @stack('styles')
 </head>
 
 <body>
@@ -517,5 +518,6 @@
     <script src="{{ asset('assets/js/countdown.min.js') }}"></script>
     <script src="{{ asset('assets/js/wow.min.js') }}"></script>
     <script src="{{ asset('assets/js/main.js') }}"></script>
+    @stack('scripts')
 </body>
 </html>

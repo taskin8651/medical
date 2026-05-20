@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class CategoryController extends Controller
 {
@@ -64,7 +65,7 @@ class CategoryController extends Controller
         // Sale/On Sale filter
         if ($request->filled('on_sale') && $request->on_sale == 1) {
             $query->whereNotNull('sale_price')
-                  ->where('sale_price', '<', 'price');
+                  ->whereColumn('sale_price', '<', 'price');
         }
 
         // Sorting
@@ -74,7 +75,11 @@ class CategoryController extends Controller
                 $query->orderBy('created_at', 'desc');
                 break;
             case 'best_seller':
-                $query->orderBy('sales_count', 'desc');
+                if (Schema::hasColumn('products', 'sales_count')) {
+                    $query->orderBy('sales_count', 'desc');
+                } else {
+                    $query->orderBy('created_at', 'desc');
+                }
                 break;
             case 'price_low':
                 $query->orderBy('price', 'asc');

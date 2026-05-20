@@ -196,7 +196,7 @@
                                                     @endif
                                                     
                                                     <a href="{{ route('shop.show', $product->slug) }}">
-                                                        <img src="{{ asset($product->image?->getUrl() ?? 'assets/img/product/01.png') }}" alt="{{ $product->name }}">
+                                                        <img src="{{ $product->getFirstMediaUrl('images') ?: asset('assets/img/product/01.png') }}" alt="{{ $product->name }}">
                                                     </a>
                                                     <div class="product-action-wrap">
                                                         <div class="product-action">
@@ -232,20 +232,23 @@
                                                     <div class="product-bottom">
                                                         <div class="product-price">
                                                             @if($product->sale_price && $product->sale_price < $product->price)
-                                                                <span class="old-price">${{ number_format($product->price, 2) }}</span>
-                                                                <span class="new-price">${{ number_format($product->sale_price, 2) }}</span>
+                                                                <span class="old-price">₹{{ number_format($product->price, 2) }}</span>
+                                                                <span class="new-price">₹{{ number_format($product->sale_price, 2) }}</span>
                                                             @else
-                                                                <span>${{ number_format($product->price, 2) }}</span>
+                                                                <span>₹{{ number_format($product->price, 2) }}</span>
                                                             @endif
                                                         </div>
-                                                        <button type="button"
-    class="product-cart-btn add-to-cart"
-    data-product-id="{{ $product->id }}"
-    data-bs-placement="left"
-    title="Add To Cart">
-
-    <i class="fas fa-bag-shopping"></i>
-</button>
+                                                        @if($product->stock > 0)
+                                                            <form action="{{ route('cart.add', $product) }}" method="POST">
+                                                                @csrf
+                                                                <button type="submit"
+                                                                    class="product-cart-btn"
+                                                                    data-bs-placement="left"
+                                                                    title="Add To Cart">
+                                                                    <i class="fas fa-bag-shopping"></i>
+                                                                </button>
+                                                            </form>
+                                                        @endif
                                                     </div>
                                                     
                                                     @if($product->stock <= 0)
@@ -356,16 +359,6 @@
                     document.getElementById('filter-min-price').value = minVal;
                     document.getElementById('filter-max-price').value = maxVal;
                 }
-
-                // Add to cart
-                document.querySelectorAll('.add-to-cart').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        const productId = this.dataset.productId;
-                        // Add your cart logic here
-                        console.log('Added to cart:', productId);
-                    });
-                });
 
                 // Add to wishlist
                 document.querySelectorAll('.add-to-wishlist').forEach(btn => {

@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\ProductVariant;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class CheckoutController extends Controller
 {
@@ -109,8 +112,9 @@ class CheckoutController extends Controller
             }
 
             $summary = $this->calculateCartSummary($cart, $request->shipping_method);
+            $user = $this->resolveCheckoutUser($request, $billingAddress);
 
-            $sellerState = config('app.seller_state', env('SELLER_STATE', 'Rajasthan'));
+            $sellerState = config('app.seller_state', env('SELLER_STATE', 'Bihar'));
             $buyerState = $shippingAddress['state'] ?? $billingAddress['state'];
 
             $isInterState = strtolower(trim($sellerState)) !== strtolower(trim($buyerState));
@@ -121,7 +125,7 @@ class CheckoutController extends Controller
 
             $order = Order::create([
                 'order_number' => Order::generateOrderNumber(),
-                'user_id' => Auth::id(),
+                'user_id' => $user->id,
 
                 'buyer_gst_no' => $request->buyer_gst_no,
                 'buyer_drug_license' => $request->buyer_drug_license,
@@ -142,7 +146,7 @@ class CheckoutController extends Controller
 
                 'payment_status' => 'pending',
                 'payment_method' => $request->payment_method,
-                'payment_terms' => $request->payment_method === 'cod' ? 'Cash On Delivery' : 'Prepaid',
+                'payment_terms' => 'immediate',
                 'due_date' => now()->addDays(7),
                 'amount_paid' => 0,
 
@@ -172,18 +176,19 @@ class CheckoutController extends Controller
 
                 $unitPrice = $product->sale_price ?? $product->price ?? 0;
                 $gstRate = $product->gst_rate ?? 0;
+                $variant = $this->ensureProductVariant($product);
 
                 $orderItem = new OrderItem();
                 $orderItem->order_id = $order->id;
-                $orderItem->product_variant_id = null;
+                $orderItem->product_variant_id = $variant->id;
 
                 $orderItem->product_name = $product->name;
                 $orderItem->variant_name = trim(($product->pack_size ?? '') . ' ' . ($product->pack_type ?? ''));
-                $orderItem->sku = $product->sku;
+                $orderItem->sku = $product->sku ?: $variant->sku;
                 $orderItem->hsn_code = $product->hsn_code;
 
-                $orderItem->batch_number = null;
-                $orderItem->expiry_date = null;
+                $orderItem->batch_number = $variant->batch_number;
+                $orderItem->expiry_date = $variant->expiry_date;
 
                 $orderItem->qty = $qty;
                 $orderItem->mrp = $product->mrp ?? $unitPrice;
@@ -196,6 +201,7 @@ class CheckoutController extends Controller
                 $orderItem->save();
 
                 $product->decrement('stock', $qty);
+                $variant->decrement('stock', $qty);
             }
 
             session()->forget('cart');
@@ -246,6 +252,79 @@ class CheckoutController extends Controller
             'tax' => round($tax, 2),
             'total' => round($total, 2),
         ];
+    }
+
+    private function resolveCheckoutUser(Request $request, array $billingAddress): User
+    {
+        if (Auth::check()) {
+            return Auth::user();
+        }
+
+        $user = User::firstOrNew(['email' => $billingAddress['email']]);
+        $user->fill([
+            'name' => $billingAddress['name'] ?: $billingAddress['email'],
+            'phone' => $billingAddress['phone'],
+            'business_name' => $billingAddress['name'],
+            'gst_no' => $request->buyer_gst_no,
+            'drug_license_no' => $request->buyer_drug_license,
+            'address' => trim(($billingAddress['address_1'] ?? '') . ' ' . ($billingAddress['address_2'] ?? '')),
+            'city' => $billingAddress['city'],
+            'state' => $billingAddress['state'],
+            'pincode' => $billingAddress['postcode'],
+            'country' => $billingAddress['country'] ?: 'India',
+            'approval_status' => 'approved',
+        ]);
+
+        if (!$user->exists) {
+            $user->password = Str::random(16);
+            $user->email_verified_at = now()->format(config('panel.date_format') . ' ' . config('panel.time_format'));
+        }
+
+        $user->save();
+
+        return $user;
+    }
+
+    private function ensureProductVariant(Product $product): ProductVariant
+    {
+        $variant = $product->variants()->where('is_active', true)->first();
+
+        if ($variant) {
+            return $variant;
+        }
+
+        return ProductVariant::create([
+            'product_id' => $product->id,
+            'name' => trim(($product->strength ? $product->strength . ' ' : '') . ($product->pack_size ?: 'Default Pack')),
+            'sku' => $this->uniqueVariantSku($product->sku ?: Str::slug($product->name)),
+            'strength' => $product->strength,
+            'pack_size' => $product->pack_size,
+            'pack_type' => $product->pack_type,
+            'batch_number' => null,
+            'expiry_date' => null,
+            'mrp' => $product->mrp ?? $product->price,
+            'ptr' => $product->ptr,
+            'pts' => $product->pts,
+            'price' => $product->sale_price ?: $product->price,
+            'gst_rate' => $product->gst_rate,
+            'stock' => $product->stock ?? 0,
+            'low_stock_alert' => 10,
+            'is_active' => true,
+        ]);
+    }
+
+    private function uniqueVariantSku(string $baseSku): string
+    {
+        $baseSku = strtoupper(Str::slug($baseSku ?: 'ITEM', '-'));
+        $sku = $baseSku;
+        $counter = 1;
+
+        while (ProductVariant::where('sku', $sku)->exists()) {
+            $sku = $baseSku . '-' . $counter;
+            $counter++;
+        }
+
+        return $sku;
     }
 
     public function success($orderId)
