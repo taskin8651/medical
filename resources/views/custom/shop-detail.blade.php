@@ -137,7 +137,11 @@
         <span class="fas fa-bag-shopping"></span> Add To Cart
     </button>
 </form>
-                                         <a href="#" class="theme-btn "><span class="fas fa-download"></span>Download</a>
+                                         @if($product->getMedia('documents')->count())
+                                             <a href="{{ $product->getFirstMediaUrl('documents') }}" target="_blank" rel="noopener" class="theme-btn">
+                                                 <span class="fas fa-download"></span>Download PDF
+                                             </a>
+                                         @endif
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-lg-12 col-xl-6">
@@ -195,6 +199,19 @@
                         <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="nav-tab1">
                             <div class="shop-single-desc">
                                 <p>{!! nl2br(e($product->description ?: $product->short_description ?: 'Description not available.')) !!}</p>
+                                @if($product->getMedia('documents')->count())
+                                    <div class="shop-single-list mt-4">
+                                        <h5 class="title">Documents</h5>
+                                        <ul>
+                                            @foreach($product->getMedia('documents') as $document)
+                                                <li>
+                                                    <span>{{ $document->file_name }}:</span>
+                                                    <a href="{{ $document->getUrl() }}" target="_blank" rel="noopener">Download PDF</a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 @if($product->generic_name || $product->composition || $product->strength)
                                     <div class="row">
                                         <div class="col-lg-5 col-xl-4">

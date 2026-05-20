@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Media;
 use App\Models\Subcategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -154,7 +153,18 @@ class ProductController extends Controller
         $media = $product->media()->findOrFail($mediaId);
         $media->setCustomProperty('is_primary', true);
         $media->save();
-        
+
+        return response()->json(['success' => true]);
+    }
+
+    /** Return subcategories for a selected category */
+    public function getSubcategories(Category $category)
+    {
+        return response()->json(
+            $category->subcategories()
+                ->orderBy('name')
+                ->get(['id', 'name'])
+        );
     }
 
     
@@ -204,7 +214,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'files' => 'required|array|max:10',
-            'files.*' => 'required|file|max:5120', // 5MB max
+            'files.*' => 'required|file|mimes:jpg,jpeg,png,webp,pdf|max:5120',
         ]);
 
         $uploaded = [];
@@ -213,9 +223,9 @@ class ProductController extends Controller
             // Determine collection based on file type
             $collection = str_starts_with($file->getMimeType(), 'image/') ? 'images' : 'documents';
 
-            $mediaFile = $product->addMedia($file->getPathname())
-                ->setName($file->getClientOriginalName())
-                ->setFileName($file->getClientOriginalName())
+            $mediaFile = $product->addMedia($file)
+                ->usingName(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
+                ->usingFileName($this->safeMediaFileName($file->getClientOriginalName()))
                 ->toMediaCollection($collection);
 
             // Set first image as primary if no primary exists
@@ -291,8 +301,8 @@ class ProductController extends Controller
             
             foreach ($request->file('images') as $i => $image) {
                 $mediaFile = $product->addMedia($image->getPathname())
-                    ->setName($image->getClientOriginalName())
-                    ->setFileName($image->getClientOriginalName())
+                    ->usingName(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME))
+                    ->usingFileName($this->safeMediaFileName($image->getClientOriginalName()))
                     ->toMediaCollection('images');
                 
                 // Set first image as primary if no primary exists
@@ -306,11 +316,19 @@ class ProductController extends Controller
         if ($request->hasFile('documents')) {
             foreach ($request->file('documents') as $doc) {
                 $product->addMedia($doc->getPathname())
-                    ->setName($doc->getClientOriginalName())
-                    ->setFileName($doc->getClientOriginalName())
+                    ->usingName(pathinfo($doc->getClientOriginalName(), PATHINFO_FILENAME))
+                    ->usingFileName($this->safeMediaFileName($doc->getClientOriginalName()))
                     ->toMediaCollection('documents');
             }
         }
+    }
+
+    private function safeMediaFileName(string $originalName): string
+    {
+        $extension = pathinfo($originalName, PATHINFO_EXTENSION);
+        $name = pathinfo($originalName, PATHINFO_FILENAME);
+
+        return Str::slug($name) . '-' . Str::random(8) . ($extension ? '.' . strtolower($extension) : '');
     }
  
     private function uniqueSlug(string $name): string

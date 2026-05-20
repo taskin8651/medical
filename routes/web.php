@@ -116,6 +116,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // ----------------------------------------------------------------
     // ORDERS
     // ----------------------------------------------------------------
+    Route::get('orders/manual-billing', [OrderController::class, 'manualBilling'])->name('orders.manualBilling');
+    Route::post('orders/manual-billing', [OrderController::class, 'storeManualBilling'])->name('orders.manualBilling.store');
+    Route::get('orders/{order}/manual-bill', [OrderController::class, 'manualBill'])->name('orders.manualBill');
     Route::resource('orders', OrderController::class);
  
     Route::post('orders/{order}/status',          [OrderController::class, 'updateStatus'])->name('orders.status');

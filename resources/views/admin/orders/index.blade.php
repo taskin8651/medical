@@ -43,6 +43,10 @@
         <h2 style="font-size:22px; font-weight:700; color:#0F172A; margin:0;">Orders</h2>
         <p style="font-size:13px; color:#64748B; margin:4px 0 0;">Manage customer orders</p>
     </div>
+    <a href="{{ route('admin.orders.manualBilling') }}" class="btn-primary">
+        <i class="fas fa-file-invoice"></i>
+        Manual Billing
+    </a>
 </div>
 
 <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:14px; margin-bottom:24px;">
@@ -86,7 +90,7 @@
                 <tr style="border-bottom:1px solid #F1F5F9;">
                     <td style="padding:14px 16px; color:#475569;">#{{ $order->id }}</td>
                     <td style="padding:14px 16px; color:#0F172A; font-weight:600;">{{ $order->user->name ?? 'N/A' }}</td>
-                    <td style="padding:14px 16px; color:#0F172A; font-weight:600;">${{ number_format($order->total_amount, 2) }}</td>
+                    <td style="padding:14px 16px; color:#0F172A; font-weight:600;">₹{{ number_format($order->total, 2) }}</td>
                     <td style="padding:14px 16px;">
                         <span class="status-badge status-{{ $order->status }}">
                             {{ ucfirst($order->status) }}
@@ -98,6 +102,7 @@
                             @can('order_show')
                             <a href="{{ route('admin.orders.show', $order) }}" class="btn-outline" style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);">View</a>
                             @endcan
+                            <a href="{{ route('admin.orders.manualBill', $order) }}" class="btn-outline" style="border-color:#BBF7D0; color:#15803D;">Bill</a>
                             @can('order_edit')
                             <a href="{{ route('admin.orders.edit', $order) }}" class="btn-outline" style="border-color:color-mix(in srgb, var(--accent) 40%, transparent); color:var(--accent);">Edit</a>
                             @endcan

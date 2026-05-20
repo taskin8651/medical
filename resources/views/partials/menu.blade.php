@@ -264,9 +264,17 @@
 
                 @can('order_access')
                 <a href="{{ route('admin.orders.index') }}"
-                   class="sub-link {{ request()->is('admin/orders*') ? 'active' : '' }}">
+                   class="sub-link {{ request()->is('admin/orders') ? 'active' : '' }}">
                     <i class="fas fa-list" style="margin-right:7px; font-size:11px; color:#475569;"></i>
                     All Orders
+                </a>
+                @endcan
+
+                @can('order_create')
+                <a href="{{ route('admin.orders.manualBilling') }}"
+                   class="sub-link {{ request()->is('admin/orders/manual-billing') ? 'active' : '' }}">
+                    <i class="fas fa-file-invoice" style="margin-right:7px; font-size:11px; color:#475569;"></i>
+                    Manual Billing
                 </a>
                 @endcan
 

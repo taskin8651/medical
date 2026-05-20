@@ -124,8 +124,12 @@
                     <td style="padding:14px 16px; color:#475569;">#{{ $product->id }}</td>
                     <td style="padding:14px 16px;">
                         <div style="display:flex; align-items:center; gap:10px;">
-                            <div style="width:40px; height:40px; border-radius:12px; overflow:hidden; background:#E2E8F0; display:flex; align-items:center; justify-content:center; color:#475569; font-weight:700;">
-                                {{ strtoupper(substr($product->name, 0, 1)) }}
+                            <div style="width:40px; height:40px; border-radius:12px; overflow:hidden; background:#E2E8F0; display:flex; align-items:center; justify-content:center; color:#475569; font-weight:700; flex-shrink:0;">
+                                @if($product->getFirstMediaUrl('images'))
+                                    <img src="{{ $product->getFirstMediaUrl('images') }}" alt="{{ $product->name }}" style="width:100%;height:100%;object-fit:cover;">
+                                @else
+                                    {{ strtoupper(substr($product->name, 0, 1)) }}
+                                @endif
                             </div>
                             <div>
                                 <p style="font-size:13.5px; font-weight:600; margin:0; color:#0F172A;">{{ $product->name }}</p>

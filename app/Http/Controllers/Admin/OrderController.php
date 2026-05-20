@@ -9,10 +9,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use App\Models\ProductVariant;
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
  
 class OrderController extends Controller
 {
@@ -61,6 +64,166 @@ class OrderController extends Controller
     {
         $buyers = User::where('role', 'buyer')->where('is_active', true)->get();
         return view('admin.orders.create', compact('buyers'));
+    }
+
+    public function manualBilling()
+    {
+        $this->ensureBillingVariantsExist();
+
+        $variants = ProductVariant::with('product')
+            ->where('is_active', true)
+            ->orderBy('sku')
+            ->get();
+
+        return view('admin.orders.manual-billing', compact('variants'));
+    }
+
+    public function storeManualBilling(Request $request)
+    {
+        $data = $request->validate([
+            'customer_name'         => 'required|string|max:255',
+            'customer_phone'        => 'nullable|string|max:30',
+            'customer_email'        => 'nullable|email|max:255',
+            'customer_address'      => 'nullable|string|max:500',
+            'customer_city'         => 'nullable|string|max:100',
+            'customer_state'        => 'nullable|string|max:100',
+            'customer_pincode'      => 'nullable|string|max:20',
+            'buyer_gst_no'          => 'nullable|string|max:20',
+            'buyer_drug_license'    => 'nullable|string|max:100',
+            'payment_method'        => 'required|in:cash,upi,card,bank_transfer,credit',
+            'amount_paid'           => 'nullable|numeric|min:0',
+            'is_inter_state'        => 'boolean',
+            'notes'                 => 'nullable|string|max:1000',
+            'items'                 => 'required|array|min:1',
+            'items.*.variant_id'    => 'required|exists:product_variants,id',
+            'items.*.qty'           => 'required|integer|min:1',
+            'items.*.unit_price'    => 'required|numeric|min:0',
+            'items.*.discount_percent' => 'nullable|numeric|min:0|max:100',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $user = $this->resolveWalkInUser($data);
+            $isInterState = (bool) ($data['is_inter_state'] ?? false);
+            $subtotal = $totalGst = $totalCgst = $totalSgst = $totalIgst = 0;
+            $orderItems = [];
+
+            foreach ($data['items'] as $row) {
+                $variant = ProductVariant::with('product')->findOrFail($row['variant_id']);
+                $qty = (int) $row['qty'];
+                $unitPrice = (float) $row['unit_price'];
+                $discountPercent = (float) ($row['discount_percent'] ?? 0);
+                $gstRate = (float) $variant->effective_gst_rate;
+
+                $gross = round($qty * $unitPrice, 2);
+                $discountAmount = round($gross * $discountPercent / 100, 2);
+                $taxable = round($gross - $discountAmount, 2);
+                $gstAmount = round($taxable * $gstRate / 100, 2);
+                $cgst = $sgst = $igst = 0;
+
+                if ($isInterState) {
+                    $igst = $gstAmount;
+                } else {
+                    $cgst = round($gstAmount / 2, 2);
+                    $sgst = round($gstAmount - $cgst, 2);
+                }
+
+                $lineTotal = round($taxable + $gstAmount, 2);
+
+                $subtotal += $taxable;
+                $totalGst += $gstAmount;
+                $totalCgst += $cgst;
+                $totalSgst += $sgst;
+                $totalIgst += $igst;
+
+                $orderItems[] = [
+                    'product_variant_id' => $variant->id,
+                    'product_name'       => $variant->product->name,
+                    'variant_name'       => $variant->name,
+                    'sku'                => $variant->sku,
+                    'hsn_code'           => $variant->product->hsn_code,
+                    'batch_number'       => $variant->batch_number,
+                    'expiry_date'        => $variant->expiry_date,
+                    'qty'                => $qty,
+                    'mrp'                => $variant->mrp,
+                    'unit_price'         => $unitPrice,
+                    'discount_percent'   => $discountPercent,
+                    'discount_amount'    => $discountAmount,
+                    'taxable_amount'     => $taxable,
+                    'gst_rate'           => $gstRate,
+                    'gst_amount'         => $gstAmount,
+                    'cgst'               => $cgst,
+                    'sgst'               => $sgst,
+                    'igst'               => $igst,
+                    'total'              => $lineTotal,
+                    'created_at'         => now(),
+                    'updated_at'         => now(),
+                ];
+            }
+
+            $subtotal = round($subtotal, 2);
+            $totalGst = round($totalGst, 2);
+            $grandTotal = round($subtotal + $totalGst, 2);
+            $amountPaid = min((float) ($data['amount_paid'] ?? $grandTotal), $grandTotal);
+            $paymentStatus = $amountPaid >= $grandTotal ? 'paid' : ($amountPaid > 0 ? 'partial' : 'pending');
+
+            $address = [
+                'name' => $data['customer_name'],
+                'email' => $data['customer_email'] ?? null,
+                'phone' => $data['customer_phone'] ?? null,
+                'address_1' => $data['customer_address'] ?? null,
+                'city' => $data['customer_city'] ?? null,
+                'state' => $data['customer_state'] ?? null,
+                'postcode' => $data['customer_pincode'] ?? null,
+                'country' => 'India',
+            ];
+
+            $order = Order::create([
+                'order_number'       => Order::generateOrderNumber(),
+                'user_id'            => $user->id,
+                'buyer_gst_no'       => $data['buyer_gst_no'] ?? null,
+                'buyer_drug_license' => $data['buyer_drug_license'] ?? null,
+                'billing_address'    => $address,
+                'shipping_address'   => $address,
+                'subtotal'           => $subtotal,
+                'total_gst'          => $totalGst,
+                'cgst'               => round($totalCgst, 2),
+                'sgst'               => round($totalSgst, 2),
+                'igst'               => round($totalIgst, 2),
+                'discount_amount'    => array_sum(array_column($orderItems, 'discount_amount')),
+                'shipping_charge'    => 0,
+                'total'              => $grandTotal,
+                'payment_method'     => $data['payment_method'],
+                'payment_terms'      => $data['payment_method'] === 'credit' ? 'net_15' : 'immediate',
+                'payment_status'     => $paymentStatus,
+                'due_date'           => $data['payment_method'] === 'credit' ? now()->addDays(15)->toDateString() : now()->toDateString(),
+                'amount_paid'        => $amountPaid,
+                'invoice_number'     => Order::generateInvoiceNumber(),
+                'invoice_date'       => now()->toDateString(),
+                'status'             => 'delivered',
+                'dispatch_mode'      => 'pickup',
+                'notes'              => $data['notes'] ?? 'Manual counter bill',
+            ]);
+
+            $order->items()->insert(
+                array_map(fn ($item) => array_merge($item, ['order_id' => $order->id]), $orderItems)
+            );
+
+            foreach ($orderItems as $item) {
+                ProductVariant::where('id', $item['product_variant_id'])
+                    ->decrement('stock', $item['qty']);
+            }
+
+            DB::commit();
+
+            return redirect()->route('admin.orders.manualBill', $order)
+                ->with('success', 'Manual bill created successfully.');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return back()->withInput()->with('error', 'Manual bill failed: ' . $e->getMessage());
+        }
     }
  
     // ----------------------------------------------------------------
@@ -329,6 +492,94 @@ class OrderController extends Controller
  
         // Return a printable invoice view
         return view('admin.orders.invoice', compact('order'));
+    }
+
+    public function manualBill(Order $order)
+    {
+        if (!$order->invoice_number) {
+            $order->update([
+                'invoice_number' => Order::generateInvoiceNumber(),
+                'invoice_date'   => now()->toDateString(),
+            ]);
+        }
+
+        $order->load(['user', 'items.variant.product']);
+        $settings = Setting::getSettings();
+
+        return view('admin.orders.manual-bill', compact('order', 'settings'));
+    }
+
+    private function resolveWalkInUser(array $data): User
+    {
+        $email = $data['customer_email'] ?? null;
+
+        if (!$email) {
+            $email = 'walkin-' . now()->format('YmdHis') . '-' . Str::lower(Str::random(5)) . '@manual.local';
+        }
+
+        $user = User::firstOrNew(['email' => $email]);
+        $user->fill([
+            'name' => $data['customer_name'],
+            'phone' => $data['customer_phone'] ?? null,
+            'business_name' => $data['customer_name'],
+            'gst_no' => $data['buyer_gst_no'] ?? null,
+            'drug_license_no' => $data['buyer_drug_license'] ?? null,
+            'address' => $data['customer_address'] ?? null,
+            'city' => $data['customer_city'] ?? null,
+            'state' => $data['customer_state'] ?? null,
+            'pincode' => $data['customer_pincode'] ?? null,
+            'country' => 'India',
+            'approval_status' => 'approved',
+        ]);
+
+        if (!$user->exists) {
+            $user->password = Str::random(16);
+            $user->email_verified_at = now()->format(config('panel.date_format') . ' ' . config('panel.time_format'));
+        }
+
+        $user->save();
+
+        return $user;
+    }
+
+    private function ensureBillingVariantsExist(): void
+    {
+        Product::whereDoesntHave('variants')->chunkById(100, function ($products) {
+            foreach ($products as $product) {
+                ProductVariant::create([
+                    'product_id' => $product->id,
+                    'name' => trim(($product->strength ? $product->strength . ' ' : '') . ($product->pack_size ?: 'Default Pack')),
+                    'sku' => $this->uniqueVariantSku($product->sku ?: Str::slug($product->name)),
+                    'strength' => $product->strength,
+                    'pack_size' => $product->pack_size,
+                    'pack_type' => $product->pack_type,
+                    'batch_number' => null,
+                    'expiry_date' => null,
+                    'mrp' => $product->mrp ?? $product->price,
+                    'ptr' => $product->ptr,
+                    'pts' => $product->pts,
+                    'price' => $product->sale_price ?: $product->price,
+                    'gst_rate' => $product->gst_rate,
+                    'stock' => $product->stock ?? 0,
+                    'low_stock_alert' => 10,
+                    'is_active' => true,
+                ]);
+            }
+        });
+    }
+
+    private function uniqueVariantSku(string $baseSku): string
+    {
+        $baseSku = strtoupper(Str::slug($baseSku ?: 'ITEM', '-'));
+        $sku = $baseSku;
+        $counter = 1;
+
+        while (ProductVariant::where('sku', $sku)->exists()) {
+            $sku = $baseSku . '-' . $counter;
+            $counter++;
+        }
+
+        return $sku;
     }
  
     // ----------------------------------------------------------------

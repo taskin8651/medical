@@ -154,9 +154,14 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">Primary Image</span>
-@if($product->primaryImage())
-    <img src="{{ $product->primaryImage()->getUrl() }}" width="80">
-@endif                </div>
+                    <span class="detail-value">
+                        @if($primaryImage = $product->primaryImage())
+                            <img src="{{ $primaryImage->getUrl() }}" alt="{{ $product->name }}" style="width:90px;height:90px;object-fit:cover;border-radius:10px;border:1px solid #E2E8F0;">
+                        @else
+                            -
+                        @endif
+                    </span>
+                </div>
             </div>
         </div>
        @if($product->getMedia('images')->count())
@@ -180,14 +185,14 @@
     </div>
 </div>
 @endif
-        @if($product->media->where('type', 'brochure')->count())
+        @if($product->getMedia('documents')->count())
         <div class="detail-card" style="padding:18px;">
             <p style="font-size:13px; font-weight:700; color:#0F172A; margin:0 0 12px;">Documents</p>
             <ul style="list-style:none; padding:0; margin:0; display:grid; gap:10px;">
-                @foreach($product->media->where('type','brochure') as $media)
+                @foreach($product->getMedia('documents') as $media)
                 <li style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:12px 14px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
                     <span style="font-size:13px; color:#475569;">{{ $media->file_name }}</span>
-                    <a href="{{ asset('storage/'.$media->file_path) }}" target="_blank" style="color:var(--accent); font-weight:600;">Download</a>
+                    <a href="{{ $media->getUrl() }}" target="_blank" rel="noopener" style="color:var(--accent); font-weight:600;">Download</a>
                 </li>
                 @endforeach
             </ul>
