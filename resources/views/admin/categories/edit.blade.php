@@ -59,8 +59,7 @@
     </div>
 </div>
 
-<form method="POST" action="{{ route('admin.categories.update', $category) }}">
-    @method('PUT')
+<form method="POST" action="{{ route('admin.categories.update', $category) }}" enctype="multipart/form-data">    @method('PUT')
     @csrf
 
     <div class="form-card">
