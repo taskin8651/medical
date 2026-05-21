@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'site_title' => 'epaper',
+    'site_title' => 'Sk Surgical',
 
 ];
