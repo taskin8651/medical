@@ -1,106 +1,118 @@
-@extends('layouts.app')
+@extends('custom.master')
+
+@section('title', trans('global.login'))
+
+@push('styles')
+    <style>
+        .auth-area {
+            background: var(--theme-bg-light);
+        }
+
+        .auth-shell {
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .auth-alert {
+            border: 0;
+            border-radius: 12px;
+            background: var(--theme-color-light);
+            color: var(--color-dark);
+        }
+
+        .auth-inline-action {
+            color: var(--theme-color);
+            font-weight: 600;
+        }
+    </style>
+@endpush
+
 @section('content')
-
-<div class="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-
-    <div class="w-full max-w-md bg-white border border-gray-200 rounded-lg shadow-sm">
-
-        {{-- HEADER --}}
-        <div class="px-8 pt-8 pb-4 text-center">
-            <h1 class="text-2xl font-semibold text-gray-900">
-                {{ trans('panel.site_title') }}
-            </h1>
-            <p class="text-sm text-gray-500 mt-1">
-                {{ trans('global.login') }}
-            </p>
+    <div class="site-breadcrumb">
+        <div class="site-breadcrumb-bg" style="background: url({{ asset('assets/img/breadcrumb/01.html') }})"></div>
+        <div class="container">
+            <div class="site-breadcrumb-wrap">
+                <h4 class="breadcrumb-title">{{ trans('global.login') }}</h4>
+                <ul class="breadcrumb-menu">
+                    <li><a href="{{ route('home') }}"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="active">{{ trans('global.login') }}</li>
+                </ul>
+            </div>
         </div>
-
-        {{-- INFO MESSAGE --}}
-        @if(session('message'))
-            <div class="mx-8 mb-4 px-4 py-2 text-sm rounded-md
-                        bg-blue-50 text-blue-700 border border-blue-200">
-                {{ session('message') }}
-            </div>
-        @endif
-
-        {{-- FORM --}}
-        <form method="POST" action="{{ route('login') }}" class="px-8 pb-8 space-y-5">
-            @csrf
-
-            {{-- EMAIL --}}
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                    {{ trans('global.login_email') }}
-                </label>
-                <input type="email"
-                       name="email"
-                       value="{{ old('email') }}"
-                       required
-                       autofocus
-                       class="w-full px-3 py-2 border rounded-md text-sm
-                              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                              {{ $errors->has('email') ? 'border-red-500' : 'border-gray-300' }}">
-                @if($errors->has('email'))
-                    <p class="mt-1 text-xs text-red-600">
-                        {{ $errors->first('email') }}
-                    </p>
-                @endif
-            </div>
-
-            {{-- PASSWORD --}}
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">
-                    {{ trans('global.login_password') }}
-                </label>
-                <input type="password"
-                       name="password"
-                       required
-                       class="w-full px-3 py-2 border rounded-md text-sm
-                              focus:ring-2 focus:ring-blue-500 focus:border-blue-500
-                              {{ $errors->has('password') ? 'border-red-500' : 'border-gray-300' }}">
-                @if($errors->has('password'))
-                    <p class="mt-1 text-xs text-red-600">
-                        {{ $errors->first('password') }}
-                    </p>
-                @endif
-            </div>
-
-            {{-- REMEMBER + FORGOT --}}
-            <div class="flex items-center justify-between">
-                <label class="flex items-center gap-2 text-sm text-gray-600">
-                    <input type="checkbox"
-                           name="remember"
-                           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                    {{ trans('global.remember_me') }}
-                </label>
-
-                @if(Route::has('password.request'))
-                    <a href="{{ route('password.request') }}"
-                       class="text-sm text-blue-600 hover:underline">
-                        {{ trans('global.forgot_password') }}
-                    </a>
-                @endif
-            </div>
-
-            {{-- LOGIN BUTTON --}}
-            <div class="pt-2">
-                <button type="submit"
-                        class="w-full py-2.5 bg-blue-600 text-white text-sm font-medium
-                               rounded-md hover:bg-blue-700 transition">
-                    {{ trans('global.login') }}
-                </button>
-            </div>
-
-            {{-- REGISTER LINK --}}
-            <div class="text-center pt-2">
-                <a href="{{ route('register') }}"
-                   class="text-sm text-blue-600 hover:underline">
-                    {{ trans('global.register') }}
-                </a>
-            </div>
-
-        </form>
     </div>
-</div>
 
+    <div class="auth-area py-100">
+        <div class="container">
+            <div class="auth-shell">
+                <div class="login-form">
+                    <div class="login-header">
+                        <a href="{{ route('home') }}">
+                            <img src="{{ asset('assets/img/logo/logo.png') }}" alt="{{ trans('panel.site_title') }}">
+                        </a>
+                        <h3>Welcome Back</h3>
+                        <p>Sign in to manage your wholesale account.</p>
+                    </div>
+
+                    @if(session('message'))
+                        <div class="alert auth-alert mb-4">
+                            {{ session('message') }}
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+
+                        <div class="form-group">
+                            <label for="email">{{ trans('global.login_email') }}</label>
+                            <input id="email"
+                                   type="email"
+                                   name="email"
+                                   value="{{ old('email') }}"
+                                   class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                                   placeholder="Enter your email"
+                                   required
+                                   autofocus>
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password">{{ trans('global.login_password') }}</label>
+                            <input id="password"
+                                   type="password"
+                                   name="password"
+                                   class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
+                                   placeholder="Enter your password"
+                                   required>
+                            @error('password')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between gap-3 mb-4 flex-wrap">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="remember" id="remember">
+                                <label class="form-check-label" for="remember">{{ trans('global.remember_me') }}</label>
+                            </div>
+
+                            @if(Route::has('password.request'))
+                                <a href="{{ route('password.request') }}" class="forgot-pass">
+                                    {{ trans('global.forgot_password') }}
+                                </a>
+                            @endif
+                        </div>
+
+                        <button type="submit" class="theme-btn">
+                            <i class="fas fa-right-to-bracket"></i> {{ trans('global.login') }}
+                        </button>
+                    </form>
+
+                    <div class="login-footer">
+                        <p>New wholesale buyer? <a href="{{ route('register') }}">Create an account</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
