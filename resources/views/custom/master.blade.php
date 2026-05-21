@@ -280,10 +280,7 @@
         <div class="main-navigation">
             <nav class="navbar navbar-expand-lg">
                 <div class="container position-relative">
-                    <a class="navbar-brand" href="{{ route('home') }}">
-                        <img src="{{ $logo }}" class="logo-display" alt="{{ $siteName }}">
-                        <img src="{{ $logo }}" class="logo-scrolled" alt="{{ $siteName }}">
-                    </a>
+                    
                     <div class="category-all">
                         <button class="category-btn" type="button">
                             <i class="fas fa-list-ul"></i><span>All Categories</span>
@@ -374,10 +371,10 @@
         <div class="footer-widget">
             <div class="container">
                 <div class="row footer-widget-wrapper pt-100 pb-40">
-                    <div class="col-md-6 col-lg-3">
+                    <div class="col-md-6 col-lg-4">
                         <div class="footer-widget-box about-us">
                             <a href="{{ route('home') }}" class="footer-logo">
-                                <img src="{{ $logo }}" alt="{{ $siteName }}">
+                                <img src="{{ asset('assets/img/footerlogo.png') }}" alt="{{ $siteName }}">
                             </a>
                             <p class="mb-3">{{ $footerDescription }}</p>
                             <ul class="footer-contact">
@@ -388,7 +385,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-2">
+                    <div class="col-md-6 col-lg-3">
                         <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Quick Links</h4>
                             <ul class="footer-list">
@@ -400,7 +397,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-2">
+                    <div class="col-md-6 col-lg-3">
                         <div class="footer-widget-box list">
                             <h4 class="footer-widget-title">Browse Category</h4>
                             <ul class="footer-list">
@@ -424,24 +421,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
-                        <div class="footer-widget-box list">
-                            <h4 class="footer-widget-title">Get Mobile App</h4>
-                            <p>{{ $siteName }} app is now available on App Store and Google Play.</p>
-                            <div class="footer-download">
-                                <h5>Download Our Mobile App</h5>
-                                <div class="footer-download-btn">
-                                    <a href="#"><i class="fab fa-google-play"></i><div class="download-btn-info"><span>Get It On</span><h6>Google Play</h6></div></a>
-                                    <a href="#"><i class="fab fa-app-store-ios"></i><div class="download-btn-info"><span>Get It On</span><h6>App Store</h6></div></a>
-                                </div>
-                            </div>
-                            <div class="footer-payment mt-20">
-                                <span>We Accept:</span>
-                                <img src="{{ asset('assets/img/payment/amex.svg') }}" alt="Payment">
-                                <img src="{{ asset('assets/img/payment/paypal-2.svg') }}" alt="Payment">
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
         </div>
