@@ -101,7 +101,7 @@
                 <div class="login-form register-form">
                     <div class="login-header">
                         <a href="{{ route('home') }}">
-                            <img src="{{ asset('assets/img/logo/logo.png') }}" alt="{{ trans('panel.site_title') }}">
+                            <h1>{{ trans('panel.site_title') }}</h1>
                         </a>
                         <h3>Create Buyer Account</h3>
                         <p>Register your business for wholesale medical purchases.</p>

@@ -47,7 +47,7 @@
                 <div class="login-form">
                     <div class="login-header">
                         <a href="{{ route('home') }}">
-                            <img src="{{ asset('assets/img/logo/logo.png') }}" alt="{{ trans('panel.site_title') }}">
+                            <h1>{{ trans('panel.site_title') }}</h1>
                         </a>
                         <h3>Welcome Back</h3>
                         <p>Sign in to manage your wholesale account.</p>
