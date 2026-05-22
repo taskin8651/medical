@@ -9,7 +9,7 @@
                     <h4 class="breadcrumb-title">Shop</h4>
                     <ul class="breadcrumb-menu">
                         <li><a href="{{ route('home') }}"><i class="fas fa-home"></i> Home</a></li>
-                        <li class="active"><i class="fas fa-chevron-right"></i> Shop</li>
+                        <li class="active"> Shop</li>
                     </ul>
                 </div>
             </div>
@@ -76,26 +76,7 @@
                                     @endforelse
                                 </ul>
                             </div>
-                            <!-- Price Range Filter -->
-                            <div class="shop-widget">
-                                <h4 class="shop-widget-title">Price Range</h4>
-                                <div class="price-range-box">
-                                    <div class="price-range-input">
-                                        <input type="text" id="price-amount" readonly 
-                                               value="Rs. {{ number_format($filters['min_price'] ?? $minPrice) }} - Rs. {{ number_format($filters['max_price'] ?? $maxPrice) }}">
-                                    </div>
-                                    <form method="GET" action="{{ route('shop') }}" class="mt-3">
-                                        @foreach(request()->query() as $key => $value)
-                                            @if($key != 'min_price' && $key != 'max_price')
-                                                <input type="hidden" name="{{ $key }}" value="{{ is_array($value) ? implode(',', $value) : $value }}">
-                                            @endif
-                                        @endforeach
-                                        <input type="hidden" name="min_price" id="filter-min-price" value="{{ $filters['min_price'] ?? $minPrice }}">
-                                        <input type="hidden" name="max_price" id="filter-max-price" value="{{ $filters['max_price'] ?? $maxPrice }}">
-                                        <button type="submit" class="theme-btn w-100">Apply Price</button>
-                                    </form>
-                                </div>
-                            </div>
+                           
                             <!-- Stock Status Filter -->
                             <div class="shop-widget">
                                 <h4 class="shop-widget-title">Stock Status</h4>
@@ -173,9 +154,7 @@
                                         Showing {{ $products->firstItem() ?? 0 }}-{{ $products->lastItem() ?? 0 }} of {{ $products->total() }} Results
                                     </div>
                                 </div>
-                                <div class="shop-sort-gl">
-                                    <a href="#" class="shop-sort-grid active" data-bs-toggle="tooltip" title="Grid View"><i class="fas fa-th"></i></a>
-                                </div>
+                              
                             </div>
                         </div>
 

@@ -135,35 +135,50 @@
         </div>
     @endif
 
-    @if($brands->isNotEmpty())
-        <div class="brand-area bg pt-80 pb-80">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 mx-auto">
-                        <div class="site-heading text-center">
-                            <span class="site-title-tagline">Popular Brands</span>
-                            <h2 class="site-title">Shop By <span>Brand</span></h2>
-                        </div>
-                    </div>
-                </div>
+  @if($brands->isNotEmpty())
+<section class="brand-area brand-premium-area pt-80 pb-80">
+    <div class="container">
 
-                <div class="brand-slider owl-carousel owl-theme">
-                    @foreach($brands as $brand)
-                        <div class="brand-item">
-                            <a href="{{ route('shop', ['brand' => $brand->id]) }}">
-                                @if($brand->logo)
-                                    <img src="{{ asset('storage/' . $brand->logo) }}" alt="{{ $brand->name }}">
-                                @else
-                                    <h5>{{ $brand->name }}</h5>
-                                    <span>{{ $brand->products_count }} Items</span>
-                                @endif
-                            </a>
-                        </div>
-                    @endforeach
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <div class="site-heading text-center">
+                    <span class="site-title-tagline">Popular Brands</span>
+                    <h2 class="site-title">Shop By <span>Brand</span></h2>
+                    <p>Explore trusted medicine and healthcare brands.</p>
                 </div>
             </div>
         </div>
-    @endif
+
+        <div class="brand-slider owl-carousel owl-theme">
+            @foreach($brands as $brand)
+                <div class="brand-item">
+                    <a href="{{ route('shop', ['brand' => $brand->id]) }}" class="brand-card">
+
+                        <div class="brand-logo-box">
+                            @if(!empty($brand->logo))
+                                <img src="{{ asset('storage/' . $brand->logo) }}"
+                                     alt="{{ $brand->name }}"
+                                     onerror="this.style.display='none'; this.closest('.brand-logo-box').classList.add('no-logo');">
+                            @else
+                                <div class="brand-letter">
+                                    {{ strtoupper(substr($brand->name, 0, 1)) }}
+                                </div>
+                            @endif
+                        </div>
+
+                        <div class="brand-content">
+                            <h5>{{ $brand->name }}</h5>
+                            <span>{{ $brand->products_count ?? 0 }} Items</span>
+                        </div>
+
+                    </a>
+                </div>
+            @endforeach
+        </div>
+
+    </div>
+</section>
+@endif
 
     @if($galleries->isNotEmpty())
         <div class="gallery-area py-100">

@@ -13,20 +13,26 @@ class CategoryController extends Controller
     /**
      * Display all categories
      */
-    public function index()
-    {
-        $categories = Category::where('is_active', 1)->withCount('products')->get();
+   public function index()
+{
+    $categories = Category::active()
+        ->with('media')
+        ->withCount('products')
+        ->latest()
+        ->get();
 
-        return view('custom.categories', compact('categories'));
-    }
+    return view('custom.categories', compact('categories'));
+}
 
     /**
      * Display products for a specific category
      */
     public function show(Request $request, $slug)
     {
-        $category = Category::where('slug', $slug)->where('is_active', 1)->firstOrFail();
-
+$category = Category::with('media')
+    ->where('slug', $slug)
+    ->where('is_active', 1)
+    ->firstOrFail();
         $query = Product::where('category_id', $category->id)->where('is_active', 1);
 
         // Search filter

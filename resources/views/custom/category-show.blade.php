@@ -28,9 +28,9 @@
                             <div class="shop-widget">
                                 <div class="category-info-widget">
                                     <div class="category-info-img">
-                                        <img src="{{ asset('storage/' . $category->image ?? 'assets/img/category/default.jpg') }}"
-                                             alt="{{ $category->name }}"
-                                             onerror="this.src='{{ asset('assets/img/category/default.jpg') }}'">
+                                       <img src="{{ $category->getFirstMediaUrl('category') ?: asset('assets/img/category/default.jpg') }}"
+     alt="{{ $category->name }}"
+     onerror="this.src='{{ asset('assets/img/category/default.jpg') }}'">
                                     </div>
                                     <h4 class="category-info-title">{{ $category->name }}</h4>
                                     @if($category->description)
@@ -79,26 +79,6 @@
                                 </ul>
                             </div>
 
-                            <!-- Price Range Filter -->
-                            <div class="shop-widget">
-                                <h4 class="shop-widget-title">Price Range</h4>
-                                <div class="price-range-box">
-                                    <div class="price-range-input">
-                                        <input type="text" id="price-amount" readonly
-                                               value="Rs. {{ number_format($filters['min_price'] ?? $minPrice) }} - Rs. {{ number_format($filters['max_price'] ?? $maxPrice) }}">
-                                    </div>
-                                    <form method="GET" action="{{ route('category.show', $category->slug) }}" class="mt-3">
-                                        @foreach(request()->query() as $key => $value)
-                                            @if($key != 'min_price' && $key != 'max_price')
-                                                <input type="hidden" name="{{ $key }}" value="{{ is_array($value) ? implode(',', $value) : $value }}">
-                                            @endif
-                                        @endforeach
-                                        <input type="hidden" name="min_price" id="filter-min-price" value="{{ $filters['min_price'] ?? $minPrice }}">
-                                        <input type="hidden" name="max_price" id="filter-max-price" value="{{ $filters['max_price'] ?? $maxPrice }}">
-                                        <button type="submit" class="btn btn-sm btn-primary w-100">Apply Price</button>
-                                    </form>
-                                </div>
-                            </div>
 
                             <!-- Stock Status Filter -->
                             <div class="shop-widget">
@@ -169,9 +149,7 @@
                                         Showing {{ $products->firstItem() ?? 0 }}-{{ $products->lastItem() ?? 0 }} of {{ $products->total() }} Results
                                     </div>
                                 </div>
-                                <div class="shop-sort-gl">
-                                    <a href="#" class="shop-sort-grid active" data-bs-toggle="tooltip" title="Grid View"><i class="fas fa-border-all"></i></a>
-                                </div>
+                               
                             </div>
                         </div>
 
@@ -196,9 +174,7 @@
                                                     </a>
                                                     <div class="product-action-wrap">
                                                         <div class="product-action">
-                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quickview" data-product-id="{{ $product->id }}" data-tooltip="tooltip" title="Quick View"><i class="fas fa-eye"></i></a>
-                                                            <a href="javascript:void(0)" class="add-to-wishlist" data-product-id="{{ $product->id }}" data-tooltip="tooltip" title="Add To Wishlist"><i class="fas fa-heart"></i></a>
-                                                            <a href="#" data-tooltip="tooltip" title="Add To Compare"><i class="fas fa-rotate"></i></a>
+                                                            <a href="{{ route('shop.show', $product->slug) }}" data-bs-toggle="modal" ><i class="fas fa-eye"></i></a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -310,7 +286,7 @@
                 margin: 0 auto 15px;
                 border-radius: 50%;
                 overflow: hidden;
-                border: 3px solid #007bff;
+                border: 3px solid #11B76B ;
             }
 
             .category-info-img img {
@@ -334,7 +310,7 @@
 
             .category-stats {
                 font-size: 12px;
-                color: #007bff;
+                color: #11B76B;
                 font-weight: 500;
             }
         </style>

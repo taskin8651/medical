@@ -453,6 +453,52 @@ Version         : 1.0
 
 
 
+(function ($) {
+    "use strict";
+
+    $(document).ready(function () {
+        if ($(".brand-slider").length) {
+            $(".brand-slider").owlCarousel({
+                loop: true,
+                margin: 24,
+                nav: true,
+                dots: true,
+                autoplay: true,
+                autoplayTimeout: 2500,
+                autoplayHoverPause: true,
+                smartSpeed: 800,
+                navText: [
+                    '<span aria-label="Previous">‹</span>',
+                    '<span aria-label="Next">›</span>'
+                ],
+                responsive: {
+                    0: {
+                        items: 1,
+                        margin: 14
+                    },
+                    576: {
+                        items: 2,
+                        margin: 16
+                    },
+                    768: {
+                        items: 3,
+                        margin: 18
+                    },
+                    992: {
+                        items: 4,
+                        margin: 22
+                    },
+                    1200: {
+                        items: 5,
+                        margin: 24
+                    }
+                }
+            });
+        }
+    });
+
+})(jQuery);
+
 
 
 
