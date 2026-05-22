@@ -17,7 +17,7 @@
     <script src="//unpkg.com/alpinejs" defer></script>
 
     {{-- Font Awesome --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" href="{{ asset('assets/css/all-fontawesome.min.css') }}"/>
 
     {{-- Datatables --}}
     <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">

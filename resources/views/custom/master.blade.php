@@ -34,7 +34,7 @@
                 return $icon;
             }
         }
-        return 'fa-box-medical';
+        return 'fa-briefcase-medical';
     };
 @endphp
 <!DOCTYPE html>
@@ -49,7 +49,7 @@
     <link rel="icon" type="image/x-icon" href="{{ $favicon }}">
 
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('assets/css/all-fontawesome.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/animate.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css') }}">
@@ -280,6 +280,9 @@
         <div class="main-navigation">
             <nav class="navbar navbar-expand-lg">
                 <div class="container position-relative">
+                    <a class="navbar-brand d-lg-none" href="{{ route('home') }}">
+                        <img src="{{ $logo }}" alt="{{ $siteName }}">
+                    </a>
                     
                     <div class="category-all">
                         <button class="category-btn" type="button">
@@ -320,7 +323,7 @@
                                     @endif
                                 </li>
                             @empty
-                                <li><a href="{{ route('shop') }}"><i class="fas fa-box-medical menu-category-icon"></i><span>All Products</span></a></li>
+                                <li><a href="{{ route('shop') }}"><i class="fas fa-briefcase-medical menu-category-icon"></i><span>All Products</span></a></li>
                             @endforelse
                         </ul>
                     </div>

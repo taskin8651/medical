@@ -24,7 +24,7 @@
 @endphp
 
 <div class="site-breadcrumb">
-    <div class="site-breadcrumb-bg" style="background: url('{{ asset('assets/img/breadcrumb/01.jpg') }}')"></div>
+    <div class="site-breadcrumb-bg"><i class="fas fa-briefcase-medical"></i></div>
     <div class="container">
         <div class="site-breadcrumb-wrap">
             <h4 class="breadcrumb-title">{{ $product->name }}</h4>

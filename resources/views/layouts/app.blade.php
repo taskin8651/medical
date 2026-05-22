@@ -12,7 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {{-- Font Awesome --}}
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+          href="{{ asset('assets/css/all-fontawesome.min.css') }}"/>
 
     {{-- Select2 / Dropzone (agar login page me kabhi use ho) --}}
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">

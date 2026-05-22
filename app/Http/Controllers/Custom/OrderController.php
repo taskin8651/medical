@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Custom;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
@@ -46,6 +48,38 @@ class OrderController extends Controller
             ->where('order_number', $orderNumber)
             ->firstOrFail();
 
+        if ($redirect = $this->authorizeCustomerAccess($order)) {
+            return $redirect;
+        }
+
+        return view('custom.orders.show', compact('order'));
+    }
+
+    public function bill(string $orderNumber)
+    {
+        $order = Order::with(['user', 'items.variant.product'])
+            ->where('order_number', $orderNumber)
+            ->firstOrFail();
+
+        if ($redirect = $this->authorizeCustomerAccess($order)) {
+            return $redirect;
+        }
+
+        if (!$order->invoice_number) {
+            $order->update([
+                'invoice_number' => Order::generateInvoiceNumber(),
+                'invoice_date' => now()->toDateString(),
+            ]);
+        }
+
+        $settings = Setting::getSettings();
+        $customerView = true;
+
+        return view('admin.orders.manual-bill', compact('order', 'settings', 'customerView'));
+    }
+
+    private function authorizeCustomerAccess(Order $order): ?RedirectResponse
+    {
         $isOwner = Auth::check() && (int) $order->user_id === (int) Auth::id();
         $isVerified = session()->has('verified_customer_orders.' . $order->id);
 
@@ -55,7 +89,7 @@ class OrderController extends Controller
                 ->with('error', 'Please verify your order number with email or phone to view details.');
         }
 
-        return view('custom.orders.show', compact('order'));
+        return null;
     }
 
     private function identifierMatches(Order $order, string $identifier): bool

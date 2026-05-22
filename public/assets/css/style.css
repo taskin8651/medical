@@ -3045,13 +3045,22 @@ label {
 
 .shop-widget-banner .banner-img{
   position: absolute;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
   width: 100%;
   height: 100%;
   border-radius: 10px;
   z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--theme-color), var(--theme-color2));
+  overflow: hidden;
+}
+
+.shop-widget-banner .banner-img i {
+  color: #fff;
+  font-size: 115px;
+  opacity: 0.16;
+  transform: rotate(-18deg);
 }
 
 .shop-widget-banner .banner-img::before{
@@ -7848,14 +7857,23 @@ label {
 
 .site-breadcrumb-bg {
   position: absolute;
-  background-repeat: no-repeat;
-  background-position: center !important;
-  background-size: cover !important;
   height: 100%;
   width: 100%;
   top: 0;
   left: 0;
   z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(235, 247, 242, 0.95), rgba(255, 255, 255, 0.92));
+}
+
+.site-breadcrumb-bg i {
+  color: var(--theme-color);
+  font-size: 130px;
+  margin-right: 10%;
+  opacity: 0.12;
 }
 
 .site-breadcrumb .breadcrumb-title {

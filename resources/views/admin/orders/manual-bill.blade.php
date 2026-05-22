@@ -5,6 +5,7 @@
     $companyEmail = $settings->email ?: 'amitk75541@gmail.com';
     $companyPhone = $settings->phone ?: '620051348, 8789626518';
     $companyGstin = '10QUHPS7501F1ZI';
+    $customerView = $customerView ?? false;
     $invoiceNo = preg_replace('/\D+/', '', $order->invoice_number ?: $order->order_number) ?: ($order->id + 1000);
     $paymentMode = strtoupper(str_replace('_', ' ', $order->payment_method ?: 'cash'));
     $itemCount = max($order->items->sum('qty'), 0);
@@ -108,11 +109,19 @@
 </head>
 <body>
     <div class="toolbar">
-        <a href="{{ route('admin.orders.index') }}">Back to Orders</a>
-        <div style="display:flex;gap:10px">
-            <a href="{{ route('admin.orders.manualBilling') }}">New Manual Bill</a>
-            <button type="button" onclick="window.print()">Print / Save PDF</button>
-        </div>
+        @if($customerView)
+            <a href="{{ route('orders.show', $order->order_number) }}">Back to Order</a>
+            <div style="display:flex;gap:10px">
+                <a href="{{ route('user.dashboard') }}">My Dashboard</a>
+                <button type="button" onclick="window.print()">Print / Save PDF</button>
+            </div>
+        @else
+            <a href="{{ route('admin.orders.index') }}">Back to Orders</a>
+            <div style="display:flex;gap:10px">
+                <a href="{{ route('admin.orders.manualBilling') }}">New Manual Bill</a>
+                <button type="button" onclick="window.print()">Print / Save PDF</button>
+            </div>
+        @endif
     </div>
 
     <main class="sheet">

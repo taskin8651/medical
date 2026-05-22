@@ -215,7 +215,7 @@
 </style>
 
 <div class="site-breadcrumb">
-    <div class="site-breadcrumb-bg" style="background: url({{ asset('assets/img/breadcrumb/01.html') }})"></div>
+    <div class="site-breadcrumb-bg"><i class="fas fa-briefcase-medical"></i></div>
     <div class="container">
         <div class="site-breadcrumb-wrap">
             <h4 class="breadcrumb-title">Order Details</h4>
@@ -240,7 +240,8 @@
                 <div class="hero-actions">
                     <span class="status-pill status-{{ $status }}"><i class="fas fa-circle"></i> {{ ucfirst($status) }}</span>
                     <span class="status-pill status-{{ $paymentStatus }}"><i class="fas fa-credit-card"></i> {{ ucfirst($paymentStatus) }}</span>
-                    <button type="button" class="outline-btn" onclick="window.print()"><i class="fas fa-print"></i> Print</button>
+                    <a href="{{ route('orders.bill', $order->order_number) }}" class="outline-btn"><i class="fas fa-file-invoice"></i> Billing Print</a>
+                    <button type="button" class="outline-btn" onclick="window.print()"><i class="fas fa-print"></i> Print Summary</button>
                 </div>
             </div>
 

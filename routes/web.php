@@ -31,7 +31,7 @@ Route::get('/home', function () {
  
 Auth::routes();
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth', 'admin']], function () {
     Route::get('/', 'HomeController@index')->name('home');
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
@@ -175,5 +175,6 @@ Route::get('/contact', [CustomContactController::class, 'index'])->name('contact
 Route::post('/contact', [CustomContactController::class, 'store'])->name('contact.store');
 Route::get('/orders', [CustomOrderController::class, 'index'])->name('orders.index');
 Route::post('/orders/track', [CustomOrderController::class, 'track'])->name('orders.track');
+Route::get('/orders/{orderNumber}/bill', [CustomOrderController::class, 'bill'])->name('orders.bill');
 Route::get('/orders/{orderNumber}', [CustomOrderController::class, 'show'])->name('orders.show');
 Route::get('/dashboard', [UserDashboardController::class, 'index'])->middleware('auth')->name('user.dashboard');

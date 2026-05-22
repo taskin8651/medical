@@ -3,7 +3,7 @@
 
  <!-- breadcrumb -->
         <div class="site-breadcrumb">
-            <div class="site-breadcrumb-bg" style="background: url({{ asset('assets/img/breadcrumb/01.html') }})"></div>
+            <div class="site-breadcrumb-bg"><i class="fas fa-briefcase-medical"></i></div>
             <div class="container">
                 <div class="site-breadcrumb-wrap">
                     <h4 class="breadcrumb-title">Shop</h4>
@@ -139,7 +139,7 @@
                             </div>
                             <!-- Banner -->
                             <div class="shop-widget-banner mt-30 mb-50">
-                                <div class="banner-img" style="background-image:url({{ asset('assets/img/banner/shop-banner.html') }})"></div>
+                                <div class="banner-img"><i class="fas fa-pills"></i></div>
                                 <div class="banner-content">
                                     <h6>Get <span>35% Off</span></h6>
                                     <h4>New Collection of Medicine</h4>

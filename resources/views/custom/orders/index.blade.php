@@ -99,7 +99,7 @@
 </style>
 
 <div class="site-breadcrumb">
-    <div class="site-breadcrumb-bg" style="background: url({{ asset('assets/img/breadcrumb/01.html') }})"></div>
+    <div class="site-breadcrumb-bg"><i class="fas fa-briefcase-medical"></i></div>
     <div class="container">
         <div class="site-breadcrumb-wrap">
             <h4 class="breadcrumb-title">My Orders</h4>
@@ -191,8 +191,9 @@
                             <div class="row-label">Status</div>
                             <span class="status-pill status-{{ $order->status }}">{{ ucfirst($order->status ?? 'pending') }}</span>
                         </div>
-                        <div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
                             <a href="{{ route('orders.show', $order->order_number) }}" class="theme-btn">View</a>
+                            <a href="{{ route('orders.bill', $order->order_number) }}" class="theme-btn">Bill</a>
                         </div>
                     </div>
                 @empty
