@@ -215,14 +215,14 @@
 </style>
 
 <div class="site-breadcrumb">
-    <div class="site-breadcrumb-bg"><i class="fas fa-briefcase-medical"></i></div>
+    <div class="site-breadcrumb-bg"></div>
     <div class="container">
         <div class="site-breadcrumb-wrap">
             <h4 class="breadcrumb-title">Order Details</h4>
             <ul class="breadcrumb-menu">
                 <li><a href="{{ route('home') }}"><i class="fas fa-house"></i> Home</a></li>
-                <li><a href="{{ route('orders.index') }}">My Orders</a></li>
-                <li class="active">{{ $order->order_number }}</li>
+                <li><a href="{{ route('orders.index') }}"><i class="fas fa-list"></i> My Orders</a></li>
+                <li class="active"><i class="fas fa-chevron-right"></i> {{ $order->order_number }}</li>
             </ul>
         </div>
     </div>

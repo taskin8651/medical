@@ -167,7 +167,7 @@
             <h4 class="breadcrumb-title">My Dashboard</h4>
             <ul class="breadcrumb-menu">
                 <li><a href="{{ route('home') }}"><i class="fas fa-house"></i> Home</a></li>
-                <li class="active">My Dashboard</li>
+                <li class="active"><i class="fas fa-chevron-right"></i> My Dashboard</li>
             </ul>
         </div>
     </div>

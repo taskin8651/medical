@@ -9,7 +9,7 @@
                     <h4 class="breadcrumb-title">Shop</h4>
                     <ul class="breadcrumb-menu">
                         <li><a href="{{ route('home') }}"><i class="fas fa-home"></i> Home</a></li>
-                        <li class="active">Shop</li>
+                        <li class="active"><i class="fas fa-chevron-right"></i> Shop</li>
                     </ul>
                 </div>
             </div>
