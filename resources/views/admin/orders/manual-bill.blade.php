@@ -113,7 +113,7 @@
             <a href="{{ route('orders.show', $order->order_number) }}">Back to Order</a>
             <div style="display:flex;gap:10px">
                 <a href="{{ route('user.dashboard') }}">My Dashboard</a>
-                <button type="button" onclick="window.print()">Print / Save PDF</button>
+                <button type="button" onclick="window.print()">Download / Save PDF</button>
             </div>
         @else
             <a href="{{ route('admin.orders.index') }}">Back to Orders</a>
@@ -298,5 +298,14 @@
             </table>
         </section>
     </main>
+    @if($customerView && request()->boolean('download'))
+        <script>
+            window.addEventListener('load', function () {
+                setTimeout(function () {
+                    window.print();
+                }, 300);
+            });
+        </script>
+    @endif
 </body>
 </html>

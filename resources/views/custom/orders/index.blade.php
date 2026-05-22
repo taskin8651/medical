@@ -193,7 +193,7 @@
                         </div>
                         <div style="display:flex;gap:8px;flex-wrap:wrap;">
                             <a href="{{ route('orders.show', $order->order_number) }}" class="theme-btn">View</a>
-                            <a href="{{ route('orders.bill', $order->order_number) }}" class="theme-btn">Bill</a>
+                            <a href="{{ route('orders.bill', ['orderNumber' => $order->order_number, 'download' => 1]) }}" class="theme-btn">Download Bill</a>
                         </div>
                     </div>
                 @empty

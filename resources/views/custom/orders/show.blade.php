@@ -240,7 +240,7 @@
                 <div class="hero-actions">
                     <span class="status-pill status-{{ $status }}"><i class="fas fa-circle"></i> {{ ucfirst($status) }}</span>
                     <span class="status-pill status-{{ $paymentStatus }}"><i class="fas fa-credit-card"></i> {{ ucfirst($paymentStatus) }}</span>
-                    <a href="{{ route('orders.bill', $order->order_number) }}" class="outline-btn"><i class="fas fa-file-invoice"></i> Billing Print</a>
+                    <a href="{{ route('orders.bill', ['orderNumber' => $order->order_number, 'download' => 1]) }}" class="outline-btn"><i class="fas fa-file-invoice"></i> Download Bill</a>
                     <button type="button" class="outline-btn" onclick="window.print()"><i class="fas fa-print"></i> Print Summary</button>
                 </div>
             </div>
