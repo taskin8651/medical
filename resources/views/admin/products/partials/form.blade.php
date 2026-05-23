@@ -276,5 +276,31 @@
                 @error('documents.*')<p class="field-error">{{ $message }}</p>@enderror
             </div>
         </div>
+
+        @if($product && $product->getMedia('images')->count())
+            <div style="margin-top:16px">
+                <p style="font-size:13px;font-weight:800;color:#0f172a;margin:0 0 10px">Existing Product Images</p>
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+                    @foreach($product->getMedia('images') as $media)
+                        @php
+                            $mediaUrl = $media->getUrl();
+                            $publicPath = $media->id . '/' . $media->file_name;
+                            if ($media->disk !== 'public' && \Illuminate\Support\Facades\Storage::disk('public')->exists($publicPath)) {
+                                $mediaUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($publicPath);
+                            }
+                        @endphp
+                        <div data-media-card="{{ $media->id }}" style="border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;background:#f8fafc">
+                            <img src="{{ $mediaUrl }}" alt="{{ $product->name }}" style="width:100%;height:120px;object-fit:cover;display:block">
+                            <div style="padding:9px;display:grid;gap:8px">
+                                <span style="font-size:12px;color:#334155;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="{{ $media->file_name }}">{{ $media->file_name }}</span>
+                                <button type="button" class="btn-ghost" style="justify-content:center;padding:8px 10px;color:#b91c1c;border-color:#fecaca" onclick="deleteMediaFile({{ $media->id }}, {{ $product->id }})">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </div>
 </div>

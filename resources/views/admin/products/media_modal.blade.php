@@ -128,15 +128,28 @@ function setAsPrimary(mediaId) {
         .catch(() => setMediaMessage('Primary image set nahi ho payi.', true));
 }
 
-function deleteMediaFile(mediaId) {
+function deleteMediaFile(mediaId, productId = null) {
     if (!confirm('Delete this file?')) return;
 
-    fetch(`/admin/products/${currentProductId}/media/${mediaId}`, {
+    const targetProductId = productId || currentProductId;
+
+    if (!targetProductId) {
+        setMediaMessage('Product media delete nahi ho paya. Page refresh karke try karein.', true);
+        return;
+    }
+
+    fetch(`/admin/products/${targetProductId}/media/${mediaId}`, {
         method: 'DELETE',
         headers: { 'X-CSRF-TOKEN': csrfToken(), 'Accept': 'application/json' },
     })
         .then(response => response.ok ? response.json() : Promise.reject())
-        .then(() => loadMediaGrid())
+        .then(() => {
+            document.querySelectorAll(`[data-media-card="${mediaId}"]`).forEach(card => card.remove());
+            if (currentProductId) {
+                loadMediaGrid();
+            }
+            setMediaMessage('File deleted.');
+        })
         .catch(() => setMediaMessage('File delete nahi ho payi.', true));
 }
 

@@ -16,6 +16,10 @@
 .btn-primary { background:var(--accent); color:#fff; border:none; }
 .btn-primary:hover { opacity:.92; }
 .btn-ghost { background:#F8FAFC; color:#475569; border:1.5px solid #E2E8F0; }
+.image-card { border:1px solid #E2E8F0; border-radius:12px; overflow:hidden; background:#F8FAFC; }
+.image-card img { width:100%; height:100px; object-fit:cover; display:block; }
+.image-card-body { padding:8px; display:grid; gap:8px; }
+.btn-danger { justify-content:center; color:#B91C1C; border-color:#FECACA; cursor:pointer; }
 </style>
 @endsection
 
@@ -56,7 +60,21 @@
                 <p style="font-size:13px; font-weight:600; color:#0F172A; margin-bottom:8px;">Existing Images</p>
                 <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px;">
                     @foreach($gallery->getMedia('gallery') as $media)
-                    <img src="{{ $media->getUrl() }}" alt="Gallery image" style="width:100%; border-radius:12px; height:100px; object-fit:cover;">
+                    @php
+                        $mediaUrl = $media->getUrl();
+                        $publicPath = $media->id . '/' . $media->file_name;
+                        if ($media->disk !== 'public' && \Illuminate\Support\Facades\Storage::disk('public')->exists($publicPath)) {
+                            $mediaUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($publicPath);
+                        }
+                    @endphp
+                    <div class="image-card" data-gallery-media-card="{{ $media->id }}">
+                        <img src="{{ $mediaUrl }}" alt="Gallery image">
+                        <div class="image-card-body">
+                            <button type="button" class="btn-ghost btn-danger" onclick="deleteGalleryMedia({{ $gallery->id }}, {{ $media->id }})">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
                     @endforeach
                 </div>
             </div>
@@ -69,4 +87,25 @@
         <button type="submit" class="btn-primary"><i class="fas fa-save"></i> Update Gallery</button>
     </div>
 </form>
+@endsection
+
+@section('scripts')
+<script>
+function deleteGalleryMedia(galleryId, mediaId) {
+    if (!confirm('Delete this image?')) return;
+
+    fetch(`/admin/gallery/${galleryId}/media/${mediaId}`, {
+        method: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+            'Accept': 'application/json',
+        },
+    })
+        .then(response => response.ok ? response.json() : Promise.reject())
+        .then(() => {
+            document.querySelectorAll(`[data-gallery-media-card="${mediaId}"]`).forEach(card => card.remove());
+        })
+        .catch(() => alert('Image delete nahi ho payi. Page refresh karke try karein.'));
+}
+</script>
 @endsection

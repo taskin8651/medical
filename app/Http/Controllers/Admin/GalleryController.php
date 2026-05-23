@@ -28,7 +28,7 @@ class GalleryController extends Controller
         // Multiple images upload
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $file) {
-                $gallery->addMedia($file)->toMediaCollection('gallery');
+                $gallery->addMedia($file)->toMediaCollection('gallery', 'public');
             }
         }
 
@@ -52,11 +52,23 @@ class GalleryController extends Controller
         if ($request->hasFile('images')) {
             $gallery->clearMediaCollection('gallery'); // optional
             foreach ($request->file('images') as $file) {
-                $gallery->addMedia($file)->toMediaCollection('gallery');
+                $gallery->addMedia($file)->toMediaCollection('gallery', 'public');
             }
         }
 
         return redirect()->route('admin.gallery.index')->with('success','Updated');
+    }
+
+    public function deleteMedia(Gallery $gallery, $mediaId)
+    {
+        $media = $gallery->media()->findOrFail($mediaId);
+        $media->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with('success', 'Image deleted');
     }
 
     public function destroy($id)

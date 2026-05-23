@@ -141,7 +141,12 @@ class ProductController extends Controller
     {
         $media = $product->media()->findOrFail($mediaId);
         $media->delete();
-        return response()->json(['success' => true]);
+
+        if (request()->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return back()->with('success', 'Media deleted.');
     }
 
     /** Mark one image as primary, unset others */
@@ -189,7 +194,7 @@ class ProductController extends Controller
             return [
                 'id' => $media->id,
                 'name' => $media->name,
-                'url' => $media->getUrl(),
+                'url' => $this->mediaUrl($media),
                 'custom_properties' => $media->custom_properties,
             ];
         });
@@ -198,7 +203,7 @@ class ProductController extends Controller
             return [
                 'id' => $media->id,
                 'name' => $media->name,
-                'url' => $media->getUrl(),
+                'url' => $this->mediaUrl($media),
                 'size' => $media->size,
                 'custom_properties' => $media->custom_properties,
             ];
@@ -227,7 +232,7 @@ class ProductController extends Controller
             $mediaFile = $product->addMedia($file)
                 ->usingName(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME))
                 ->usingFileName($this->safeMediaFileName($file->getClientOriginalName()))
-                ->toMediaCollection($collection);
+                ->toMediaCollection($collection, 'public');
 
             // Set first image as primary if no primary exists
             if ($collection === 'images' && !$product->media()->where('collection_name', 'images')->where('custom_properties->is_primary', true)->exists()) {
@@ -238,7 +243,7 @@ class ProductController extends Controller
             $uploaded[] = [
                 'id' => $mediaFile->id,
                 'name' => $mediaFile->name,
-                'url' => $mediaFile->getUrl(),
+                'url' => $this->mediaUrl($mediaFile),
                 'collection' => $collection,
             ];
         }
@@ -304,7 +309,7 @@ class ProductController extends Controller
                 $mediaFile = $product->addMedia($image->getPathname())
                     ->usingName(pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME))
                     ->usingFileName($this->safeMediaFileName($image->getClientOriginalName()))
-                    ->toMediaCollection('images');
+                    ->toMediaCollection('images', 'public');
                 
                 // Set first image as primary if no primary exists
                 if (!$hasPrimary && $i === 0) {
@@ -319,9 +324,24 @@ class ProductController extends Controller
                 $product->addMedia($doc->getPathname())
                     ->usingName(pathinfo($doc->getClientOriginalName(), PATHINFO_FILENAME))
                     ->usingFileName($this->safeMediaFileName($doc->getClientOriginalName()))
-                    ->toMediaCollection('documents');
+                    ->toMediaCollection('documents', 'public');
             }
         }
+    }
+
+    private function mediaUrl(\Spatie\MediaLibrary\MediaCollections\Models\Media $media): string
+    {
+        if ($media->disk === 'public') {
+            return $media->getUrl();
+        }
+
+        $publicPath = $media->id . '/' . $media->file_name;
+
+        if (Storage::disk('public')->exists($publicPath)) {
+            return Storage::disk('public')->url($publicPath);
+        }
+
+        return $media->getUrl();
     }
 
     private function safeMediaFileName(string $originalName): string

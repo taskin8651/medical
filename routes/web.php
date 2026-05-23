@@ -127,10 +127,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('orders/stats',                    [OrderController::class, 'stats'])->name('orders.stats');
 
     Route::resource('hero', HeroController::class);
-     Route::resource('gallery', GalleryController::class);
-     Route::resource('blog', BlogController::class);
-     Route::resource('testimonial', TestimonialController::class);
-     Route::get('settings', [SettingController::class,'index'])->name('settings.index');
+    Route::delete('gallery/{gallery}/media/{media}', [GalleryController::class, 'deleteMedia'])->name('gallery.media.delete');
+    Route::resource('gallery', GalleryController::class);
+    Route::resource('blog', BlogController::class);
+    Route::resource('testimonial', TestimonialController::class);
+    Route::get('settings', [SettingController::class,'index'])->name('settings.index');
     Route::post('settings', [SettingController::class,'update'])->name('settings.update');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
